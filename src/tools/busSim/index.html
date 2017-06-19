@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Bus in Carpark Simulator </title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/vendor/bootstrap.css" rel="stylesheet" >
+        <script src="/vendor/jquery.slim.min.js"></script>
+        <style>
+        .container {
+           background-color: silver;
+        }
+	body {	font: 16pt Helvetica, sans-serif; }
+	@media screen and (max-width: 760px){
+		body {	font-size: 8pt; }
+	}
+        </style>
+    </head>
+    <body>
+        <div class="container" id="display"></div>
+
+        <script src="/vendor/base.js"></script>
+        <script src="busSim.view.js"></script>
+        <script src="busSim.state.js"></script>
+        <script src="busSim.js"></script>
+    </body>
+</html>

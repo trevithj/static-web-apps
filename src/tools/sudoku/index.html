@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        	<title>Sudoku Assister</title>
+	        <meta charset="UTF-8">
+        	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="/vendor/bootstrap.css" rel="stylesheet" >
+		<script src="/vendor/jquery.slim.min.js"></script>
+		<style>
+			.standard {
+				background-color:white; opacity:0.9;
+				font-size:34pt; text-align:center;  /* width:1.5em; */
+			}
+			.selected { background-color:#ccf; }
+			td.flag   { font-size:12pt; text-align: center; /*width:1.5em;*/}
+			td.flag-0 { background-color: white; color:silver;}
+			td.flag-1 { background-color: #fdd; color:#fdd;}
+			td.flag-2 { background-color: #dfd; color:black;}
+			td.box { padding: 0.1em; background-color: silver; }
+			td.box-2, td.box-4, td.box-6, td.box-8 { background-color:black;}
+			table.cellTable { width: 100%; }
+
+			body {	font-size: 16pt; }
+		@media screen and (max-width: 600px){
+			body {	font: 8pt Helvetica, sans-serif; }
+			td.flag   { font-size:8pt; }
+			.standard { font-size:20pt; }
+		}
+
+		</style>
+	</head>
+	<body>
+		<div class="col-md-12" id="display">
+			Grid Display:
+			<button class="btn btn-primary" name="work" onclick="BASE.dispatch('SET_GRID','working');">Working</button>
+			<button class="btn btn-primary" name="stnd" onclick="BASE.dispatch('SET_GRID','standard');">Standard</button>
+			<button class="btn btn-default" name="undo" onclick="BASE.dispatch('UNDO');">Undo</button>
+			<table style="width:100%">
+				<tbody id="main"></tbody>
+			</table>
+		</div>
+
+        <script src="/vendor/base.js"></script>
+        <script src="sudoku.view.js"></script>
+        <script src="sudoku.state.js"></script>
+		<script>
+			var view = BASE.value("VIEW");
+			view.init();
+			BASE.send("OK_2_INIT_STATE");
+
+			BASE.listen("ERROR", function(msg) {
+				console.error(msg);
+			});
+
+			BASE.listen("CELL_CLICKED", function(obj) {
+				var state = BASE.getState();
+				if(state.grid==="working") {
+					obj.value = 2;
+					BASE.dispatch("UPDATE_CELL", obj);
+				} else { //assume grid=="standard"
+					BASE.dispatch("SELECT_CELL", obj);
+				}
+				console.info(obj);
+			});
+
+			BASE.listen("NBR_CLICKED", function(obj) {
+				obj.value = 2;
+				BASE.dispatch("UPDATE_CELL", obj);
+			});
+
+
+			BASE.listen("STATE_CHANGED", function(state) {
+				switch(state.actionType) {
+					case "UPDATE_CELL":
+					case "RESET":
+						return view.render(state);
+					default: return view.render(state);
+				}
+			});
+
+			BASE.dispatch("RESET");
+
+		</script>
+	</body>
+</html>
