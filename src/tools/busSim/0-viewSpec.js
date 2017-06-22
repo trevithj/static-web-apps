@@ -23,7 +23,7 @@ describe("Bus Sim ", () => {
 		});
 
 		it("should do initial render OK", ()=> {
-			//browser.assert.text('#display', 'OK');
+			browser.assert.text('#display', 'OK');
 			BASE.dispatch("SET_DIR", "DOWN");
 			browser.assert.text('#display', 'Direction is invalid');
 			browser.assert.element('g#theBus');
@@ -31,9 +31,9 @@ describe("Bus Sim ", () => {
 		});
 
 		it("should move the bus", ()=> {
-			browser.assert.attribute("#theBus","transform","translate(0,0)");
-			BASE.dispatch("SET_LOC", {x:1, y:1});
-			browser.assert.attribute("#theBus","transform","translate(120,120)");
+			browser.assert.attribute("#theBus","transform","translate(0,480)");
+			BASE.dispatch("SET_LOC", {x:4, y:0});
+			browser.assert.attribute("#theBus","transform","translate(480,480)");
 		});
 
 		it("should set direction OK", ()=> {

@@ -1,10 +1,10 @@
 (function() {
 	var DIR = {
-		NORTH: {dx:0, dy:-1, left:"WEST",  right:"EAST"},
-		SOUTH: {dx:0, dy: 1, left:"EAST",  right:"WEST"},
-		WEST: { dx:-1,dy: 0, left:"NORTH", right:"SOUTH"},
-		EAST: { dx: 1,dy: 0, left:"SOUTH", right:"NORTH"}
-	};
+		NORTH: {dx:0, dy: 1, left:"WEST",  right:"EAST"},
+		SOUTH: {dx:0, dy:-1, left:"EAST",  right:"WEST"},
+		EAST: { dx: 1,dy: 0, left:"NORTH", right:"SOUTH"},
+		WEST: { dx:-1,dy: 0, left:"SOUTH", right:"NORTH"}
+	};//assumes 0,0 is SW corner, 4,4 is NE corner
 
 	//useful helper function
 	function setProp(prop, type, action) {
@@ -24,10 +24,11 @@
 
 	function doMove(loc, dir) {
 		var dirObj = DIR[dir];
-		return {
+		var newLoc = {
 			x: loc.x + dirObj.dx,
 			y: loc.y + dirObj.dy
 		};
+		return (locCheck(newLoc)) ? newLoc : loc;
 	}
 
 	function doTurn(dir, lr) {
@@ -63,9 +64,21 @@
 		}
 	}
 
-	function messageR(newState) {
-		var msg = (newState.isValidLoc) ? "OK" : "Location is invalid";
-		return (newState.isValidDir) ? msg : "Direction is invalid";
+	function locSame(newL, oldL) {
+		return (newL.x === oldL.x && newL.y === oldL.y);
+	}
+
+	function messageR(newS, oldS, type) {
+		switch(type) {
+			case "MOVE":
+				return locSame(newS.location, oldS.location) ? "Bad Move" : "OK";
+			case "PLACE":
+			case "SET_DIR":
+				if (!newS.isValidDir) { return "Direction is invalid"; }
+			case "SET_LOC":
+				return (newS.isValidLoc) ? "OK" : "Location is invalid";
+			default: return "OK";
+		}
 	}
 
 	function isValidDirR(action) {
@@ -100,9 +113,9 @@
 			facing: facingR(state, action),
 			actionType: action.type
 		};
-		newState.message = messageR(newState);
 		newState.isValidDir = isValidDirR(action);
 		newState.isValidLoc = isValidLocR(action);
+		newState.message = messageR(newState, state, action.type);
 		return newState;
 	});
 

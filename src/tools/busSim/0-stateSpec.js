@@ -7,7 +7,7 @@ zombie.localhost('example.com', 8888);
 const browser = new zombie();
 var BASE, state;
 
-describe("Bus Sim ", () => {
+describe("Bus Sim", () => {
 	before(() => {
 		return browser.visit('/tools/busSim/index.html');
 	});
@@ -70,26 +70,38 @@ describe("Bus Sim ", () => {
 			state = BASE.getState();
 			assert.equal(state.facing, "EAST");
 			assert.equal(state.isValidDir, true);
+			assert.equal(state.message, "OK");
 			BASE.dispatch("SET_DIR", "DOWN");
 			state = BASE.getState();
 			assert.equal(state.facing, "EAST");
 			assert.equal(state.isValidDir, false, "DOWN shouldn't be valid");
+			assert.equal(state.message, "Direction is invalid");
 			BASE.dispatch("PLACE", {loc:{x:1, y:2}, dir:"UP"});
 			state = BASE.getState();
 			assert.equal(state.facing, "EAST");
 			assert.equal(state.isValidDir, false, "UP shouldn't be valid");
+			assert.equal(state.message, "Direction is invalid");
 		});
 
 		it("should move the bus", ()=> {
 			var locatn = {x:2, y:2};
-			BASE.dispatch("PLACE", {loc:locatn, dir:"NORTH"});
+			BASE.dispatch("PLACE", {loc:locatn, dir:"WEST"});
 			BASE.dispatch("MOVE");
 			state = BASE.getState();
 			assert.notDeepEqual(state.location, locatn);
-			locatn.y-=1;
+			locatn.x-=1;
 			assert.deepEqual(state.location, locatn);
 		});
 
+		it("should not move the bus outside the park", ()=> {
+			var locatn = {x:4, y:4};
+			BASE.dispatch("PLACE", {loc:locatn, dir:"NORTH"});
+			state = BASE.getState();
+			assert.deepEqual(state.location, locatn);
+			BASE.dispatch("MOVE");
+			state = BASE.getState();
+			assert.deepEqual(state.location, locatn);
+		});
 	});
 });
 
