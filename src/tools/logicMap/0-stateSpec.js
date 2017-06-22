@@ -1,13 +1,13 @@
 /*jshint esversion: 6 */
-const Browser = require('zombie');
+const zombie = require('zombie');
 const expect = require('chai').expect;
 
 //assumes localhost:8888 server is running.
 //run `node server.js` in src folder.
 
-Browser.localhost('example.com', 8888);
+zombie.localhost('example.com', 8888);
 
-const browser = new Browser();
+const browser = new zombie();
 var BASE;
 
 describe("logicMap ", () => {
@@ -47,9 +47,6 @@ describe("logicMap ", () => {
 		it("should set links", ()=> {
 			var links = BASE.getState().links;
 			expect(links, "links not set?").to.be.an('array').that.is.empty;
-//			BASE.dispatch("SET_LINKS", [
-//				{srcs:["N1","N2"], tgts:["n3"]}
-//			]);
 			BASE.dispatch("SET_LINKS", ["[N1,N2][n3]","[N4,N5] some stuff [n3]"]);
 			links = BASE.getState().links;
 			expect(isValidLink(links[0])).to.be.true;

@@ -59,5 +59,9 @@ typings/
 
 # ignore some folders
 example*
-ation_name/
 build/
+
+src/*
+src/**/*.txt
+!src/tools
+!src/node_modules
