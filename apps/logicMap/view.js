@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 (function() {
-	const display = $("#display");
+	const display = document.querySelector("#display");
 
 	function getToolbar(state) {
 		var views = state.views;
@@ -43,10 +43,7 @@
 	//renderer
 	BASE.listen("STATE_CHANGED", function(state) {
 //		console.log(state);
-		display.html(`
-			${getToolbar(state)}
-			${getMainDisplay(state)}
-		`);
+		display.innerHTML = `${getToolbar(state)}	${getMainDisplay(state)}`;
 	});
 
 }());
