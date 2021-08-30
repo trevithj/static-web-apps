@@ -1,13 +1,13 @@
 (function() {
 	///////// View rendering /////////
-	var display = $('#display');
+	var display = document.querySelector('#display');
 	var view = {};
 	view.init = function() {
-		view.main = display.find("#main");
-		view.main.html("");
-		view.undoBtn = display.find("button[name='undo']");
-		view.workBtn = display.find("button[name='work']");
-		view.stndBtn = display.find("button[name='stnd']");
+		view.main = display.querySelector("#main");
+		view.main.innerHTML = "";
+		view.undoBtn = display.querySelector("button[name='undo']");
+		view.workBtn = display.querySelector("button[name='work']");
+		view.stndBtn = display.querySelector("button[name='stnd']");
 	}
 
 	function makeFlagTD(cell, flagNum) {
@@ -61,7 +61,7 @@
 		var html=rows.map(function(row) {
 			return makeRow(row, state).join("\n");
 		});
-		view.main.html(html.join(""));
+		view.main.innerHTML = html.join("");
 	}
 
 
@@ -102,7 +102,7 @@
 				default: return makeNumberBtn(n, state.selectedCell);
 			}
 		});
-		view.main.append(row.join(""));
+		view.main.innerHTML = view.main.innerHTML + row.join("");
 	}
 	
 	function makeNumberBtn(n, sel) {
@@ -128,12 +128,18 @@
 		if(state.grid==="standard") {
 			renderNumberBtns(state);
 		}
-		view.undoBtn.prop("disabled", state.history.length===0);
-		view.workBtn.prop("disabled", state.grid==="working");
-		view.stndBtn.prop("disabled", state.grid==="standard");
+		toggle(view.undoBtn, state.history.length===0);
+		toggle(view.workBtn, state.grid==="working");
+		toggle(view.stndBtn, state.grid==="standard");
 	};
 
-
+  function toggle(btn, flag) {
+    if (flag) {
+      btn.setAttribute("disabled", "");
+    } else {
+      btn.removeAttribute("disabled");
+    }
+  }
 
 
 	BASE.value("VIEW", view);
