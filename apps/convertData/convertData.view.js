@@ -1,5 +1,5 @@
 (function() {
-	var display = $("#display");
+	var display = document.querySelector("#display");
 	//renderers
 	function makeBtn(name, enabled) {
 		var type = (enabled) ? 'primary' : 'default';
@@ -124,14 +124,14 @@
 
 	BASE.listen("STATE_CHANGED", function(state) {
 		if(state.actionType==="SET_VIEW") {
-			display.html([
+			display.innerHTML = [
 				makeViewBtns(state),
 				'<div class="view">',
 					makeView(state),
 				'</div>'
-			].join(""));
+			].join("");
 			if(state.view==="Input") {
-				$('textarea[name="data"]').focus();
+				document.querySelector('textarea[name="data"]').focus();
 			} else if(state.view==="Sankey") {
 				var rows = [
 {_rows:13, class:"Second Class", age:"Child", sex:"Female", survived:"Survived"},

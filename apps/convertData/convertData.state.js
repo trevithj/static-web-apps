@@ -25,7 +25,7 @@
 		return lines;
 	}
 
-	function setColHeadings(state, action) {
+	function setRowHeadings(state, action) {
 		var v = state.rowHeadings || [];
 		if(action.type==="SET_DATA") {
 			var i = action.payload.indexOf("\n");
