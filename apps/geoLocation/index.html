@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>GeoLocation Reader</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="Keywords" content="HTML, JavaScript, Geolocation, Navigation, Programming, Web Development, Learning, Examples, Source code, Demos, Tips">
+  <link rel="stylesheet" type="text/css" href="./index.css">
+</head>
+
+<body>
+  <div id="display">
+  </div>
+
+  <script src="../../common/base.js"></script>
+  <script src="gl.view.js"></script>
+  <script src="gl.state.js"></script>
+  <script>
+    var view = BASE.value("VIEW");
+    view.init();
+    BASE.send("OK_2_INIT_STATE");
+
+    BASE.listen("BTN_CLICKED", function (obj) {
+      console.log(obj);
+      // obj.value = 2;
+      // BASE.dispatch("UPDATE_CELL", obj);
+    });
+
+
+    BASE.listen("STATE_CHANGED", function (state) {
+      switch (state.actionType) {
+        case "ERROR": 
+        case "POSITION_CHANGED": 
+        case "RESET":
+          return view.render(state);
+        default: return view.render(state);
+      }
+    });
+
+    BASE.dispatch("RESET");
+
+    if('geolocation' in navigator) {
+      const watchId = navigator.geolocation.watchPosition(
+        position => {
+          BASE.dispatch('POSITION_CHANGED', position.coords);
+        },
+        err => {
+          BASE.dispatch('ERROR', `(${err.code}): ${err.message}`);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000
+        }
+      );
+      BASE.dispatch('WATCHING', watchId);
+      BASE.listen("UNWATCH", state => {
+        navigator.geolocation.clearWatch(watchId || state.watch);
+        BASE.dispatch('UNWATCHING');
+      });
+    } else {
+      BASE.dispatch('ERROR', 'geolocation IS NOT available');
+    }
+  </script>
+</body>
+
+</html>

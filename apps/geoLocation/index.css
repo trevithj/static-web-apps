@@ -1,0 +1,21 @@
+div#display {
+  max-width: 840px;
+}
+
+body {
+  font-size: 16pt;
+}
+
+@media screen and (max-width: 600px) {
+  body {
+    font: 8pt Helvetica, sans-serif;
+  }
+}
+
+div.main-div {
+  margin: 1em;
+}
+
+div.row {
+  font-family: Consolas, Menlo, "courier new", monospace;
+}

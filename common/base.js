@@ -66,3 +66,10 @@ const BASE = {};
     return values[name];
   }
 }());
+
+// Misc helper functions
+(function () {
+  BASE.select = (selector) => document.querySelector(selector);
+  BASE.selectAll = (selector) => document.querySelectorAll(selector);
+  
+}());
