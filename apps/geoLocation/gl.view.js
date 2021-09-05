@@ -11,7 +11,7 @@
     `;
     view.tabs = display.querySelector('.tab-bar');
     view.main = display.querySelector('.main-div');
-    view.foot = display.querySelector('.footer-div');
+    view.foot = display.querySelector('.footer-bar');
   }
 
   view.render = function (state) {
