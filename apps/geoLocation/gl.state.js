@@ -6,9 +6,9 @@
   };
   
   function positionR(state, action) {
-    console.log({action});
     return (action.type==='POSITION_CHANGED') ? action.payload : state.position;
   };
+
   function tabR(state, action) {
     return (action.type==='TAB_CHANGED') ? action.payload : state.tab;
   };
@@ -22,12 +22,13 @@
   };
 
   const averagesR = BASE.value('averagesR');
+  const pointsR = BASE.value('pointsR');
 
 	function reducer(state, action) {
 		state = state || {
       error: '',
+      points: [],  //each row contains [lng,lat,altitude,timestamp],
       position: {},
-      points: [],
       tab: 'position',
       watch:-1,
     };
@@ -35,12 +36,8 @@
 			actionType: action.type,
       averages: averagesR(state, action),
       error: errorR(state, action),
+      points: pointsR(state, action),
       position: positionR(state, action),
-      points: [ //each row contains [lng,lat,altitude,timestamp],
-        [123.456, 32.1987, 23.456, 123123123],
-        [123.456, 32.1987, 23.456, 123123123],
-        [123.456, 32.1987, 23.456, 123123123]
-      ],
       tab: tabR(state, action),
       watch: watchR(state, action),
 		};

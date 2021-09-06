@@ -5,22 +5,22 @@
   view.init = function () {
     display.innerHTML = `
       <h2>GeoLocation Reader</h2>
-      <div class="tab-bar">
+      <div class="tab-bar button-bar">
         <button id="tab-1">Position</button>
         <button id="tab-2">Points</button>
+      </div>
+      <div class="frame avg-div">Loading</div>
+      <div class="act-bar button-bar">
         <button id="add">Add Point</button>
+        <button id="reset">Reset Point</button>
       </div>
-      <div class="main-div">
-        <div class="avg-div">Loading</div>
-        <div class="pos-div">Loading</div>
-      </div>
+      <div class="frame pos-div">Loading</div>
       <div class="footer-bar" />
     `;
-    view.tabs = display.querySelector('.tab-bar');
     view.tabBtn1 = display.querySelector('#tab-1');
     view.tabBtn2 = display.querySelector('#tab-2');
     view.addBtn = display.querySelector('#add');
-    view.main = display.querySelector('.main-div');
+    view.resetBtn = display.querySelector('#reset');
     view.foot = display.querySelector('.footer-bar');
     view.pos = display.querySelector('.pos-div');
     view.avg = display.querySelector('.avg-div');
@@ -36,10 +36,16 @@
     view.addBtn.addEventListener("click", () => {
       BASE.dispatch('ADD_CURRENT_POINT');
     });
-    //TODO: clear points? Or just refresh the page?
+    view.resetBtn.addEventListener("click", () => {
+      BASE.dispatch('RESET_AVERAGES');
+    });
   }
 
   view.render = function (state) {
+    const renderPosition = BASE.value("renderPosition");
+    const renderPoints = BASE.value("renderPoints");
+    const renderAverages = BASE.value("renderAverages");
+
     const {actionType, tab, averages} = state;
     switch (actionType) {
       case 'ERROR':
@@ -51,6 +57,8 @@
       }
       case 'RESET_AVERAGES':
         return renderAverages(tab, averages);
+      case 'ADD_CURRENT_POINT':
+        return renderPoints(tab, state.points);
       case 'TAB_CHANGED': {
         updateTabs(tab);
         renderPoints(tab, state.points);
@@ -58,7 +66,7 @@
         renderAverages(tab, averages);
         return
       }
-        //TODO: allow watch to be switched off/on?
+      //TODO: allow watch to be switched off/on?
       default:
         return;
     }
@@ -68,46 +76,10 @@
     view.foot.innerHTML = `ERROR: ${error}`;
   }
 
-  //roll-your-own nullish
-  function ifNull(v, other = 'unknown') {return v === null ? other : v;}
-
-  function renderPosition(tab, position) {
-    if(tab !=='position') return;
-    const {accuracy, latitude, longitude, altitude, altitudeAccuracy, heading, speed} = position;
-    view.pos.innerHTML = `
-      <h3>Real-time geolocation data</h3>
-      <div class='row'>LongLatA : [
-        ${longitude}, ${latitude}, ${ifNull(altitude,0)}
-      ]</div>
-      <div class='row'>Accuracy : ${accuracy}, ${ifNull(altitudeAccuracy, -1)}</div>
-      <div class='row'>Heading  : ${ifNull(heading)}</div>
-      <div class='row'>Speed    : ${ifNull(speed)}</div>
-    `;
-  }
-
-  function renderPoints(tab, points) {
-    if(tab !=='points') return;
-    console.log({points});
-    view.pos.innerHTML = ['<h3>Stored points data</h3>','<textArea>', ...points.map(p => JSON.stringify(p)),'</textArea>'].join('\n');
-  }
-
-  function renderAverages(tab, averages) {
-    const {latSum, lngSum, altSum, timestamp, count} = averages;
-    console.log(count);
-    if(count < 1) return;
-    view.avg.innerHTML = `
-      <h3>Averaged geolocation data</h3>
-      <div class='row'>LongLatA: [
-        ${Number(latSum/count).toFixed(9)}, ${Number(lngSum/count).toFixed(9)}, ${Number(altSum/count).toFixed(3)}
-      ]</div>
-      <div class='row'> Counts = ${count}</div>
-      <div class='row'> Last update on ${new Date(timestamp).toISOString()} (${timestamp})</div>
-    `;
-  }
 
   function updateTabs(tab) {
-    toggle(view.tabBtn1, tab==="position");
-    toggle(view.tabBtn2, tab==="points");
+    toggle(view.tabBtn1, tab === "position");
+    toggle(view.tabBtn2, tab === "points");
   }
 
   function toggle(btn, flag) {

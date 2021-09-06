@@ -12,24 +12,24 @@ body {
   }
 }
 
-div.main-div {
-  margin: 1em;
-}
-
-div.main-div > div {
+div.frame {
   border: solid thin silver;
   border-radius: 8px;
   padding: 8px;
   margin-bottom: 5px;
 }
 
-div.tab-bar > button {
-  width: 6.5em;
+div.button-bar > button {
+  width: 7em;
 }
-button#add {
-  /* margin-left: calc(100% - 22em); */
-  position:absolute;
-  right: 1em;
+
+div.act-bar {
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+div.act-bar > button {
+  background-color: rgba(255, 0,0, 0.3);
 }
 
 div.row {
