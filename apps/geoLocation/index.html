@@ -5,7 +5,8 @@
   <title>GeoLocation Reader</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="Keywords" content="HTML, JavaScript, Geolocation, Navigation, Programming, Web Development, Learning, Examples, Source code, Demos, Tips">
+  <meta name="Keywords"
+    content="HTML, JavaScript, Geolocation, Navigation, Programming, Web Development, Learning, Examples, Source code, Demos, Tips">
   <link rel="stylesheet" type="text/css" href="./index.css">
 </head>
 
@@ -15,6 +16,7 @@
 
   <script src="../../common/base.js"></script>
   <script src="gl.view.js"></script>
+  <script src="gl.state.averages.js"></script>
   <script src="gl.state.js"></script>
   <script>
     var view = BASE.value("VIEW");
@@ -30,8 +32,8 @@
 
     BASE.listen("STATE_CHANGED", function (state) {
       switch (state.actionType) {
-        case "ERROR": 
-        case "POSITION_CHANGED": 
+        case "ERROR":
+        case "POSITION_CHANGED":
         case "RESET":
           return view.render(state);
         default: return view.render(state);
@@ -40,7 +42,7 @@
 
     BASE.dispatch("RESET");
 
-    if('geolocation' in navigator) {
+    if ('geolocation' in navigator) {
       const watchId = navigator.geolocation.watchPosition(
         position => {
           BASE.dispatch('POSITION_CHANGED', position.coords);
@@ -54,13 +56,21 @@
         }
       );
       BASE.dispatch('WATCHING', watchId);
-      BASE.listen("UNWATCH", state => {
-        navigator.geolocation.clearWatch(watchId || state.watch);
-        BASE.dispatch('UNWATCHING');
+
+      window.addEventListener('unload', () => {
+        navigator.geolocation.clearWatch(watchId);
       });
+
     } else {
       BASE.dispatch('ERROR', 'geolocation IS NOT available');
     }
+
+    //allow user-controlled unwatching in future
+    BASE.listen("UNWATCH", state => {
+      navigator.geolocation.clearWatch(state.watch);
+      BASE.dispatch('UNWATCHING');
+    });
+
   </script>
 </body>
 
