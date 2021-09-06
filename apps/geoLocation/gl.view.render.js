@@ -9,7 +9,7 @@
     view.pos.innerHTML = `
       <h3>Real-time geolocation data</h3>
       <div class='row'>LongLatA : [
-        ${longitude}, ${latitude}, ${ifNull(altitude,0)}
+        ${Number(longitude).toFixed(8)}, ${Number(latitude).toFixed(8)}, ${Number(ifNull(altitude,0)).toFixed(2)}
       ]</div>
       <div class='row'>Accuracy : ${accuracy}, ${ifNull(altitudeAccuracy, -1)}</div>
       <div class='row'>Heading  : ${ifNull(heading)}</div>
@@ -19,9 +19,17 @@
 
   function renderPoints(tab, points) {
     if(tab !=='points') return;
-    console.log({points});
-    view.pos.innerHTML = ['<h3>Stored points data</h3>','<textArea>', ...points.map(p => JSON.stringify(p)),'</textArea>'].join('\n');
+    // console.log({points});
+    view.pos.innerHTML = `<h3>Stored points data</h3><textArea>${stringify(points)}</textArea>`;
   }
+
+  function stringify(points) {
+    return points.map(p => {
+      const [lng=0, lat=0, alt=0, timestamp=0] = p;
+      return `${Number(lng).toFixed(8)}, ${Number(lat).toFixed(8)}, ${Number(alt).toFixed(2)}, ${timestamp}`;
+    }).join('\n');
+  }
+
 
   function renderAverages(tab, averages) {
     const {latSum, lngSum, altSum, timestamp, count} = averages;
@@ -38,7 +46,7 @@
     if(count < 1) {
       return '0.00000000, 0.00000000, 0.00'
     } else {
-      return `${Number(latSum/count).toFixed(8)}, ${Number(lngSum/count).toFixed(8)}, ${Number(altSum/count).toFixed(2)}`;
+      return `${Number(lngSum/count).toFixed(8)}, ${Number(latSum/count).toFixed(8)}, ${Number(altSum/count).toFixed(2)}`;
     }
   }
 

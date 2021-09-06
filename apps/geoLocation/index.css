@@ -20,7 +20,7 @@ div.frame {
 }
 
 div.button-bar > button {
-  width: 7em;
+  width: 7.5em;
 }
 
 div.act-bar {
@@ -39,5 +39,6 @@ div.row {
 textarea {
   margin: 0;
   width: 100%;
-  height: 50vh;
+  height: 40vh;
+  font-size: small;
 }
