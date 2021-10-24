@@ -1,0 +1,28 @@
+body {
+	/*font-family: Helvetica,Arial,sans-serif;*/
+	font-family: Courier new, monospace, sans-serif;
+	font-size: 2.4em;
+	line-height: 1.4;
+	background: #000; /* #090;*/
+	color: #fff; /* #fcf;*/
+	overflow: hidden;
+}
+#speech {
+	position: absolute;
+	margin-left: 20vw;
+	margin-right: 20vw;
+}
+p {
+	margin: .5em;
+}
+/*.line {}*/
+.slide {
+	text-align: center;
+	margin: 0;
+}
+div.text {
+  white-space: pre; 
+}
+div.char1 { color: #99ff99; }
+div.cha21 { color: #ff9999; }
+div.char3 { color: #9999ff; }
