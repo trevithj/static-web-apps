@@ -6,8 +6,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    .container-fluid {
+    .menu-container {
+      background-color: silver;
+      min-height: 1em;
+    }
+    .menu-container button {
+      width: 5rem;
+    }
+
+    .editor-container {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 12rem;
+      min-height: 30em;
+      background-color: rgba(0,0,255, 0.5);
+    }
+
+    .display-container {
       background-color: #eee;
+      height: calc(100vh - 1.2em);
     }
 
     div.tab {
@@ -39,9 +57,23 @@
 </head>
 
 <body>
-  <div class="container-fluid" id="display"></div>
+  <div class="menu-container" id="menu">
+    <button name='add'>Add</button>
+    <button name='mod'>Move</button>
+    <button name='del'>Erase</button>
+  </div>
+  <div class="display-container" id="display"></div>
+  <div class="editor-container" id="editor">
+    <textarea rows="1" cols="20"></textarea>
+    <input type="text" name="edit" />
+  </div>
 
   <script src="../../common/base.js"></script>
+  <script>
+    BASE.value('Selectors', {
+      main:'#display', menu: '#menu', editor: '#editor'
+    });
+  </script>
   <script src="view.js"></script>
   <script src="state.js"></script>
   <script src="main.js"></script>
