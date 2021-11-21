@@ -3,11 +3,20 @@
  * 2- a mediator one-to-one messaging system.
  * 3- a simple global value namespacer handler.
  **/
-const BASE = {};
+const BASE = {
+  send: null,
+  listen: null,
+  initState: null,
+  dispatch: null,
+  getState: null,
+  value: null,
+  select: null,
+  selectAll: null,
+};
 
 //Flux/Redux-like framework that acts as a single 'store'.
 (function () {
-  var state, reduce;
+  let state, reduce;
 
   BASE.initState = (reducerFn) => {
     if (typeof reducerFn !== "function") {
@@ -27,26 +36,30 @@ const BASE = {};
   }
 
   BASE.getState = () => {
-    return state;
+    return state; //return a copy?
   }
 }());
 
 // Mediation methods, to allow messages to be passed between
 // arbitrary nodes: one-to-one only.
 // This is like pub/sub, but enforces a single subscriber.
-// To unsubscribe from a subject, set an empty getterFn.
+// To unsubscribe from a subject, pass an empty listenFn to BASE.listen.
 (function () {
   const listeners = {};
 
   BASE.send = (subject, message) => {
     var listenFn = listeners[subject];
-    if (typeof listenFn === "function") {
+    if (listenFn && typeof listenFn === "function") {
       listenFn(message);
     }
   }
 
-  BASE.listen = (subject, getterFn) => {
-    listeners[subject] = getterFn;
+  BASE.listen = (subject, listenFn) => {
+    if(typeof listenFn === 'function') {
+      listeners[subject] = listenFn;
+    } else {
+      delete listeners[subject];
+    }
   }
 }());
 
@@ -71,5 +84,4 @@ const BASE = {};
 (function () {
   BASE.select = (selector) => document.querySelector(selector);
   BASE.selectAll = (selector) => document.querySelectorAll(selector);
-  
 }());

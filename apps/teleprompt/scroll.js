@@ -13,7 +13,7 @@
 		window.DEBUG = { style: element.style };
 
 		const getYpos = function() {
-			const ypos = element.offsetTop;
+			let ypos = element.offsetTop;
 			let thisNode = element; 
 			while (thisNode.offsetParent &&  (thisNode.offsetParent !== document.body)) { 
 				thisNode = thisNode.offsetParent;

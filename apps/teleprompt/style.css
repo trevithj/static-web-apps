@@ -1,9 +1,13 @@
 body {
+  background: #000; /* #090;*/
+  color: #fff; /* #fcf;*/
+}
+.display {
 	/*font-family: Helvetica,Arial,sans-serif;*/
+  width: 100%;
 	font-family: Courier new, monospace, sans-serif;
 	font-size: 2.4em;
 	line-height: 1.4;
-	background: #000; /* #090;*/
 	color: #fff; /* #fcf;*/
 	overflow: hidden;
 }

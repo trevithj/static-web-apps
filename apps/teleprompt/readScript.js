@@ -1,6 +1,6 @@
 //globals BASE, THE_SCRIPT */
 (function(){
-  const sel = BASE.select;
+  const SEL = BASE.value('SELECTORS');
 
   function formatScript(text) {
     const lines = text.split('\n');
@@ -35,20 +35,24 @@
     const obj = JSON.parse(line);
     const html = Object.keys(obj).map(tag => {
       const n = obj[tag];
-      return Array(n).map(() => `<${tag} />`);
+      return new Array(n).fill(0).map(() => `<${tag} />`).join('');
     });
     return html.join('\n');
   }
 
-  const view = sel('body');
-	view.innerHTML = '';
-	const html = formatScript(THE_SCRIPT);
-	//console.log(html);
-	setTimeout(() => {
-		view.innerHTML = '<div id="speech"></div><div id="control"></div>';
-		const speech = sel("#speech");
-		speech.innerHTML = html.join('\n');
-    BASE.send('canInit', {speech});
-		window.dispatchEvent(new Event('canInit'));
-	}, 100);//zero should still work, but...
+  BASE.listen('refreshDisplay', () => {
+    const view = BASE.select(SEL.viewDisplay);
+    const text = BASE.select(SEL.textInput);
+    view.innerHTML = '';
+    const html = formatScript(text.value);
+    //console.log(html);
+    setTimeout(() => {
+      view.innerHTML = '<div id="speech"></div><div id="control"></div>';
+      const speech = BASE.select("#speech");
+      speech.innerHTML = html.join('\n');
+      BASE.send('canInit', {speech});
+      window.dispatchEvent(new Event('canInit'));
+    }, 100);//zero should still work, but...
+  })
+
 }());
