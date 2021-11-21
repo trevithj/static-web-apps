@@ -1,21 +1,23 @@
 /*jshint esversion: 6 */
 (function() {
-	const display = document.querySelector("#display");
+	const SEL = BASE.value('Selectors');
+	const display = document.querySelector(SEL.main);
+	const editor = document.querySelector(SEL.editor);
 
-	function getToolbar(state) {
-		var views = state.views;
-		var divs = views.map((v) => {
-			var actv = (v===state.view) ? "tab-active" : "";
-			return `<div class="col-sm-2 tab ${actv}">
-				<a href="#" onclick="BASE.dispatch(\'SET_VIEW\',\'${v}\')">${v}</a>
-			</div>`;
-		});
-		var spc = 12 - (2*views.length);
-		return `<div class="row">
-			${divs.join("")}
-			<div class="col-sm-${spc} tab tab-space">&nbsp;</div>
-		</div>`;
-	}
+	// function getToolbar(state) {
+	// 	var views = state.views;
+	// 	var divs = views.map((v) => {
+	// 		var actv = (v===state.view) ? "tab-active" : "";
+	// 		return `<div class="col-sm-2 tab ${actv}">
+	// 			<a href="#" onclick="BASE.dispatch(\'SET_VIEW\',\'${v}\')">${v}</a>
+	// 		</div>`;
+	// 	});
+	// 	var spc = 12 - (2*views.length);
+	// 	return `<div class="row">
+	// 		${divs.join("")}
+	// 		<div class="col-sm-${spc} tab tab-space">&nbsp;</div>
+	// 	</div>`;
+	// }
 	function getMainDisplay(state) {
 		return `<h2>${state.view} Pending</h2>`;
 	}
@@ -40,10 +42,22 @@
 //	graph.css("height", `${screen.availHeight*0.6}px`);
 //	graph.css("width", `${window.innerWidth*0.6}px`);
 */
+	function getCursor(mode) {
+		switch(mode) {
+			case 'add': return 'pointer';
+			case 'mod': return 'move';
+			case 'del': return 'crosshair';
+			default: return 'default';
+		}
+	}
+
 	//renderer
 	BASE.listen("STATE_CHANGED", function(state) {
-//		console.log(state);
-		display.innerHTML = `${getToolbar(state)}	${getMainDisplay(state)}`;
+		console.log(state);
+		display.innerHTML = getMainDisplay(state);
+		display.style.cursor = getCursor(state.mode);
+		editor.querySelector('input[type="text"]').value = state.mode;
+		// editor.innerHTML = getToolbar(state);
 	});
 
 }());

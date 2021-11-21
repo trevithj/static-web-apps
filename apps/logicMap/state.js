@@ -46,16 +46,24 @@
 		return nodes;
 	}
 
+	function setMode(mode, action) {
+		switch(action.type) {
+			case 'BTN_CLICKED': return action.payload.name;
+			default: return mode;
+		}
+	}
 
 	//set up reducer
 	BASE.initState(function (state, action) {
 		state = state || {
+			mode:"add",
 			view:"Input",
 			views: ["Input","Display","Help"],
 			nodes: {},
 			links: []
 		};
 		return {
+			mode: setMode(state.mode, action),
 			view: setProp(state.view, "SET_VIEW", action),
 			views: setProp(state.views, "SET_VIEWS", action),
 			nodes: setNodes(state.nodes, "SET_NODES", action),
