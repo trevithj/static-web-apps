@@ -1,33 +1,31 @@
 //globals BASE, THE_SCRIPT */
-(function(){
+(function () {
   const SEL = BASE.value('SELECTORS');
 
   function formatScript(text) {
-    const lines = text.split('\n');
+    const lines = text.split('\n').map(line => line.trim()).filter(line => line !== '');
     const html = [];
     let isDiv = false;
     lines.forEach(line => {
-      line = line.trim();
-      if(line!=='') { //ignore empty lines
-        const ch0 = line[0];
-        switch(ch0) {
-          case '#':
-            if(isDiv) html.push('</div>');
-            isDiv = true;
-            html.push(`<div class="text char${line[1]}">`);
-            break;
-          case '{':
-            isDiv = false;
-            html.push(parseCmd(line));
-            break;
-          case '/':
-            break; //ignore comments
-          default: //treat as plain text
-            html.push(line);
-        }
+      const ch0 = line[0];
+      switch (ch0) {
+        case '#':
+          if (isDiv) html.push('</div>');
+          isDiv = true;
+          html.push(`<div class="text char${line[1]}">`);
+          break;
+        case '{':
+          isDiv = false;
+          html.push(parseCmd(line));
+          break;
+        case '/':
+          break; //ignore comments
+        default: //treat as plain text
+          html.push(line);
+          html.push('\n');
       }
     });
-    if(isDiv) html.push('</div>');
+    if (isDiv) html.push('</div>');
     return html;
   }
 
@@ -49,7 +47,7 @@
     setTimeout(() => {
       view.innerHTML = '<div id="speech"></div><div id="control"></div>';
       const speech = BASE.select("#speech");
-      speech.innerHTML = html.join('\n');
+      speech.innerHTML = html.join('');
       BASE.send('canInit', {speech});
       window.dispatchEvent(new Event('canInit'));
     }, 100);//zero should still work, but...

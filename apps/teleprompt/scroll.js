@@ -36,14 +36,13 @@
 			element.style.MozTransition = txtn;
 		}
 
-		function toggleScrolling() {
-			if (scrolling) {
-				window.clearTimeout(scrolling);
-				scrolling = null;
-			} else {
-				doScroll();
-			}
-		};
+    BASE.listen('scrollText', run => {
+      window.clearTimeout(scrolling);
+      scrolling = null;
+      if(run) {
+        doScroll();
+      };
+    })
 		
 		function reset() {
 			window.clearTimeout(scrolling);
@@ -84,8 +83,8 @@
 			return false;
 		};
 
-		document.addEventListener('click', toggleScrolling);
-		document.addEventListener('keyup', keys);		
+		// document.addEventListener('click', toggleScrolling);
+		// document.addEventListener('keyup', keys);
 	};/// End of scroll()
 
 	function init() {

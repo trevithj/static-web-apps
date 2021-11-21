@@ -26,3 +26,9 @@ The above input should produce the below markup:
  Not bad. Thanks for asking.
 </div>
 ```
+## TODO
+* Persist edited script in localStorage, just in case. (SAVE button?)
+* ~~Make RUN button work, toggling between run and hold.~~
+* Add Inc/Dec buttons for speed. Disable if at limit.
+* ~~Add and~~ implement Reset button.
+* Currently we have three hard-coded style sets: char1, char2, char3. Consider allowing custom editing of these styles.

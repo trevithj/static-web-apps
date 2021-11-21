@@ -13,8 +13,7 @@ body {
 }
 #speech {
 	position: absolute;
-	margin-left: 20vw;
-	margin-right: 20vw;
+	margin-left: 12%;
 }
 p {
 	margin: .5em;

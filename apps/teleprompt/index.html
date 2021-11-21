@@ -36,7 +36,7 @@
       border: solid 1px grey;
       position: absolute;
       top: 12rem;
-      width: calc(100vw - 3px);
+      width: calc(100vw - 4px);
       height: 2rem;
     }
 	</style>
@@ -45,9 +45,11 @@
 <body>
   <div class="root">
     <div class="menu">
-      <button id="a">Show</button>
-      <button id="b">Run</button>
-      <button id="c">Hold</button>
+      <button id="a" title="V to toggle view">Show</button>
+      <button id="b" title="R to toggle scroll">Run</button>
+      <button id="c" title="+ to scroll faster"> + </button>
+      <button id="d" title="- to scroll slower"> - </button>
+      <button id="e" title="ESC to reset">Reset</button>
     </div>
     <div class="input">
       <textarea>
@@ -82,42 +84,17 @@ I shall but love thee better after death.
 </body>
 <script>
   BASE.value('SELECTORS', {
-    btnInput:'.menu #a',
+    btnView:'.menu #a',
     btnRun:'.menu #b',
-    btnPause:'.menu #c',
+    btnReset:'.menu #c',
     textInput:'.input textarea',
     viewInput:'.input',
     viewDisplay:'.display',
     viewMarker:'.marker'
   });
 /////////////////
-  const SEL = BASE.value('SELECTORS');
-  const toggleBtn = BASE.select(SEL.btnInput);
-  const viewInput = BASE.select(SEL.viewInput);
-  const viewDisplay = BASE.select(SEL.viewDisplay);
-  const viewMarker = BASE.select(SEL.viewMarker);
-
-  function showDisplay(show) {
-    const display = show ? '' : 'none';
-    viewDisplay.style.display=display;
-    viewMarker.style.display=display;
-  }
-  showDisplay(false);
-
-  toggleBtn.addEventListener('click', () => {
-    if(toggleBtn.innerHTML==='Edit') {
-      toggleBtn.innerHTML = 'Show';
-      viewInput.style.display='';
-      showDisplay(false);
-    } else {
-      toggleBtn.innerHTML = 'Edit';
-      viewInput.style.display='none';
-      showDisplay(true);
-      BASE.send('refreshDisplay');
-    }
-  })
-  
 </script>
+<script type="text/javascript" src="viewControl.js"></script>
 <script type="text/javascript" src="readScript.js"></script>
 <script type="text/javascript" src="scroll.js"></script>
 </html>
