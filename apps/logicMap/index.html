@@ -24,8 +24,10 @@
     }
 
     .display-container {
+      position: relative;
       background-color: #eee;
       height: calc(100vh - 1.2em);
+      width: 100%;
     }
 
     div.tab {
@@ -52,6 +54,20 @@
       body {
         font-size: 8pt;
       }
+    }
+
+    .node {
+        position:absolute;
+        border:solid thin blue;
+        border-radius:8px;
+        padding:0.2em;
+        text-align:center;
+        /* background-color: white; */
+    }
+    .links {
+        position:absolute;
+        border:solid thin grey;
+        border-radius:8px;
     }
   </style>
 </head>
