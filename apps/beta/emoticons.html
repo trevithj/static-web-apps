@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+  </style>
+</head>
+
+<body>
+<!-- Here is a place to trial animated SVG icons. -->
+
+<div>
+  <a href="https://yqnn.github.io/svg-path-editor/">SVG Path Editor</a>
+  <br />
+  <button>pan left</button>
+  <button>pan right</button>
+  <button>zoom in</button>
+  <button>zoom out</button>
+  <hr />
+</div>
+
+<div style="overflow:hidden; width: 320px;">
+  <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @keyframes wow {
+        10% { r: 0.6 }
+        20% { r: 2.5 }
+        30% { r: 0.6 }
+        40% { r: 1 }
+    }
+    @keyframes pop {
+        50% { r: 3.5 }
+    }
+    .mouth {
+        animation-duration: 3s;
+        animation-name: wow;
+        animation-iteration-count: infinite;
+    }
+    .eye {
+        animation-duration: 1s;
+        animation-name: pop;
+        animation-iteration-count: infinite;
+    }
+  </style>
+  <rect width="100%" height="100%" fill="none" stroke="silver"/>
+  <circle cx="8"    cy="8" fill="yellow" r="7" stroke-width="0.1" stroke="black"/>
+  <circle class="eye" cx="4.5"  cy="6" fill="white"  r="3" stroke-width="0.1" stroke="black"/>
+  <circle cx="5" cy="6" fill="black" r="1"/>
+  <circle class="eye" cx="11.5" cy="6" fill="white"  r="3" stroke-width="0.1" stroke="black"/>
+  <circle cx="11" cy="6" fill="black" r="1"/>
+  <circle class="mouth" cx="8" cy="12" fill="black" r="1"/>
+  <g id="scale">
+  </g>
+  Sorry, your browser does not support inline SVG.
+  </svg>
+</div>
+</body>
+<script>
+const dims = {scale: 1, x:0, y:0};
+const btns = document.querySelectorAll('button');
+const view = document.querySelector('#scale');
+function updateTxfm() {
+  const txfm = `translate(${dims.x}px, ${dims.y}px) scaleX(${dims.scale})`;
+  view.style.transform = txfm;
+}
+
+btns[0].addEventListener('click', () => {	dims.x+=2; updateTxfm(); });
+btns[1].addEventListener('click', () => {	dims.x-=2; updateTxfm(); });
+btns[2].addEventListener('click', () => {	dims.scale+=0.1; updateTxfm(); });
+btns[3].addEventListener('click', () => {	dims.scale-=0.1; updateTxfm(); });
+//btns[3].addEventListener('click', evt => console.log(evt.target.innerHTML));
+
+updateTxfm();
+</script>
+</html>
+
