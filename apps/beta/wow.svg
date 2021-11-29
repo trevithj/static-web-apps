@@ -15,16 +15,16 @@
         animation-iteration-count: infinite;
     }
     .eye {
-        animation-duration: 1s;
+        animation-duration: 0.97s;
         animation-name: pop;
         animation-iteration-count: infinite;
     }
   </style>
 
-  <circle cx="8"    cy="8" fill="yellow" r="7" stroke-width="0.1" stroke="black"/>
-  <circle class="eye" cx="4.5"  cy="6" fill="white"  r="3" stroke-width="0.1" stroke="black"/>
+  <circle cx="8"    cy="8" fill="yellow" r="7" stroke-width="0.3" stroke="black"/>
+  <circle class="eye" cx="4.5"  cy="6" fill="white"  r="3" stroke-width="0.3" stroke="black"/>
   <circle cx="5" cy="6" fill="black" r="1"/>
-  <circle class="eye" cx="11.5" cy="6" fill="white"  r="3" stroke-width="0.1" stroke="black"/>
+  <circle class="eye" cx="11.5" cy="6" fill="white"  r="3" stroke-width="0.3" stroke="black"/>
   <circle cx="11" cy="6" fill="black" r="1"/>
   <circle class="mouth" cx="8" cy="12" fill="black" r="1"/>
 </svg>
