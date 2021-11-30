@@ -11,10 +11,11 @@
 <!-- Here is a place to trial animated SVG icons. -->
 
 <div>
+    <h3>Some animated SVG icons for fun and learning.</h3>
   <a href="https://yqnn.github.io/svg-path-editor/">SVG Path Editor</a>
   <br />
-  <button>pan left</button>
-  <button>pan right</button>
+  <button>move left</button>
+  <button>move right</button>
   <button>zoom in</button>
   <button>zoom out</button>
   <hr />
@@ -51,11 +52,15 @@
   <circle cx="11" cy="6" fill="black" r="1"/>
   <circle class="mouth" cx="8" cy="12" fill="black" r="1"/>
   <g id="scale">
+      <text x="0" y="12" fill="blue">Some text</text>
   </g>
   Sorry, your browser does not support inline SVG.
   </svg>
 </div>
 <img src="./wow.svg" style="width:64px;" />
+<img src="./clock.svg" style="width:64px;" />
+<img src="./stopwatch.svg" style="width:64px;" />
+<img src="./jawdrop.svg" style="width:64px;" />
 </body>
 <script>
 const dims = {scale: 1, x:0, y:0};
@@ -66,8 +71,8 @@ function updateTxfm() {
   view.style.transform = txfm;
 }
 
-btns[0].addEventListener('click', () => {	dims.x+=2; updateTxfm(); });
-btns[1].addEventListener('click', () => {	dims.x-=2; updateTxfm(); });
+btns[0].addEventListener('click', () => {	dims.x-=2; updateTxfm(); });
+btns[1].addEventListener('click', () => {	dims.x+=2; updateTxfm(); });
 btns[2].addEventListener('click', () => {	dims.scale+=0.1; updateTxfm(); });
 btns[3].addEventListener('click', () => {	dims.scale-=0.1; updateTxfm(); });
 //btns[3].addEventListener('click', evt => console.log(evt.target.innerHTML));

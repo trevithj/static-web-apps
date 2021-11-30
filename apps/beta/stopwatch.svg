@@ -1,0 +1,32 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @keyframes hand {
+        from { transform: rotate(0deg) }
+        to { transform: rotate(360deg) }
+    }
+    .hands {
+        transform: translate(8px, 8px);
+    }
+    .sec {
+        animation-duration: 1s;
+        animation-name: hand;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        stroke-linecap: round;
+        stroke-width: 0.6;
+        stroke: red;
+    }
+    .ticks { stroke: silver; }
+  </style>
+
+  <line class="ticks" x1="2" x2="4" y1="8" y2="8" />
+  <line class="ticks" x1="12" x2="14" y1="8" y2="8" />
+  <line class="ticks" x1="8" x2="8" y1="2" y2="4" />
+  <line class="ticks" x1="8" x2="8" y1="12" y2="14" />
+  <line x1="6" x2="10" y1="1" y2="1" stroke="black" stroke-width="1.5"/>
+  <circle cx="8" cy="8" fill="none" r="6" stroke-width="0.5" stroke="black"/>
+  <g class="hands">
+    <line class="sec" x1="0" y1="0" x2="0" y2="-5" />
+    <circle cx="0" cy="0" r="1" />
+  </g>
+</svg>
