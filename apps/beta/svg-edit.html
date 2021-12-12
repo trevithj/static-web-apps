@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+  </style>
+</head>
+
+<body>
+<div>
+  <button>pan left</button>
+  <button>pan right</button>
+  <button>zoom in</button>
+  <button>zoom out</button>
+</div>
+
+<div style="overflow:hidden;">
+  <svg width="1200" viewBox="0 0 240 60" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    #scale > rect {
+      fill: #ddffdd;
+      stroke: silver;
+      stroke-width: 0.1px;
+      stroke-opacity: 0.5;
+    }
+    text {
+      font-size: 1.5px;
+    }
+    path { stroke: black; stroke-width: 0.2px; }
+  </style>
+  <rect width="100%" height="100%" fill="none" stroke="silver"/>
+  <g id="scale"></g>
+  Sorry, your browser does not support inline SVG.
+  </svg>
+</div>
+</body>
+<script>
+const offset = 1480;
+const rowHgt = 3;
+const dims = {scale: 1, x:0, y:0};
+const btns = document.querySelectorAll('button');
+const view = document.querySelector('#scale');
+function updateTxfm() {
+  const txfm = `translate(${dims.x}px, ${dims.y}px) scaleX(${dims.scale})`;
+  view.style.transform = txfm;
+}
+
+btns[0].addEventListener('click', () => {	dims.x+=2; updateTxfm(); });
+btns[1].addEventListener('click', () => {	dims.x-=2; updateTxfm(); });
+btns[2].addEventListener('click', () => {	dims.scale+=0.1; updateTxfm(); });
+btns[3].addEventListener('click', () => {	dims.scale-=0.1; updateTxfm(); });
+//btns[3].addEventListener('click', evt => console.log(evt.target.innerHTML));
+
+const pathD = Array(16).fill(1).map((x, i) => `M0 ${i} H16 M${i} 0 V16`).join(' ');
+
+updateTxfm();
+///Render
+view.innerHTML = `
+  <path class="layer1" d="${pathD}"/>
+  <path class="layer2" d="${pathD}"/>
+`;
+
+</script>
+</html>
+

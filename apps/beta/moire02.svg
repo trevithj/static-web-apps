@@ -1,0 +1,47 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @keyframes slide {
+        0% { transform: translateX(-16px) }
+        100% { transform: translateX(16px) }
+    }
+    .layer1 {
+        animation: slide 8s linear infinite;
+    }
+    .layer2 {
+        animation: slide 8s linear 4s infinite;
+    }
+    circle {
+        stroke: black;
+        stroke-opacity: 0.5;
+        stroke-width: 0.2px;
+        cx: 8;
+        cy: 8;
+        fill: none;
+    }
+  </style>
+  <defs>
+    <g id="discs">
+        <circle r="1"/>
+        <circle r="2"/>
+        <circle r="3"/>
+        <circle r="4"/>
+        <circle r="5"/>
+        <circle r="6"/>
+        <circle r="7"/>
+        <circle r="8"/>
+        <circle r="1.5"/>
+        <circle r="2.5"/>
+        <circle r="3.5"/>
+        <circle r="4.5"/>
+        <circle r="5.5"/>
+        <circle r="6.5"/>
+        <circle r="7.5"/>
+        <circle r="0.5"/>
+    </g>
+  </defs>
+
+  <use class="layer1" href="#discs" />
+  <use class="layer2" href="#discs" />
+  <use class="layer3" href="#discs" />
+
+</svg>

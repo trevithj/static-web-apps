@@ -1,0 +1,21 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @keyframes spin {
+        0% { transform: rotate(0deg) }
+        100% { transform: rotate(90deg) }
+    }
+    .layer1 {
+        transform-origin: center;
+        animation: spin 9s linear infinite;
+    }
+    path {
+        stroke: black;
+        stroke-opacity: 0.5;
+        stroke-width: 0.5px;
+        stroke-linecap: round;
+    }
+  </style>
+  <path class="layer1" d="M0 0 H16 M0 0 V16 M0 1 H16 M1 0 V16 M0 2 H16 M2 0 V16 M0 3 H16 M3 0 V16 M0 4 H16 M4 0 V16 M0 5 H16 M5 0 V16 M0 6 H16 M6 0 V16 M0 7 H16 M7 0 V16 M0 8 H16 M8 0 V16 M0 9 H16 M9 0 V16 M0 10 H16 M10 0 V16 M0 11 H16 M11 0 V16 M0 12 H16 M12 0 V16 M0 13 H16 M13 0 V16 M0 14 H16 M14 0 V16 M0 15 H16 M15 0 V16 M0 16 H16 M16 0 V16"/>
+  <path class="layer2" d="M0 0 H16 M0 0 V16 M0 1 H16 M1 0 V16 M0 2 H16 M2 0 V16 M0 3 H16 M3 0 V16 M0 4 H16 M4 0 V16 M0 5 H16 M5 0 V16 M0 6 H16 M6 0 V16 M0 7 H16 M7 0 V16 M0 8 H16 M8 0 V16 M0 9 H16 M9 0 V16 M0 10 H16 M10 0 V16 M0 11 H16 M11 0 V16 M0 12 H16 M12 0 V16 M0 13 H16 M13 0 V16 M0 14 H16 M14 0 V16 M0 15 H16 M15 0 V16 M0 16 H16 M16 0 V16"/>
+  <circle cx="8" cy="8" stroke="white" stroke-width="4px" r="10" fill="none"/>
+</svg>

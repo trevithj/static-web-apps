@@ -1,0 +1,33 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @keyframes rise {
+        from { transform: translateY(0) }
+        to { transform: translateY(-8px) }
+    }
+    .steam {
+        animation-name: rise;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+    }
+    .steam1 {
+        animation-duration: 1.4s;
+    }
+    .steam2 {
+        animation-duration: 1.3s;
+    }
+    .steam3 {
+        animation-duration: 1.5s;
+    }
+  </style>
+
+  <g class="steam steam1">
+    <path fill="none" stroke="silver" d="M 4 0 C 7 4 1 4 4 8 C 7 12 1 12 4 16" />
+  </g>
+  <g class="steam steam2">
+    <path fill="none" stroke="silver" d="M 4 0 C 7 4 1 4 4 8 C 7 12 1 12 4 16" style="transform: translateX(2.5px)"/>
+  </g>
+  <g class="steam steam3">
+    <path fill="none" stroke="silver" d="M 4 0 C 7 4 1 4 4 8 C 7 12 1 12 4 16" style="transform: translateX(5px)"/>
+  </g>
+  <path fill="white" stroke="black" d="M 1 7 H 12 V 14 C 12 15 11 16 10 16 H 3 C 2 16 1 15 1 14 Z M 12 14 A 1 1 0 0 0 12 8 Z M 3 8 V 14 Z" />
+</svg>
