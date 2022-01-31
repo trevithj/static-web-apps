@@ -12,6 +12,7 @@ const BASE = {
   value: null,
   select: null,
   selectAll: null,
+  logging: false,
 };
 
 //Flux/Redux-like framework that acts as a single 'store'.
@@ -52,9 +53,15 @@ const BASE = {
     if (listenFn && typeof listenFn === "function") {
       listenFn(message);
     }
+    if (BASE.logging) {
+        console.log({subject, message});
+    }
   }
 
   BASE.listen = (subject, listenFn) => {
+    if (BASE.logging) {
+        console.log({subject, listenFn});
+    }
     if(typeof listenFn === 'function') {
       listeners[subject] = listenFn;
     } else {

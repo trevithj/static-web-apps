@@ -64,5 +64,6 @@ build/
 
 src/*
 src/**/*.txt
+**/temp*
 !src/tools
 !src/node_modules

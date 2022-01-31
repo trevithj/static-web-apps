@@ -9,6 +9,12 @@
 		.char2 { color: #aaaaff }
 		#body { margin-top: 5em; position: relative; }
 		#control { position:absolute; bottom: 0; height: 2em; }
+        #speech {
+	        position: absolute;
+	        margin-left: 12%;
+            width: 9em;
+        }
+
     .menu {
       display: inline-block;
       width: 60px;
@@ -50,6 +56,7 @@
       <button id="c" title="+ to scroll faster"> + </button>
       <button id="d" title="- to scroll slower"> - </button>
       <button id="e" title="ESC to reset">Reset</button>
+      <div id="f" title="Speed of scrolling"></div>
     </div>
     <div class="input">
       <textarea>
@@ -83,15 +90,20 @@ I shall but love thee better after death.
   </div>
 </body>
 <script>
+  BASE.logging = true;
   BASE.value('SELECTORS', {
     btnView:'.menu #a',
     btnRun:'.menu #b',
-    btnReset:'.menu #c',
+    btnFaster:'.menu #c',
+    btnSlower:'.menu #d',
+    btnReset:'.menu #e',
+    divSpeed:'.menu #f',
     textInput:'.input textarea',
     viewInput:'.input',
     viewDisplay:'.display',
     viewMarker:'.marker'
   });
+  BASE.value('SPEED', 12);
 /////////////////
 </script>
 <script type="text/javascript" src="viewControl.js"></script>

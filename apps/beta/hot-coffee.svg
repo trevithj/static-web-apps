@@ -10,13 +10,13 @@
         animation-iteration-count: infinite;
     }
     .steam1 {
-        animation-duration: 1.4s;
+        animation-duration: 1s;
     }
     .steam2 {
-        animation-duration: 1.3s;
+        animation-duration: 1.03s;
     }
     .steam3 {
-        animation-duration: 1.5s;
+        animation-duration: 1.07s;
     }
   </style>
 

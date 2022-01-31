@@ -11,10 +11,6 @@ body {
 	color: #fff; /* #fcf;*/
 	overflow: hidden;
 }
-#speech {
-	position: absolute;
-	margin-left: 12%;
-}
 p {
 	margin: .5em;
 }
@@ -22,9 +18,6 @@ p {
 .slide {
 	text-align: center;
 	margin: 0;
-}
-div.text {
-  white-space: pre; 
 }
 div.char1 { color: #99ff99; }
 div.cha21 { color: #ff9999; }

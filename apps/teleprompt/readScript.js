@@ -22,7 +22,9 @@
           break; //ignore comments
         default: //treat as plain text
           html.push(line);
-          html.push('\n');
+        //   html.push(line.replaceAll(/\s+/g, '<br />')); //one word to a line...
+        //   html.push('\n');
+          html.push(' ');
       }
     });
     if (isDiv) html.push('</div>');

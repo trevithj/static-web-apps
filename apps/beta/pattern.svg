@@ -1,0 +1,44 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @keyframes slide {
+        0% { transform: translateX(-1px) scaleX(1); }
+        20% { transform: translateX(1px) scaleX(1); }
+        40% { transform: translateX(0px) scaleX(1); }
+        60% { transform: translateX(0px) scaleX(1.1); }
+        80% { transform: translateX(0px) scaleX(0.9); }
+        100% { transform: translateX(-1px) scaleX(1); }
+    }
+    @keyframes pulse {
+        0% { transform: scaleX(1) }
+        50% { transform: scaleX(1) }
+        100% { transform: scaleX(0.9) }
+    }
+    .layer1 {
+        transform-origin: center;
+        animation: slide 10s linear infinite;
+    }
+    .layer1Z {
+        animation: slide 8s linear infinite, pulse 8s linear infinite;
+    }
+    .layer2XX {
+        animation: slide 8s linear 4s infinite;
+    }
+    .layer2Z {
+        transform-origin: center;
+        animation: pulse 5s linear infinite;
+    }
+    path {
+        stroke: black;
+        stroke-opacity: 0.5;
+        stroke-width: 0.5px;
+        fill: none;
+    }
+  </style>
+  <defs>
+    <path id="lines" d="M0 0 V16 M1 0 V16 M2 0 V16 M3 0 V16 M4 0 V16 M5 0 V16 M6 0 V16 M7 0 V16 M8 0 V16 M9 0 V16 M10 0 V16 M11 0 V16 M12 0 V16 M13 0 V16 M14 0 V16 M15 0 V16 M16 0 V16" />
+  </defs>
+
+  <use class="layer1" href="#lines" />
+  <use class="layer2" href="#lines" />
+
+</svg>
