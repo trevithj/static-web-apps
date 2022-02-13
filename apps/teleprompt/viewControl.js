@@ -11,6 +11,12 @@
     const viewDisplay = BASE.select(SEL.viewDisplay);
     const viewMarker = BASE.select(SEL.viewMarker);
 
+    //Check for cached text
+    const text = localStorage.getItem('TEXT');
+    if(text) {
+        BASE.select(SEL.textInput).innerHTML = text;
+    }
+
     function showDisplay(show) {
         const display = show ? '' : 'none';
         viewDisplay.style.display = display;

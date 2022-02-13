@@ -19,6 +19,7 @@ p {
 	text-align: center;
 	margin: 0;
 }
+div.text { margin-top: 1rem; }
 div.char1 { color: #99ff99; }
 div.cha21 { color: #ff9999; }
 div.char3 { color: #9999ff; }

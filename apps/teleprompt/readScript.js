@@ -3,6 +3,8 @@
   const SEL = BASE.value('SELECTORS');
 
   function formatScript(text) {
+    //start by cacheing the raw text into localStorage
+    localStorage.setItem('TEXT', text);
     const lines = text.split('\n').map(line => line.trim()).filter(line => line !== '');
     const html = [];
     let isDiv = false;
