@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+    <title>Web Animations examples</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../styles.css" type="text/css">
+    <style>
+        .btn-component:active, .btn-component:hover {
+            background: var(--contrast-color-over);
+            color: var(--text-color-contrast);
+        }
+
+        .fade-component, .expand-component {
+            border: 1px solid var(--shadow);
+            background: var(--highlight-subtle);
+            padding: 0.5em;
+            font-size: 0.8em;
+        }
+
+        label {
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <main class="constrained">
+
+        <article class="panel fade-controls">
+            <h2>Element Fade In Config</h2>
+            <p>Use to introduce a dynamically loaded piece of content to the user.</p>
+
+            <section class="fade-component">
+                <h3>Dynamically Fetched Content</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia sed sapien vehicula vestibulum.</p>
+            </section>
+
+            <form>
+                <p>
+                    <input id="fade-duration-slider" class="duration-slider" type="range" min="0.05" max="5" step="0.05" value="2.5">
+                    <label for="fade-duration-slider" class="duration-text">Duration: 2.5s</label>
+                </p>
+            </form>
+        </article>
+    </main>
+</body>
+<script>
+(function fadeControls() {
+    var controls = document.querySelector('.fade-controls');
+
+    var fadeInComponent = document.querySelector('.fade-component');
+    var duration = 2500;
+    var playAnimation = () => {
+        // Stop all current animations
+        if (fadeInComponent.getAnimations) {
+            fadeInComponent.getAnimations().map((anim) => anim.finish());
+        }
+
+        // Play the animation with the newly specified duration
+        fadeInComponent.animate({
+            opacity: [0, 1]
+        }, duration);
+    };
+
+    // Configure duration slider
+    var durationSlider = controls.querySelector('.duration-slider'),
+    durationText = controls.querySelector('.duration-text');
+    durationSlider.dispatchEvent(new Event('change'));
+
+    durationSlider.addEventListener('change', () => {
+        duration = durationSlider.value * 1000;
+        durationText.textContent = 'Duration: ' + durationSlider.value + 's';
+        playAnimation();
+    });
+}());
+
+</script>
+
+</html>
+

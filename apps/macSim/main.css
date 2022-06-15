@@ -1,0 +1,21 @@
+body {
+	font-family: sans-serif;
+}
+
+div.display {
+	border: solid thin blue;
+	border-radius: 1em;
+	padding: 1em;
+	margin: 1em;
+}
+div.controls {
+	margin: 2em;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	column-gap: 1em;
+	row-gap: 0.3em;
+}
+
+div.controls buttons {
+		margin: 10%;
+}
