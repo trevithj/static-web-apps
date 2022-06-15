@@ -1,0 +1,28 @@
+div#actual-toaster {
+    position: absolute;
+    bottom: 5rem;
+    right: 10%;
+    border-bottom: solid 0.2rem black;
+    border-right: solid 0.2rem black;
+    border-top: solid thin grey;
+    border-left: solid thin grey;
+    border-radius: 0.5rem;
+    padding: 1.6rem;
+    cursor: pointer;
+    font-size: x-large;
+}
+
+div#actual-toaster.info {
+    background-color: blue;
+    color: yellow;
+}
+
+div#actual-toaster.warn {
+    background-color: yellow;
+    color: blue;
+}
+
+div#actual-toaster.error {
+    background-color: red;
+    color: cyan;
+}

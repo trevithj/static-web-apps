@@ -17,6 +17,7 @@
           html.push(`<div class="text char${line[1]}">`);
           break;
         case '{':
+          if (isDiv) html.push('</div>');
           isDiv = false;
           html.push(parseCmd(line));
           break;
