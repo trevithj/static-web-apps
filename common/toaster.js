@@ -12,11 +12,11 @@ window.addEventListener('load', e => {
     document.body.appendChild(wrapper);
 
     const toaster = wrapper.querySelector('div#actual-toaster');
-    toaster.style.display = 'none';
+    wrapper.style.display = 'none';
 
     function hideToaster() {
         //TODO: trigger animation of some sort?
-        toaster.style.display = 'none';
+        wrapper.style.display = 'none';
         toaster.classList.remove('error', 'warn', 'info');
     }
 
@@ -36,7 +36,7 @@ window.addEventListener('load', e => {
         toaster.classList.add(type);
 
         toaster.innerText = msg; 
-        toaster.style.display = '';
+        wrapper.style.display = '';
     }
 
     window.PubSub.subscribe('ShowToaster', subscriber);
