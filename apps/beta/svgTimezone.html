@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .frame {
+        overflow: hidden;
+    }
+
+    .times {
+        margin-left: 1em;
+    }
+
+    .label {
+        /* text-align: right; */
+        margin-right: 1em;
+    }
+
+    .ccd {
+        color: green;
+    }
+
+    .hvl {
+        color: blue;
+    }
+
+    .notify {
+        width: 80%;
+        text-align: center;
+    }
+
+    @keyframes flash {
+        0% { background-color: #f90; }
+        50% { background-color: #9f0; }
+        100% { background-color: #f90; }
+    }
+
+    .msg {
+        animation: flash 3s infinite;
+        color: blue;
+        font-weight: bold;
+        margin: 1rem;
+        padding: 1rem;
+    }
+    </style>
+</head>
+
+<body>
+<!-- Here is a place to trial animated SVG icons. -->
+
+<div class="grid">
+
+    <div class="frame">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <style>
+              @keyframes hand {
+                  from { transform: rotate(0deg) }
+                  to { transform: rotate(360deg) }
+              }
+              .hands {
+                  transform: translate(50px, 50px);
+              }
+              .text {
+                font-size: 2.5pt;
+                font-family: monospace;
+              }
+              .t0 {
+                  fill: grey;
+              }
+              .t1 {
+                  transform: rotate(-6deg);
+                  fill: blue;
+              }
+              .t2 {
+                  transform: rotate(58deg);
+                  fill: green;
+              }
+              .spin {
+                  animation-duration: 12s;
+                  animation-name: hand;
+                  animation-timing-function: linear;
+                  animation-iteration-count: infinite;
+              }
+            </style>
+          
+            <circle cx="50" cy="50" fill="none" r="49.5" stroke-width="0.5" stroke="black"/>
+            <g class="hands">
+                <line x1="0" y1="0" x2="50" y2="0" stroke="#ddd" stroke-width="0.3"></line>
+                <text x="20" y="0" fill="grey" style="font-size: 3pt; font-family: cursive;">Midnight</text>
+                <g class="spin">
+                    <text class="text t0" x="0" y="0">_________________Date_Line__</text>
+                    <text class="text t1" x="0" y="0">_______________Helensville__</text>
+                    <text class="text t2" x="0" y="0">________________Concord_CA__</text>
+                </g>
+                <circle cx="0" cy="0" fill="white" r="10" stroke="blue"/>
+                <text x="-0.35rem" y="0.35rem">N</text>
+            </g>
+        </svg>
+    </div>
+
+    <div class="times">
+        <button>Stop</button>
+        <h3 class="label ccd"><span id="tm2">June</span> - Concord time</h3>
+        <h3 class="label hvl"><span id="tm1">June</span> - Helensville time</h3>
+        <div class="notify"></div>
+    </div>
+
+</div>
+</body>
+<script>
+    function incrementTime(dt) {
+        dt.hr += 1;
+        if (dt.hr >= 24) {
+            dt.hr = 0;
+            dt.day += 1;
+        }
+    }
+    function displayTime(node, dt) {
+        const stHr = dt.hr > 9 ? `${dt.hr}` : `0${dt.hr}`;
+        const show = `June ${dt.day} ${stHr}:00`;
+        node.innerText = show;
+    }
+    function checkBday(node, dt1, dt2) {
+        if (dt1.hr === 0 && dt1.day === 26) {
+            node.innerHTML += '<div class="msg">Happy Birthday, Sheryl!!</div>';
+            dt1.count = 0;
+        }
+        if (dt2.hr === 0 && dt2.day === 27) {
+            node.innerHTML += `<div class="msg">Happy Birthday, Carol!! ${dt1.count} hours later!!!</div>`;
+        }
+    }
+
+    const tm1 = document.getElementById("tm1");//hvl
+    const tm2 = document.getElementById("tm2");//ccd
+    const msg = document.querySelector(".notify");
+    const grp = document.querySelector("g.spin");
+    const btn = document.querySelector("button");
+    let iid;
+    
+    function run() {
+        msg.innerHTML = '';
+        const dt1 = { day: 25, hr: 0, count: 0 };
+        const dt2 = { day: 24, hr: 4 };
+        displayTime(tm1, dt1);
+        displayTime(tm2, dt2);
+        iid = setInterval(() => {
+            incrementTime(dt1);
+            incrementTime(dt2);
+            dt1.count += 1;
+            displayTime(tm1, dt1);
+            displayTime(tm2, dt2);
+            checkBday(msg, dt1, dt2);
+            if (dt2.day === 27 && dt2.hr ===4) {
+                stop();
+            }
+        }, 500);
+    }
+    run();
+
+    function stop() {
+        grp.classList.remove('spin');
+        clearInterval(iid);
+        btn.innerText = 'Restart';
+    }
+
+    //Happy Birthday, Sheryl!
+    //Happy Birthday, Carol!!
+    btn.addEventListener('click', () => {
+        if(btn.innerText==='Stop') {
+            stop();
+        } else {
+            grp.classList.add('spin');
+            run();
+            btn.innerText = 'Stop';
+        }
+    });
+</script>
+</html>
+
