@@ -138,12 +138,12 @@
         node.innerText = show;
     }
     function checkBday(node, dt1, dt2) {
-        if (dt1.hr === 0 && dt1.day === 26) {
-            node.innerHTML += '<div class="msg">Happy Birthday, Sheryl!!</div>';
+        if (dt1.hr === 19 && dt1.day === 26) {
+            node.innerHTML += '<div class="msg">7pm. Happy Birthday, Sheryl!!</div>';
             dt1.count = 0;
         }
-        if (dt2.hr === 0 && dt2.day === 27) {
-            node.innerHTML += `<div class="msg">Happy Birthday, Carol!! ${dt1.count} hours later!!!</div>`;
+        if (dt2.hr === 2 && dt2.day === 27) {
+            node.innerHTML += `<div class="msg">2am. Happy Birthday, Carol!! (${dt1.count} hours later!)</div>`;
         }
     }
 
