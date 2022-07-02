@@ -1,0 +1,330 @@
+{
+  "P01": {
+    "Common": "Dragons Gold",
+    "Latin": "Sophora microphylia",
+    "Notes": "Miniature kowhai"
+  },
+  "P02": {
+    "Common": "Purpureum/Raukaua",
+    "Latin": "Pseudopanax Simplex",
+    "Notes": "Cluster of green seed pods"
+  },
+  "P03": {
+    "Common": "Large wild iris",
+    "Latin": "Dietes Grandiflora",
+    "Notes": "Tripping lily"
+  },
+  "P04": {
+    "Common": "Breath of Heaven",
+    "Latin": "Coleonema Rubrum"
+  },
+  "P05": {
+    "Common": "Green Dwarf",
+    "Latin": "Phormium",
+    "Notes": "Flax. Swamp flax?"
+  },
+  "P06": {
+    "Common": "Shrubby tororaro",
+    "Latin": "Muehlenbeckia Astonii"
+  },
+  "P07": {
+    "Common": "Rengarenga lilly",
+    "Latin": "Arthropodium Cirratum",
+    "Notes": "fat fleshy leaves"
+  },
+  "P08": {
+    "Common": "Daisy bush",
+    "Latin": "Brachyglottis Greyi"
+  },
+  "P09": {
+    "Common": "Red rocks",
+    "Latin": "Coprosma Acerosa Red Rock",
+    "Notes": "ground cover"
+  },
+  "P10": {
+    "Common": "Blue star creeper",
+    "Latin": "Isotoma Fluviatilis",
+    "Notes": "ground cover"
+  },
+  "P11": {
+    "Common": "Bush inferno",
+    "Latin": "Anigozanthos",
+    "Notes": "Kangaroo paw"
+  },
+  "P12": {
+    "Common": "NZ Iris",
+    "Latin": "Libertia Grandiflora",
+    "Notes": "NZ Iris"
+  },
+  "P13": {
+    "Common": "Black rage",
+    "Latin": "Phormium Tenax",
+    "Notes": "Flax"
+  },
+  "P14": {
+    "Common": "Star Jasmine",
+    "Latin": "Trachelospermum Jasminoides"
+  },
+  "P15": {
+    "Common": "Maori Princess",
+    "Latin": "Metrosideros",
+    "Notes": "Pohutukawa, specimen tree planting"
+  },
+  "P16": {
+    "Common": "Hawera",
+    "Latin": "Coprosma Acerosa Hawera",
+    "Notes": "ground cover"
+  },
+  "P17": {
+    "Common": "Kaffir Lilly",
+    "Latin": "Clivia Mimiata",
+    "Notes": "grouped planting"
+  },
+  "P18": {
+    "Common": "NZ Iris",
+    "Latin": "Libertia Ixioides"
+  },
+  "P19": {
+    "Common": "Veitchi",
+    "Latin": "Gardenia"
+  },
+  "P20": {
+    "Common": "Geenty's green",
+    "Latin": "Corokia"
+  },
+  "P21": {
+    "Common": "Tanika",
+    "Latin": "Lomandra Longifolia",
+    "Notes": "Border planting"
+  },
+  "P22": {
+    "Common": "Mountain Green",
+    "Latin": "Pittosporum"
+  },
+  "P23": {
+    "Common": "Cabbage Tree",
+    "Latin": "Cordyline Australis"
+  },
+  "P24": {
+    "Common": "Puka",
+    "Latin": "Meryta Sinclairii"
+  },
+  "P25": {
+    "Common": "Oioi",
+    "Latin": "Apodasmia Simillis"
+  },
+  "P26": {
+    "Common": "Manuka/Burgandy Queen",
+    "Latin": "Leptospermum scoparium",
+    "Notes": "Manuka"
+  },
+  "P27": {
+    "Common": "Rainbow surprise",
+    "Latin": "Coprosma Repens",
+    "Notes": "ground cover"
+  },
+  "P28": {
+    "Common": "Lemonwood",
+    "Latin": "Pittosporum Eugeniodes",
+    "Notes": "aka Tarata"
+  },
+  "P29": {
+    "Common": "Kohuhu",
+    "Latin": "Pittosporum Tenuifolium"
+  },
+  "P30": {
+    "Common": "Karo",
+    "Latin": "Pittosporum Crassifolium"
+  },
+  "P31": {
+    "Common": "Ginkgo",
+    "Latin": "Ginkgo Biloba"
+  },
+  "P32": {
+    "Common": "Red Karo",
+    "Latin": "Coprosma karo red",
+    "Notes": "ground cover"
+  },
+  "P33": {
+    "Common": "Oliver Twist",
+    "Latin": "Pittosporum Tenuifolium Oliver Twist",
+    "Notes": "small leaves on black stems"
+  },
+  "P34": {
+    "Common": "River birch",
+    "Latin": "Betula nigra"
+  },
+  "P35": {
+    "Common": "Houpara / Five finger",
+    "Latin": "Pseudopanax Lessonii",
+    "Notes": "Big variety of leaf shapes and colours"
+  },
+  "P36": {
+    "Common": "Middlemore",
+    "Latin": "Coprosma middlemore",
+    "Notes": "round green leaves, box hedge"
+  },
+  "P37": {
+    "Common": "Kowhai",
+    "Latin": "Sophora microphylla"
+  },
+  "P38": {
+    "Common": "Mahoe",
+    "Latin": "Melicytus ramiflorus"
+  },
+  "P39": {
+    "Common": "Karaka",
+    "Latin": "Corynocarpus laevigatus",
+    "Notes": "Wind-tolerant, 10m."
+  },
+  "P40": {
+    "Common": "Ceanothus",
+    "Latin": "Ceanothus 'Blue Sapphire'",
+    "Notes": "trim after flowering"
+  },
+  "P41": {
+    "Common": "Taiko",
+    "Latin": "Coprosma 'Taiko'",
+    "Notes": "ground cover, dark green"
+  },
+  "P42": {
+    "Common": "Hebe",
+    "Latin": "Hebe topiaria",
+    "Notes": "Compact ball-shaped shrub"
+  },
+  "P43": {
+    "Common": "Horopito",
+    "Latin": "Pseudowintera colorata",
+    "Notes": "Moulin rouge', slow-growing shrub"
+  },
+  "P44": {
+    "Common": "Jade",
+    "Latin": "Pittosporum Tenuifolium Jade",
+    "Notes": "3m x 3m"
+  },
+  "P45": {
+    "Common": "Blackwood",
+    "Latin": "Acacia melanoxylon"
+  },
+  "P46": {
+    "Common": "Poplar"
+  },
+  "P47": {
+    "Common": "Black Alder",
+    "Latin": "Alnus glutinosa"
+  },
+  "P48": {
+    "Common": "Italian Alder",
+    "Latin": "Alnus cordata"
+  },
+  "P49": {
+    "Common": "Cypress",
+    "Latin": "Cupressus"
+  },
+  "P50": {
+    "Common": "Purple Sycamore",
+    "Latin": "Acer pseudoplatanus",
+    "Notes": "Purpureum"
+  },
+  "P51": {
+    "Common": "Plum",
+    "Notes": "early jewel, billington, doris"
+  },
+  "P52": {
+    "Common": "Nectarine",
+    "Notes": "fantasia, red gold (died), snow queen"
+  },
+  "P53": {
+    "Common": "Olive"
+  },
+  "P54": {
+    "Common": "Apple",
+    "Notes": "Granny smith, fuji, royal gala"
+  },
+  "P55": {
+    "Common": "Almond",
+    "Notes": "monavale"
+  },
+  "P56": {
+    "Common": "Pear",
+    "Notes": "doyenne du comice, william bon chretian, beurre hardy"
+  },
+  "P57": {
+    "Common": "Titoki",
+    "Latin": "Alectryon excelsus",
+    "Notes": "7m, clay, good shelter tree, attracts birds."
+  },
+  "P58": {
+    "Common": "Canton Lace",
+    "Latin": "Radermachera sinica",
+    "Notes": "3m, avoid dry and windy sites. Fast growing?"
+  },
+  "P59": {
+    "Common": "Kohekohe",
+    "Latin": "Dysoxylum spectabile",
+    "Notes": "7m, NZ Mahogany"
+  },
+  "P60": {
+    "Common": "Magnolia",
+    "Latin": "Magnolia grandiflora",
+    "Notes": "\"Little Gem\" 5m"
+  },
+  "P61": {
+    "Common": "Golden Totara",
+    "Latin": "Podicarpus totara 'aurea'",
+    "Notes": "4m, likes being in numbers - pref shelter?"
+  },
+  "P62": {
+    "Common": "Miro",
+    "Latin": "Prumnopitys ferruginea",
+    "Notes": "Slow, 10m, semi-shade pref. Wood pigeons."
+  },
+  "P63": {
+    "Common": "Hoheria/Lacebark",
+    "Latin": "Hoheria angustifolia/populnea",
+    "Notes": "6m, quick growing, pref moist soil."
+  },
+  "P64": {
+    "Common": "Ribbonwood",
+    "Latin": "Plagianthus regia",
+    "Notes": "5-10m, tough, wind-tolerant"
+  },
+  "P65": {
+    "Common": "Taraire",
+    "Latin": "Belschmiedia taraire",
+    "Notes": "8m, pref moist-free-draining soil & full sun. Wood pigeons."
+  },
+  "P66": {
+    "Common": "Kahikatea /white pine",
+    "Latin": "Dacrycarpus dacrydioides",
+    "Notes": "50m conifer, edible berries, likes wet feet.",
+    "Category": "stage 2"
+  },
+  "P67": {
+    "Common": "Mistral",
+    "Latin": "Metrosiderosis mistral",
+    "Notes": "Natural Rata/Pohutukawa hybrid."
+  },
+  "P68": {
+    "Common": "Rewarewa",
+    "Latin": "Knightia excelsia",
+    "Notes": "Up to 30m, frost-tender when young"
+  },
+  "P69": {
+    "Common": "Australian manuka",
+    "Latin": "Leptospermum copper sheen"
+  },
+  "P70": {
+    "Common": "Ake ake",
+    "Latin": "Dodonaea viscosa"
+  },
+  "P71": {
+    "Common": "Olearia",
+    "Latin": "Olearia paniculata"
+  },
+  "P72": {
+    "Common": "Makomako/Wineberry",
+    "Latin": "Aristotelia serrata",
+    "Notes": "Fast-growing, to 10m"
+  }
+}

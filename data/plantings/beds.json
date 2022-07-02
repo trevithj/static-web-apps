@@ -1,0 +1,86 @@
+[
+  {
+    "Key": "A",
+    "Location": "Center Drive bed"
+  },
+  {
+    "Key": "B",
+    "Location": "Patio outside kitchen/laundry"
+  },
+  {
+    "Key": "C",
+    "Location": "Raised beds east of house, side of garage"
+  },
+  {
+    "Key": "D",
+    "Location": "Side of deck and fenceline SW side of house"
+  },
+  {
+    "Key": "E",
+    "Location": "Path-level beds NW of study/lounge"
+  },
+  {
+    "Key": "F",
+    "Location": "Thai forest"
+  },
+  {
+    "Key": "N",
+    "Location": "Northwood, NW of small shed"
+  },
+  {
+    "Key": "G",
+    "Location": "North raised beds outside study window"
+  },
+  {
+    "Key": "NN",
+    "Location": "North corner, north field"
+  },
+  {
+    "Key": "H",
+    "Location": "West corner, lower North-west fence"
+  },
+  {
+    "Key": "N2",
+    "Location": "Surround mid north field"
+  },
+  {
+    "Key": "E1",
+    "Location": "East corner/pen"
+  },
+  {
+    "Key": "E2",
+    "Location": "Surround mid east field"
+  },
+  {
+    "Key": "SS",
+    "Location": "South corner, south field by Pohutukawa"
+  },
+  {
+    "Key": "S2",
+    "Location": "Two-cow garage by trough"
+  },
+  {
+    "Key": "ES",
+    "Location": "East field, south corner, sycamore"
+  },
+  {
+    "Key": "O",
+    "Location": "Orchard"
+  },
+  {
+    "Key": "SB",
+    "Location": "South field blackwoods"
+  },
+  {
+    "Key": "EI",
+    "Location": "Easter Island - mid east field"
+  },
+  {
+    "Key": "EI2",
+    "Location": "Small Easter Island - just SE of EI"
+  },
+  {
+    "Key": "E3",
+    "Location": "Precipice - Top of ridge, SE of house"
+  }
+]
