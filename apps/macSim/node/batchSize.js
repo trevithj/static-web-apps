@@ -5,10 +5,14 @@
  * Shows stats: average process per unit, per batch, till 1st customer contact.
  *
  * */
+const withDelay = false;
 
 function* processor(units = 20, batch = 10) {
 	let thisBatch = 0;
 	while (units > 0) {
+		if(withDelay && Math.random() > 0.95) {
+			yield 0; //skip a round
+		}
 		units -= 1;
 		thisBatch += 1;
 		if (thisBatch === batch) {

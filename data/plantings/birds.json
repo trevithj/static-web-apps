@@ -1,0 +1,122 @@
+[
+  [
+    "commonName",
+    "latinName"
+  ],
+  {
+    "commonName": "Rifleman",
+    "latinName": "Acanthisitta chloris"
+  },
+  {
+    "commonName": "Indian Myna",
+    "latinName": "Acridotheres tristis"
+  },
+  {
+    "commonName": "Sky Lark",
+    "latinName": "Alauda arvensis"
+  },
+  {
+    "commonName": "Mallard Duck",
+    "latinName": "Anas platyrhynchos"
+  },
+  {
+    "commonName": "Indian Runner Duck",
+    "latinName": "Anas unknown"
+  },
+  {
+    "commonName": "White-faced Heron",
+    "latinName": "Ardea novaehollandiae"
+  },
+  {
+    "commonName": "Goose",
+    "latinName": "Branta unknown"
+  },
+  {
+    "commonName": "Goldfinch",
+    "latinName": "Carduelis carduelis"
+  },
+  {
+    "commonName": "Australian Harrier",
+    "latinName": "Circus approximans gouldi"
+  },
+  {
+    "commonName": "Australian Magpie",
+    "latinName": "Gymnorhina tibicen"
+  },
+  {
+    "commonName": "New Zealand Kingfisher",
+    "latinName": "Halcyon sanctia vagans"
+  },
+  {
+    "commonName": "Wood Pigeon",
+    "latinName": "Hemiphaga novaeseelandiae"
+  },
+  {
+    "commonName": "Welcome Swallow",
+    "latinName": "Hirundo tahitica neoxena"
+  },
+  {
+    "commonName": "California Quail",
+    "latinName": "Lophortyx californica"
+  },
+  {
+    "commonName": "Turkey",
+    "latinName": "Meleagris galiopavo"
+  },
+  {
+    "commonName": "Morepork",
+    "latinName": "Ninox novaeseelandiae"
+  },
+  {
+    "commonName": "House Sparrow",
+    "latinName": "Passer domesticus"
+  },
+  {
+    "commonName": "Pea Fowl",
+    "latinName": "Pavo cristatus"
+  },
+  {
+    "commonName": "Pheasant",
+    "latinName": "Phanianus colchicus"
+  },
+  {
+    "commonName": "Eastern Rosella",
+    "latinName": "Platycercus eximius"
+  },
+  {
+    "commonName": "Pukeko",
+    "latinName": "Porphyno melanotus"
+  },
+  {
+    "commonName": "Tui",
+    "latinName": "Prosthemadera novaeseelandiae"
+  },
+  {
+    "commonName": "Fantail",
+    "latinName": "Rhipidura fuliginosa"
+  },
+  {
+    "commonName": "Spotted Dove",
+    "latinName": "Streptopelia chinensis tigriua"
+  },
+  {
+    "commonName": "Starling",
+    "latinName": "Sturnus vulgaris"
+  },
+  {
+    "commonName": "Song Thrush",
+    "latinName": "Turdus philomelos"
+  },
+  {
+    "commonName": "Blackbird",
+    "latinName": "Turdus merula"
+  },
+  {
+    "commonName": "Spur-winged Plover",
+    "latinName": "Vanellus miles novaehollandiae"
+  },
+  {
+    "commonName": "Silvereye",
+    "latinName": "Zosterops lateralis (wax-eye)"
+  }
+]
