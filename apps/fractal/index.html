@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Barnsley Fern v1</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link href="/vendor/bootstrap.css" rel="stylesheet" > -->
+    <!--script src="/vendor/jquery.slim.min.js"></script-->
+    <style>
+        body {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+        }
+
+        main {
+            width: 750px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        main div {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div>
+            This renders the Barnsley Fern fractal in ever-increasing detail. The code doesn't stop,
+            but loops endlessly using a Generator function to yield the next point to render.
+            Just close or back out of the page when you're finished.
+        </div>
+        <div class="container"></div>
+    </main>
+
+</body>
+<script src="fern01.js"></script>
+
+</html>

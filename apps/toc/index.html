@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title> ToC Sim 310 </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="main.css" rel="stylesheet">
+</head>
+
+<body>
+    <h1>Title</h1>
+    <div class="main">
+        <div class="controls">
+            <button id="tick">Next Step</button>
+            <button id="quit">Exit Sim</button>
+        </div>
+        <div class="display">
+            <svg viewBox="0 0 80 90"></svg>
+        </div>
+    </div>
+
+</body>
+<script src="../../common/base.js"></script>
+<script>
+    const rows = [1, 2, 3, 4, 5,6,7,8,9];
+    const cols = 'A B C D E F G H'.split(' ');
+    const SIZE = 'width=10 height=10';
+
+    const svg = document.querySelector('svg');
+    const html = ['<rect x=0 y=0 width=80 height=90 fill=#eee stroke=none />'];
+    cols.forEach((l1,b) => {
+        rows.forEach((l2,r) => {
+            html.push(
+                `<rect x=${b*10} y=${r*10} ${SIZE} fill=none stroke=blue stroke-width=0.1 />`
+            )
+        })
+    })
+    svg.innerHTML = html.join("\n");
+
+    // window.addEventListener('unload')
+    let time = 0;
+    // setInterval(() => {
+    //     console.log(`${Math.floor(time/60)}:${time % 60}`);
+    //     time += 1;
+    // }, 1000);
+</script>
+
+</html>

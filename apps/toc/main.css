@@ -1,0 +1,20 @@
+body {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+.main {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    width: calc(100% - 2rem);
+    border: solid 1rem #ddd;
+    border-radius: 1rem;
+    height: 75vh;
+}
+.display {
+    width: 100%;
+    height: inherit;
+}
+svg {
+    width: 100%;
+    height: inherit;
+}
