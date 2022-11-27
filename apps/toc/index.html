@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <!-- http://thenewcode.com/1068/Making-Arrows-in-SVG -->
     <h1>Title</h1>
     <div class="main">
         <div class="controls">
@@ -16,28 +17,71 @@
             <button id="quit">Exit Sim</button>
         </div>
         <div class="display">
-            <svg viewBox="0 0 80 90"></svg>
+            <svg viewBox="0 0 80 100"></svg>
         </div>
     </div>
 
 </body>
 <script src="../../common/base.js"></script>
+<script src="../../data/sims/310.js"></script>
 <script>
-    const rows = [1, 2, 3, 4, 5,6,7,8,9];
-    const cols = 'A B C D E F G H'.split(' ');
     const SIZE = 'width=10 height=10';
+    const textPos = "dominant-baseline=middle text-anchor=middle";
+    function create(node) {
+        const element = document.createElementNS('http://www.w3.org/2000/svg','g');
+        const x = node.col*10;
+        const y = 90 - node.row*10;
+        element.style = `transform: translate(${x}px, ${y}px)`;
+        return { element, x, y };
+    }
+    const renderStore = (store) =>[
+        `<rect x=0 y=0 ${SIZE} fill=none stroke=blue stroke-width=0.1 />`,
+        '<rect x=2 y=1 width=6 height=4 fill=white stroke=black stroke-width=0.2 />',
+        `<text ${textPos} y=3 x=5 class="store">${store.qty}</text>`
+    ].join('');
+    const renderOp = (op, fill) =>[
+        `<ellipse cy=7.5 cx=5 rx=4 ry=2.5 fill=${fill} stroke=black stroke-width=0.2 />`,
+        `<text ${textPos} y=7.5 x=5 class="optxt">${op.runtime}</text>`
+    ].join('');
 
-    const svg = document.querySelector('svg');
-    const html = ['<rect x=0 y=0 width=80 height=90 fill=#eee stroke=none />'];
-    cols.forEach((l1,b) => {
-        rows.forEach((l2,r) => {
-            html.push(
-                `<rect x=${b*10} y=${r*10} ${SIZE} fill=none stroke=blue stroke-width=0.1 />`
-            )
-        })
+    const { data310 } = STATIC;
+    // Initial create and render of nodes
+    const stores = data310.stores.map(store => {
+        const { element, x, y } = create(store);
+        element.innerHTML = renderStore(store);
+        return {...store, x, y, element };
+    });
+    const ops = data310.ops.map(op => {
+        const fill = data310.macColors[op.type] || 'white';
+        const { element, x, y } = create(op);
+        element.innerHTML = renderOp(op, fill);
+        return {...op, x, y, fill, element };
     })
+    // Create the SVG view and add node elements
+    const svg = document.querySelector('svg');
+    const html = [
+        '<rect x=0 y=0 width=80 height=100 fill=#eee stroke=none />',
+        '<path id="links" fill=none stroke=red stroke-width=1px />',
+        '<g id="nodes" />'
+    ];
     svg.innerHTML = html.join("\n");
+    const nodeView = document.querySelector('g#nodes');
+    // Adding the node elements
+    ops.forEach(op => {
+        nodeView.appendChild(op.element);
+    })
+    stores.forEach(store => {
+        nodeView.appendChild(store.element);
+    })
 
+    // TODO: Draw the links
+    const path = document.querySelector("path#links");
+
+    console.log(data310.stores);
+    console.log(data310.nodes);
+    console.log(path);
+
+    // TODO: handle animation loop
     // window.addEventListener('unload')
     let time = 0;
     // setInterval(() => {
