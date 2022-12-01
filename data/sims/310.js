@@ -1,7 +1,7 @@
 (function () {
-    function makeStore(col, row, qty = 0) {
+    function makeStore(col, row, qty = 0, type = 'ST') {
         const id = `ST:${col}-${row}`;
-        return {id, type:"ST", row, col, qty, fedby:[], fedto:[]};
+        return {id, type, row, col, qty, fedby:[], fedto:[]};
     }
     function makeOp(type, col, row, runtime) {
         const id = `OP:${col}-${row}`;
@@ -50,7 +50,11 @@
     ];
 
     const stores = [
-        makeStore(1,9),
+        makeStore(1,0,0, 'RM'),
+        makeStore(3,0,0, 'RM'),
+        makeStore(5,0,0, 'RM'),
+        makeStore(6,0,0, 'RM'),
+        makeStore(1,9,0, 'FG'),
         makeStore(1,7),
         makeStore(1,6),
         makeStore(1,5),
@@ -59,7 +63,7 @@
         makeStore(3,1),
         makeStore(3,5),
         makeStore(4,7),
-        makeStore(4,9),
+        makeStore(4,9,0,'FG'),
         makeStore(5,1),
         makeStore(5,2,15),
         makeStore(5,5),
@@ -68,7 +72,7 @@
         makeStore(6,3,10),
         makeStore(6,5),
         makeStore(6,7),
-        makeStore(6,9),
+        makeStore(6,9,0, 'FG'),
     ]
 
     const macs = [
@@ -93,6 +97,10 @@
         linkNodes(op.id, `ST:${ida[1]}`);
     })
     // Now link stores to next ops
+    linkNodes('ST:1-0', 'OP:1-1');
+    linkNodes('ST:3-0', 'OP:3-1');
+    linkNodes('ST:5-0', 'OP:5-1');
+    linkNodes('ST:6-0', 'OP:6-1');
     linkNodes('ST:1-1', 'OP:2-3');
     linkNodes('ST:3-1', 'OP:2-3');
     linkNodes('ST:2-3', 'OP:1-5');
@@ -112,12 +120,12 @@
     linkNodes('ST:6-7', 'OP:6-9');
 
     const macColors = {
-        A: '#99f',
-        B: '#9f9',
-        C: '#9ff',
-        D: '#f99',
-        E: '#f9f',
-        F: '#fa6',
+        A: '#00f',
+        B: '#090',
+        C: '#09c',
+        D: '#c00',
+        E: '#c0c',
+        F: '#960',
     }
     const STATIC = window.STATIC || {};
 

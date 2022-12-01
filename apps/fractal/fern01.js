@@ -55,16 +55,15 @@
 
     setupCanvas();
     const fern = paintFern();
-    const interval = setInterval(() => {
+    const tick = () => {
         const result = fern.next();
-        if (result.done) clearInterval(interval); //never happens...
-        else {
+        if (!result.done) { // should never be done
             const {x, y} = result.value;
             plot(x, y);
+            setTimeout(tick, 0);
         }
-    }, 0);
-
-    window.addEventListener('close', () => clearInterval(interval));
+    }
+    tick();
 }());
 
 /*
