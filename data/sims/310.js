@@ -1,4 +1,13 @@
 (function () {
+    const macColors = {
+        A: '#00f',
+        B: '#090',
+        C: '#09c',
+        D: '#c00',
+        E: '#c0c',
+        F: '#960',
+    }
+
     function makeStore(col, row, qty = 0, type = 'ST') {
         const id = `ST:${col}-${row}`;
         return {id, type, row, col, qty, fedby:[], fedto:[]};
@@ -89,6 +98,15 @@
     ops.forEach(mapNode);
     stores.forEach(mapNode);
     macs.forEach(mapNode);
+    //Update RM nodes with unit cost
+    nodes['ST:1-0'].unitCost = 30;
+    nodes['ST:3-0'].unitCost = 35;
+    nodes['ST:5-0'].unitCost = 30;
+    nodes['ST:6-0'].unitCost = 65;
+    //Update FG nodes with unit price
+    nodes['ST:1-9'].unitPrice = 180;
+    nodes['ST:4-9'].unitPrice = 240;
+    nodes['ST:6-9'].unitPrice = 180;
 
     // Now create the network
     // First, link each op to its matching store
@@ -119,14 +137,6 @@
     linkNodes('ST:6-5', 'OP:6-7');
     linkNodes('ST:6-7', 'OP:6-9');
 
-    const macColors = {
-        A: '#00f',
-        B: '#090',
-        C: '#09c',
-        D: '#c00',
-        E: '#c0c',
-        F: '#960',
-    }
     const STATIC = window.STATIC || {};
 
     STATIC.data310 = {

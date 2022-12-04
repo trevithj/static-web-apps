@@ -4,11 +4,39 @@ body {
 
 .main {
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr 1fr;
     width: calc(100% - 2rem);
     border: solid 0.5rem #ddd;
     border-radius: 1rem;
-    height: 85vh;
+    /* height: 85vh; */
+}
+.info p {
+    display: block;
+    text-align: right;
+    margin-right: 2rem;
+    font-weight: bold;
+}
+.info span {
+    display: inline-block;
+    width: 40%;
+    font-weight: normal;
+}
+.macGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 2fr;
+    width: 100%;
+    text-align: right;
+}
+.resources {
+    width: calc(100% - 2rem);
+    border: solid thin silver;
+    text-align: right;
+    padding-right: 1rem;
+}
+.resources p {
+    border: solid thin silver;
+    padding: 0.1rem 0.4rem 0.1rem 0;
+    margin: 0;
 }
 .display {
     width: 100%;
