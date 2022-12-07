@@ -7,17 +7,20 @@
         E: '#c0c',
         F: '#960',
     }
+    const cols = '-ABCDEFGH';
 
     function makeStore(col, row, qty = 0, type = 'ST') {
-        const id = `ST:${col}-${row}`;
+        const c = cols.charAt(col);
+        const id = `ST:${c}-${row}`;
         return {id, type, row, col, qty, fedby:[], fedto:[]};
     }
     function makeOp(type, col, row, runtime) {
-        const id = `OP:${col}-${row}`;
+        const c = cols.charAt(col);
+        const id = `OP:${c}-${row}`;
         return {id, type, row, col, runtime, fedby:[], fedto:[]};
     }
     function makeMac(type, setup, row, col) {
-        const id = `MAC:${col}-${row}`;
+        const id = `MAC:${type}-${col}`;
         return {id, type, setup, row, col};
     }
 
@@ -98,15 +101,16 @@
     ops.forEach(mapNode);
     stores.forEach(mapNode);
     macs.forEach(mapNode);
+    
     //Update RM nodes with unit cost
-    nodes['ST:1-0'].unitCost = 30;
-    nodes['ST:3-0'].unitCost = 35;
-    nodes['ST:5-0'].unitCost = 30;
-    nodes['ST:6-0'].unitCost = 65;
+    nodes['ST:A-0'].unitCost = 30;
+    nodes['ST:C-0'].unitCost = 35;
+    nodes['ST:E-0'].unitCost = 30;
+    nodes['ST:F-0'].unitCost = 65;
     //Update FG nodes with unit price
-    nodes['ST:1-9'].unitPrice = 180;
-    nodes['ST:4-9'].unitPrice = 240;
-    nodes['ST:6-9'].unitPrice = 180;
+    nodes['ST:A-9'].unitPrice = 180;
+    nodes['ST:D-9'].unitPrice = 240;
+    nodes['ST:F-9'].unitPrice = 180;
 
     // Now create the network
     // First, link each op to its matching store
@@ -115,27 +119,27 @@
         linkNodes(op.id, `ST:${ida[1]}`);
     })
     // Now link stores to next ops
-    linkNodes('ST:1-0', 'OP:1-1');
-    linkNodes('ST:3-0', 'OP:3-1');
-    linkNodes('ST:5-0', 'OP:5-1');
-    linkNodes('ST:6-0', 'OP:6-1');
-    linkNodes('ST:1-1', 'OP:2-3');
-    linkNodes('ST:3-1', 'OP:2-3');
-    linkNodes('ST:2-3', 'OP:1-5');
-    linkNodes('ST:2-3', 'OP:3-5');
-    linkNodes('ST:1-5', 'OP:1-6');
-    linkNodes('ST:1-6', 'OP:1-7');
-    linkNodes('ST:1-7', 'OP:1-9');
-    linkNodes('ST:3-5', 'OP:4-7');
-    linkNodes('ST:4-7', 'OP:4-9');
-    linkNodes('ST:5-1', 'OP:5-2');
-    linkNodes('ST:5-2', 'OP:5-5');
-    linkNodes('ST:5-5', 'OP:4-7');
-    linkNodes('ST:6-1', 'OP:6-2');
-    linkNodes('ST:6-2', 'OP:6-3');
-    linkNodes('ST:6-3', 'OP:6-5');
-    linkNodes('ST:6-5', 'OP:6-7');
-    linkNodes('ST:6-7', 'OP:6-9');
+    linkNodes('ST:A-0', 'OP:A-1');
+    linkNodes('ST:C-0', 'OP:C-1');
+    linkNodes('ST:E-0', 'OP:E-1');
+    linkNodes('ST:F-0', 'OP:F-1');
+    linkNodes('ST:A-1', 'OP:B-3');
+    linkNodes('ST:C-1', 'OP:B-3');
+    linkNodes('ST:B-3', 'OP:A-5');
+    linkNodes('ST:B-3', 'OP:C-5');
+    linkNodes('ST:A-5', 'OP:A-6');
+    linkNodes('ST:A-6', 'OP:A-7');
+    linkNodes('ST:A-7', 'OP:A-9');
+    linkNodes('ST:C-5', 'OP:D-7');
+    linkNodes('ST:D-7', 'OP:D-9');
+    linkNodes('ST:E-1', 'OP:E-2');
+    linkNodes('ST:E-2', 'OP:E-5');
+    linkNodes('ST:E-5', 'OP:D-7');
+    linkNodes('ST:F-1', 'OP:F-2');
+    linkNodes('ST:F-2', 'OP:F-3');
+    linkNodes('ST:F-3', 'OP:F-5');
+    linkNodes('ST:F-5', 'OP:F-7');
+    linkNodes('ST:F-7', 'OP:F-9');
 
     const STATIC = window.STATIC || {};
 

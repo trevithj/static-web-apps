@@ -1,4 +1,4 @@
-(function(){
+(function () {
 
     // The network
     const SIZE = 'width=10 height=10';
@@ -19,6 +19,7 @@
     }
     const renderOp = (op) => {
         const html = [
+            `<title>${op.id}</title>`,
             `<ellipse cy=7.5 cx=5 rx=4 ry=2.5 fill=${op.fill} stroke=black stroke-width=0.2 />`,
             `<text ${textPos} y=7.5 x=5 class="optxt">${op.runtime}</text>`
         ].join('');
@@ -55,7 +56,8 @@
     const html = [
         '<rect x=0 y=0 width=80 height=100 stroke=#eee fill=#fafafa />',
         '<path id="links" fill=none stroke=silver stroke-width=0.5px />',
-        '<g id="nodes" />'
+        '<g id="grid" />',
+        '<g id="nodes" />',
     ];
     svg.innerHTML = html.join("\n");
     const nodeView = BASE.select('g#nodes');
@@ -93,16 +95,7 @@
             })
         }
     })
-    console.log(nodesMap);
-
-    // TODO: handle animation loop
-    // window.addEventListener('unload')
-    let time = 0;
-    // setTimeout(() => {
-    //     console.log(`${Math.floor(time/60)}:${time % 60}`);
-    //     time += 1;
-    //     BASE.send('TICK'); //TODO: check if we need a new timeout
-    // }, info.speed);
+    //console.log(nodesMap);
 
     BASE.listen('RM_CLICKED', (rm) => {
         rm.qty += 1;
@@ -113,4 +106,12 @@
         console.log(fg);
     })
 
+    // draw the reference grid
+    const rows = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(row =>
+        `<text class="row" x=-3 y=${96 - (10 * row)}>${row}</text>`
+    );
+    const cols = 'A B C D E F G H'.split(' ').map((col, i) =>
+        `<text class="col" y=98 x=${10 * i + 4}>${col}</text>`
+    );
+    BASE.select("#grid").innerHTML = [...rows, ...cols].join("");
 }());

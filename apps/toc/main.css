@@ -23,9 +23,14 @@ body {
 }
 .macGrid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 2fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 2fr;
     width: 100%;
     text-align: right;
+    line-height: 1.5rem;
+}
+.macGrid select  {
+    height: 1.5rem;
+    padding: 0 5px;
 }
 .resources {
     width: calc(100% - 2rem);
@@ -45,6 +50,12 @@ body {
 svg {
     width: 100%;
     height: inherit;
+    overflow: visible;
+    margin-left: 1.8rem;
+}
+text.row, text.col {
+    font-size: 3px;
+    fill: silver;
 }
 .ST {
     fill:white;
