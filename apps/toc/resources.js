@@ -2,13 +2,13 @@
     // The resources
     //TODO: refactor to use one element per resource
 
-    const {data310} = STATIC;
+    const {data310, macColors} = STATIC;
     const macsEl = BASE.select(".resources");
     const macs = data310.macs.map(mac => {
         const element = document.createElement('div');
         element.classList.add('macGrid');
         const ops = data310.ops.flatMap(op => op.type === mac.type ? op.id : []);
-        const fill = data310.macColors[mac.type];
+        const fill = macColors[mac.type];
         return {...mac, ops, fill, currentOp: null, element}
     });
     // info.macsEl.querySelector('thead').innerHTML = `

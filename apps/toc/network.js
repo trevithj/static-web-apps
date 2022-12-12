@@ -26,7 +26,7 @@
         op.element.innerHTML = html;
     }
 
-    const {data310} = STATIC;
+    const {data310, macColors} = STATIC;
     const nodesMap = {}; // Needed for line plotting
     function mapNode(node) {
         nodesMap[node.id] = node;
@@ -42,7 +42,7 @@
         return node;
     });
     const ops = data310.ops.map(op => {
-        const fill = data310.macColors[op.type] || 'white';
+        const fill = macColors[op.type] || 'white';
         const {element, x, y} = create(op);
         const node = mapNode({...op, x, y, fill, element});
         // element.innerHTML = renderOp(op, fill);

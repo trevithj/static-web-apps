@@ -1,7 +1,9 @@
 body {
     font-family: Helvetica, Arial, Verdana, sans-serif;
 }
-
+h3 {
+    margin: 1.5rem 0 0.4rem;
+}
 .main {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -21,9 +23,16 @@ body {
     width: 40%;
     font-weight: normal;
 }
+.orderGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    width: 100%;
+    text-align: right;
+    line-height: 1.5rem;
+}
 .macGrid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 2fr;
+    grid-template-columns: 1fr 3rem 4rem 1fr 1fr;
     width: 100%;
     text-align: right;
     line-height: 1.5rem;
@@ -32,13 +41,13 @@ body {
     height: 1.5rem;
     padding: 0 5px;
 }
-.resources {
+.resources, .orders {
     width: calc(100% - 2rem);
     border: solid thin silver;
     text-align: right;
     padding-right: 1rem;
 }
-.resources p {
+.resources p, .orders p {
     border: solid thin silver;
     padding: 0.1rem 0.4rem 0.1rem 0;
     margin: 0;
@@ -50,6 +59,7 @@ body {
 svg {
     width: 100%;
     height: inherit;
+    max-height: 90vh;
     overflow: visible;
     margin-left: 1.8rem;
 }
