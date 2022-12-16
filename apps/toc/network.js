@@ -18,9 +18,10 @@
         store.element.innerHTML = html;
     }
     const renderOp = (op) => {
+        // console.log(op);
         const html = [
             `<title>${op.id}</title>`,
-            `<ellipse cy=7.5 cx=5 rx=4 ry=2.5 fill=${op.fill} stroke=black stroke-width=0.2 />`,
+            `<ellipse cy=7.5 cx=5 rx=4 ry=2.5 fill=${op.fill} stroke=black stroke-width=${op.selected ? 0.8 : 0.2} />`,
             `<text ${textPos} y=7.5 x=5 class="optxt">${op.runtime}</text>`
         ].join('');
         op.element.innerHTML = html;
@@ -44,7 +45,7 @@
     const ops = data310.ops.map(op => {
         const fill = macColors[op.type] || 'white';
         const {element, x, y} = create(op);
-        const node = mapNode({...op, x, y, fill, element});
+        const node = mapNode({...op, x, y, fill, element, selected: 0 });
         // element.innerHTML = renderOp(op, fill);
         // return mapNode({...op, x, y, fill, element });
         renderOp(node);
@@ -95,7 +96,7 @@
             })
         }
     })
-    //console.log(nodesMap);
+    // console.log(nodesMap);
 
     BASE.listen('RM_CLICKED', (rm) => {
         rm.qty += 1;
@@ -104,6 +105,19 @@
     })
     BASE.listen('FG_CLICKED', (fg) => {
         console.log(fg);
+    })
+    BASE.listen('OPERATION_SET', (data) => {
+        const updateOp = (id, selected) => {
+            const op = nodesMap[id];
+            if(op) {
+                op.selected += selected;
+                renderOp(op);
+            }
+        }
+        const { mac, lastOp = "-" } = data;
+        console.log(`Machine ${mac.id} changed from ${lastOp} to ${mac.currentOp}`);
+        updateOp(lastOp, -1);
+        updateOp(mac.currentOp, 1);
     })
 
     // draw the reference grid

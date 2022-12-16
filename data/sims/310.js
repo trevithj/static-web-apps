@@ -1,23 +1,15 @@
 (function () {
-    const macColors = {
-        A: '#00f',
-        B: '#090',
-        C: '#09c',
-        D: '#c00',
-        E: '#c0c',
-        F: '#960',
-    }
     const cols = '-ABCDEFGH';
 
     function makeStore(col, row, qty = 0, type = 'ST') {
         const c = cols.charAt(col);
         const id = `ST:${c}-${row}`;
-        return {id, type, row, col, qty, fedby:[], fedto:[]};
+        return {id, type, row, col, qty, fedby: [], fedto: []};
     }
     function makeOp(type, col, row, runtime) {
         const c = cols.charAt(col);
         const id = `OP:${c}-${row}`;
-        return {id, type, row, col, runtime, fedby:[], fedto:[]};
+        return {id, type, row, col, runtime, fedby: [], fedto: []};
     }
     function makeMac(type, setup, row, col) {
         const id = `MAC:${type}-${col}`;
@@ -62,29 +54,29 @@
     ];
 
     const stores = [
-        makeStore(1,0,0, 'RM'),
-        makeStore(3,0,0, 'RM'),
-        makeStore(5,0,0, 'RM'),
-        makeStore(6,0,0, 'RM'),
-        makeStore(1,9,0, 'FG'),
-        makeStore(1,7),
-        makeStore(1,6),
-        makeStore(1,5),
-        makeStore(1,1),
-        makeStore(2,3,25),
-        makeStore(3,1),
-        makeStore(3,5),
-        makeStore(4,7),
-        makeStore(4,9,0,'FG'),
-        makeStore(5,1),
-        makeStore(5,2,15),
-        makeStore(5,5),
-        makeStore(6,1),
-        makeStore(6,2),
-        makeStore(6,3,10),
-        makeStore(6,5),
-        makeStore(6,7),
-        makeStore(6,9,0, 'FG'),
+        makeStore(1, 0, 0, 'RM'),
+        makeStore(3, 0, 0, 'RM'),
+        makeStore(5, 0, 0, 'RM'),
+        makeStore(6, 0, 0, 'RM'),
+        makeStore(1, 9, 0, 'FG'),
+        makeStore(1, 7),
+        makeStore(1, 6),
+        makeStore(1, 5),
+        makeStore(1, 1),
+        makeStore(2, 3, 25),
+        makeStore(3, 1),
+        makeStore(3, 5),
+        makeStore(4, 7),
+        makeStore(4, 9, 0, 'FG'),
+        makeStore(5, 1),
+        makeStore(5, 2, 15),
+        makeStore(5, 5),
+        makeStore(6, 1),
+        makeStore(6, 2),
+        makeStore(6, 3, 10),
+        makeStore(6, 5),
+        makeStore(6, 7),
+        makeStore(6, 9, 0, 'FG'),
     ]
 
     const macs = [
@@ -101,17 +93,19 @@
     ops.forEach(mapNode);
     stores.forEach(mapNode);
     macs.forEach(mapNode);
-    
+
     //Update RM nodes with unit cost
     nodes['ST:A-0'].unitCost = 30;
     nodes['ST:C-0'].unitCost = 35;
     nodes['ST:E-0'].unitCost = 30;
     nodes['ST:F-0'].unitCost = 65;
-    //Update FG nodes with unit price
-    nodes['ST:A-9'].unitPrice = 180;
-    nodes['ST:D-9'].unitPrice = 240;
-    nodes['ST:F-9'].unitPrice = 180;
 
+    //Add weekly orders list with qty and price
+    const orders = [
+        { id: 'ST:A-9', price: 180, qty: 160 },
+        { id: 'ST:D-9', price: 240, qty: 200 },
+        { id: 'ST:F-9', price: 180, qty: 160 },
+    ];
     // Now create the network
     // First, link each op to its matching store
     ops.forEach(op => {
@@ -141,10 +135,19 @@
     linkNodes('ST:F-5', 'OP:F-7');
     linkNodes('ST:F-7', 'OP:F-9');
 
+    window.STATIC = window.STATIC || {};
     const STATIC = window.STATIC || {};
 
-    STATIC.data310 = {
-        ops, macs, stores, nodes, macColors
+    STATIC.data310 = {ops, macs, stores, orders};
+    STATIC.macColors = {
+        A: '#00f',
+        B: '#090',
+        C: '#09c',
+        D: '#c00',
+        E: '#c0c',
+        F: '#960',
+        RM: 'red',
+        FG: 'blue'
     }
-    window.STATIC = STATIC;
+
 }());

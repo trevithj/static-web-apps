@@ -32,7 +32,9 @@
             `<p ${style}><select value=${currentOp || '-'}>${options.join('')}</select></p>`
             ].join('');
         mac.element.querySelector('select').addEventListener('change', sel => {
+            const lastOp = mac.currentOp;
             mac.currentOp = sel.target.value;
+            BASE.send('OPERATION_SET', { mac, lastOp });
         });
     }
     macs.forEach(mac => {
