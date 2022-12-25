@@ -125,7 +125,7 @@
         `<text class="row" x=-3 y=${96 - (10 * row)}>${row}</text>`
     );
     const cols = 'A B C D E F G H'.split(' ').map((col, i) =>
-        `<text class="col" y=98 x=${10 * i + 4}>${col}</text>`
+        `<text class="col" y=99 x=${10 * i + 4}>${col}</text>`
     );
     BASE.select("#grid").innerHTML = [...rows, ...cols].join("");
 }());

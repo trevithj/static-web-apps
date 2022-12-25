@@ -4,18 +4,28 @@ body {
 h3 {
     margin: 1.5rem 0 0.4rem;
 }
+.cell1 {
+    font-size: large;
+    padding: 2rem;
+    border-right: solid thin silver;
+    margin-right: 2rem;
+}
+.cell1 button, .cell1 select {
+    font-size: large;
+    width: 9rem;
+    opacity: 0.9;
+}
 .main {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    width: calc(100% - 2rem);
+    grid-template-columns: 40vw 55vw;
+    width: calc(100%-1rem);
     border: solid 0.5rem #ddd;
     border-radius: 1rem;
-    /* height: 85vh; */
+    height: 95vh;
 }
 .info p {
     display: block;
     text-align: right;
-    margin-right: 2rem;
     font-weight: bold;
 }
 .info span {
@@ -26,14 +36,14 @@ h3 {
 .orderGrid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    width: 100%;
+    /* width: 100%; */
     text-align: right;
     line-height: 1.5rem;
 }
 .macGrid {
     display: grid;
     grid-template-columns: 1fr 3rem 4rem 1fr 1fr;
-    width: 100%;
+    /* width: 100%; */
     text-align: right;
     line-height: 1.5rem;
 }
@@ -41,9 +51,7 @@ h3 {
     height: 1.5rem;
     padding: 0 5px;
 }
-.resources, .orders {
-    width: calc(100% - 2rem);
-    border: solid thin silver;
+.resources, .orders, .info {
     text-align: right;
     padding-right: 1rem;
 }
@@ -59,7 +67,7 @@ h3 {
 svg {
     width: 100%;
     height: inherit;
-    max-height: 90vh;
+    max-height: 94vh;
     overflow: visible;
     margin-left: 1.8rem;
 }
