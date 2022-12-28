@@ -33,6 +33,10 @@ h3 {
     width: 40%;
     font-weight: normal;
 }
+.info input {
+    width: 90%;
+    height: 2rem;
+}
 .orderGrid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;

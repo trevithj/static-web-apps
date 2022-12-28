@@ -140,7 +140,7 @@
 
     STATIC.data310 = {ops, macs, stores, orders};
     STATIC.macColors = {
-        A: '#00f',
+        A: '#66f',
         B: '#090',
         C: '#09c',
         D: '#c00',
