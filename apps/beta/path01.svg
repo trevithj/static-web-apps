@@ -1,0 +1,30 @@
+<svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    #motion-demo {
+        offset-path: path("M20,20 C20,100 200,0 200,100");
+        animation: move 3000ms infinite alternate ease-in-out;
+        fill:cyan; fill-opacity:0.7;
+        stroke:black; stroke-width:1;
+    }
+
+    @keyframes move {
+      0% {
+        offset-distance: 0%;
+      }
+      100% {
+        offset-distance: 100%;
+      }
+    }
+    path.fg {
+        stroke: blue; fill: none;
+    }
+    path.bg {
+        stroke: yellow; stroke-width: 5; fill: none;
+    }
+  </style>
+  <path class="bg" d="M20,20 C20,100 200,0 200,100"/>
+  <path class="fg" d="M20,20 C20,100 200,0 200,100"/>
+  <g transform="translateX(20px)">
+    <rect id="motion-demo" x="-10" y="-5" width="20" height="10" />
+  </g>
+</svg>
