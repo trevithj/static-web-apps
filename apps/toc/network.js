@@ -4,7 +4,7 @@
     const SIZE = 'width=10 height=10';
     const textPos = "dominant-baseline=middle text-anchor=middle";
     function create(node) {
-        const element = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        const element = BASE.createElSVG('g');
         const x = node.col * 10 - 10;
         const y = 90 - node.row * 10;
         element.style = `transform: translate(${x}px, ${y}px)`;
@@ -87,26 +87,26 @@
     stores.forEach(store => {
         if (store.type === 'RM') {
             store.element.addEventListener('click', () => {
-                BASE.send('RM_CLICKED', store);
+                BASE.pub('RM_CLICKED', store);
             })
         }
         if (store.type === 'FG') {
             store.element.addEventListener('click', () => {
-                BASE.send('FG_CLICKED', store);
+                BASE.pub('FG_CLICKED', store);
             })
         }
     })
     // console.log(nodesMap);
-
-    BASE.listen('RM_CLICKED', (rm) => {
+    BASE.sub('RM_PURCHASED', (d) => {
+        const rm = nodesMap[d.id];
         rm.qty += 1;
         renderStore(rm);
-        BASE.send('RM_UPDATED', rm);
     })
-    BASE.listen('FG_CLICKED', (fg) => {
+
+    BASE.sub('FG_CLICKED', (fg) => {
         console.log(fg);
     })
-    BASE.listen('OPERATION_SET', (data) => {
+    BASE.sub('OPERATION_SET', (data) => {
         const updateOp = (id, selected) => {
             const op = nodesMap[id];
             if(op) {

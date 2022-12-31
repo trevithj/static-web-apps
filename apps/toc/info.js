@@ -45,7 +45,7 @@
         `.trim();
     }
     function tick() {
-        BASE.send('NEXT_STEP', info);
+        BASE.pub('NEXT_STEP', info);
         info.time += 1;
         updateTime();
     }
@@ -78,7 +78,7 @@
     info.speedEl.addEventListener('change', () => {
         info.speed = +info.speedEl.value;
     })
-    BASE.listen('RM_UPDATED', (rm) => {
+    BASE.sub('RM_PURCHASED', (rm) => {
         const {unitCost = 0} = rm;
         info.cash -= unitCost;
         updateCash(info.cash);

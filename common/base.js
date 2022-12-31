@@ -6,6 +6,8 @@
 const BASE = {
   send: null,
   listen: null,
+  pub: null,
+  sub: null,
   initState: null,
   dispatch: null,
   getState: null,
@@ -43,7 +45,7 @@ const BASE = {
 
 // Mediation methods, to allow messages to be passed between
 // arbitrary nodes: one-to-one only.
-// This is like pub/sub, but enforces a single subscriber.
+// This is like pub/sub, but enforces a single subscriber. More like a broker.
 // To unsubscribe from a subject, pass an empty listenFn to BASE.listen.
 (function () {
   const listeners = {};
@@ -70,6 +72,36 @@ const BASE = {
   }
 }());
 
+// Proper PubSub methods, to allow broadcasting messages to multiple nodes.
+// The sub function returns an unsubscribe fn.
+(function () {
+  const subscriberMap = {};
+
+  BASE.pub = (subject, message) => {
+    const subscribers = subscriberMap[subject] || [];
+    subscribers.forEach(subFn => {
+        if (subFn && typeof subFn === "function") {
+          subFn(message);
+        }
+    })
+    if (BASE.logging) {
+        console.log({subject, message, subs: subscribers.length});
+    }
+  }
+
+  BASE.sub = (subject, subFn) => {
+    if (BASE.logging) {
+        console.log({subject, subFn});
+    }
+    if (typeof subFn === 'function') {
+        const subscribers = subscriberMap[subject] || [];
+        subscribers.push(subFn);
+        subscriberMap[subject] = subscribers;
+        return () => subscriberMap[subject] = subscriberMap[subject].filter(fn => fn !== subFn);
+    }
+  }
+}());
+
 
 // Namespaces global values, so different scripts can pass values
 // to each other. Names must be unique across the applicaton.
@@ -91,4 +123,11 @@ const BASE = {
 (function () {
   BASE.select = (selector) => document.querySelector(selector);
   BASE.selectAll = (selector) => document.querySelectorAll(selector);
+  BASE.createEl = (type, className) => {
+    const el = document.createElement(type);
+    if (className) el.classList.add(className);
+    return el;
+  }
+  BASE.createElSVG = type => document.createElementNS('http://www.w3.org/2000/svg', type);
+
 }());
