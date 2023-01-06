@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        svg { height: 400px; border: solid thin blue; }
+    </style>
+</head>
+
+<body>
+    <div class="view">
+
+        <svg viewBox="0 0 1000 200" xmlns="http://www.w3.org/2000/svg">
+            <style>
+                .loco, .wagon {
+                    fill-opacity: 0.7;
+                    stroke: black;
+                    stroke-width: 1;
+                }
+                .loco { fill: cyan; }
+                .wagon { fill: gray; }
+                path.fg {
+                    stroke: white;
+                    stroke-width: 4;
+                    stroke-dasharray: 3,1;
+                    fill: none;
+                }
+    
+                path.bg {
+                    stroke: blue;
+                    stroke-width: 6;
+                    fill: none;
+                }
+            </style>
+            <path class="bg" />
+            <path class="fg" />
+            <g id="rolling-stock">
+                <!-- <rect class="loco" x="-10" y="-5" width="20" height="10" />
+                <rect class="wagon" x="-10" y="-5" width="20" height="10" /> -->
+            </g>
+        </svg>
+    </div>
+</body>
+<script src="../../common/base.js"></script>
+<script type="text/javascript">
+(function(){
+    const sel = BASE.select;
+    // const thePath = "M20,20 C20,100 200,0 200,100";
+    const thePath = [
+        "M 10 10",
+        "C 126 12 126 12 155 38",
+        "S 185 64 394 65",
+        "S 456 52 667 48",
+        "S 823 27 990 30",
+        // "M 990 91 H 6"
+    ].join(' ');
+    const theTrain = [
+        "wagon", "wagon", "wagon", "wagon", "wagon", "wagon", "wagon", "wagon", "loco"
+        // "loco", "wagon"
+    ].map(cls => {
+        const el = BASE.createElSVG('rect');
+        // const el = document.createElement('rect');
+        el.classList.add(cls);
+        el.setAttribute("x", -10);
+        el.setAttribute("y", -5);
+        el.setAttribute("width", 20);
+        el.setAttribute("height", 10);
+        return el;
+    });
+
+    sel('svg path.bg').setAttribute('d', thePath);
+    sel('svg path.fg').setAttribute('d', thePath);
+
+    const animateOpts = {
+        duration: 10000, easing: "ease-in-out", direction:"alternate", iterations: Infinity
+    };
+
+    // Create the train elements
+    const rollingStock = sel("svg #rolling-stock");
+    theTrain.forEach(el => {
+        rollingStock.appendChild(el);
+    });
+
+    // const theLoco = sel('svg .loco');
+    // theLoco.style.offsetPath=`path("${thePath}")`;
+    // theLoco.animate({
+    //     offsetDistance: ["2%","100%"]
+    // }, animateOpts); 
+    // const theWagon = sel('svg .wagon');
+    // theWagon.style.offsetPath=`path("${thePath}")`;
+    // theWagon.animate({
+    //     offsetDistance: ["0%","98%"]
+    // }, animateOpts);
+
+    theTrain.forEach((el, i) => {
+        el.style.offsetPath=`path("${thePath}")`;
+        const offset = i*2;
+        const from = `${offset}%`; 
+        const till = `${102 - (theTrain.length * 2) + offset}%`;
+        // console.log(from, till) 
+        el.animate({
+            offsetDistance: [from, till]
+        }, animateOpts);
+    });
+
+    // const view = sel('.view');
+    // window.VIEW = view;
+}());
+</script>
+</html>

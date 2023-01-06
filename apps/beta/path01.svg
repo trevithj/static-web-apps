@@ -16,15 +16,15 @@
       }
     }
     path.fg {
-        stroke: blue; fill: none;
+        stroke: white; stroke-width: 4; fill: none;
     }
     path.bg {
-        stroke: yellow; stroke-width: 5; fill: none;
+        stroke: blue; stroke-width: 6; fill: none;
     }
   </style>
+  <path class="bg" d="M200,100 a40,40 45 1 1 -100,0"/>
+  <path class="fg" d="M200,100 a40,40 45 1 1 -100,0"/>
   <path class="bg" d="M20,20 C20,100 200,0 200,100"/>
   <path class="fg" d="M20,20 C20,100 200,0 200,100"/>
-  <g transform="translateX(20px)">
-    <rect id="motion-demo" x="-10" y="-5" width="20" height="10" />
-  </g>
+  <rect id="motion-demo" x="-10" y="-5" width="20" height="10" />
 </svg>
