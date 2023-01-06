@@ -21,7 +21,7 @@
         // console.log(op);
         const html = [
             `<title>${op.id}</title>`,
-            `<ellipse cy=7.5 cx=5 rx=4 ry=2.5 fill=${op.fill} stroke=black stroke-width=${op.selected ? 0.8 : 0.2} />`,
+            `<ellipse cy=7.5 cx=5 rx=2.9 ry=2.3 fill=${op.fill} stroke=black stroke-width=${op.selected ? 0.8 : 0.1} />`,
             `<text ${textPos} y=7.5 x=5 class="optxt">${op.runtime}</text>`
         ].join('');
         op.element.innerHTML = html;

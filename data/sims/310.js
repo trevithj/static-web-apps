@@ -102,9 +102,9 @@
 
     //Add weekly orders list with qty and price
     const orders = [
-        { id: 'ST:A-9', price: 180, qty: 160 },
-        { id: 'ST:D-9', price: 240, qty: 200 },
-        { id: 'ST:F-9', price: 180, qty: 160 },
+        { id: 'ST:A-9', price: 180, qty: 40 },
+        { id: 'ST:D-9', price: 240, qty: 50 },
+        { id: 'ST:F-9', price: 180, qty: 40 },
     ];
     // Now create the network
     // First, link each op to its matching store
@@ -137,9 +137,9 @@
 
     window.STATIC = window.STATIC || {};
     const STATIC = window.STATIC || {};
-
-    STATIC.data310 = {ops, macs, stores, orders};
-    STATIC.macColors = {
+    
+    const data = {ops, macs, stores, orders};
+    const macColors = {
         A: '#66f',
         B: '#090',
         C: '#09c',
@@ -149,5 +149,8 @@
         RM: 'red',
         FG: 'blue'
     }
-
+    STATIC.data310 = data;
+    STATIC.macColors = macColors;
+    const info = {cash: 11000, time: 0, speed: 0};
+    BASE.dispatch('DATA_SET', { data, macColors, info });
 }());

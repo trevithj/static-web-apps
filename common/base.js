@@ -31,15 +31,17 @@ const BASE = {
 
   BASE.dispatch = (type, payload) => {
     state = reduce(state, {type, payload});
-    console.groupCollapsed("DISPATCH:" + type);
-    console.log("Payload: ", payload);
-    console.log("State: ", state);
-    console.groupEnd();
+    if (BASE.logging) {
+        console.groupCollapsed("DISPATCH:" + type);
+        console.log("Payload: ", payload);
+        console.log("State: ", state);
+        console.groupEnd();
+    }
     BASE.send("STATE_CHANGED", state);
   }
 
   BASE.getState = () => {
-    return state; //return a copy?
+    return Object.freeze(state); //return a copy?
   }
 }());
 
