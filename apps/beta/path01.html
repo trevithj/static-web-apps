@@ -11,8 +11,7 @@
 
 <body>
     <div class="view">
-
-        <svg viewBox="0 0 1000 200" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 2400 400" xmlns="http://www.w3.org/2000/svg">
             <style>
                 .loco, .wagon {
                     fill-opacity: 0.7;
@@ -27,7 +26,6 @@
                     stroke-dasharray: 3,1;
                     fill: none;
                 }
-    
                 path.bg {
                     stroke: blue;
                     stroke-width: 6;
@@ -36,10 +34,7 @@
             </style>
             <path class="bg" />
             <path class="fg" />
-            <g id="rolling-stock">
-                <!-- <rect class="loco" x="-10" y="-5" width="20" height="10" />
-                <rect class="wagon" x="-10" y="-5" width="20" height="10" /> -->
-            </g>
+            <g id="rolling-stock"></g>
         </svg>
     </div>
 </body>
@@ -49,57 +44,59 @@
     const sel = BASE.select;
     // const thePath = "M20,20 C20,100 200,0 200,100";
     const thePath = [
-        "M 10 10",
-        "C 126 12 126 12 155 38",
-        "S 185 64 394 65",
-        "S 456 52 667 48",
-        "S 823 27 990 30",
-        // "M 990 91 H 6"
+    // "M 10 10 C 200 12 200 12 300 38 S 385 64 594 65 S 656 52 900 48 S 1100 30 2270 30 C 2447 30 2450 275 2270 275 C 2107 271 2206 53 1918 53 C 1600 50 1232 53 898 72"
+    "M 154 13 C 200 12 200 12 296 18 S 385 64 594 65 S 656 52 900 48 S 1100 30 2270 30 C 2447 30 2450 275 2270 275 C 2107 271 2202 43 1918 42 C 1595 43 1232 44 898 61 C 656 66 773 81 594 79 C 357 68 407 238 157 228 C -32 234 -44 22 135 13 Z"
     ].join(' ');
-    const theTrain = [
-        "wagon", "wagon", "wagon", "wagon", "wagon", "wagon", "wagon", "wagon", "loco"
-        // "loco", "wagon"
-    ].map(cls => {
+
+    const SIZE = 50;
+    const theTrain = new Array(SIZE)
+    .fill(1)
+    .flatMap((x, n) => {
+        if (n===SIZE-1) return "loco";
+        return n < 20 ? "wagon" : "long";
+    })
+    .map(cls => {
         const el = BASE.createElSVG('rect');
-        // const el = document.createElement('rect');
+        const length = cls==="long" ? 2 : 1;
         el.classList.add(cls);
         el.setAttribute("x", -10);
         el.setAttribute("y", -5);
-        el.setAttribute("width", 20);
+        el.setAttribute("width", length * 20);
         el.setAttribute("height", 10);
-        return el;
+        return { el, length };
     });
 
     sel('svg path.bg').setAttribute('d', thePath);
     sel('svg path.fg').setAttribute('d', thePath);
 
     const animateOpts = {
-        duration: 10000, easing: "ease-in-out", direction:"alternate", iterations: Infinity
+        duration: 30000,
+        // easing: "ease-in-out",
+        // direction:"alternate",
+        iterations: Infinity
     };
 
     // Create the train elements
     const rollingStock = sel("svg #rolling-stock");
-    theTrain.forEach(el => {
+    theTrain.forEach(({el}) => {
         rollingStock.appendChild(el);
     });
 
-    // const theLoco = sel('svg .loco');
-    // theLoco.style.offsetPath=`path("${thePath}")`;
-    // theLoco.animate({
-    //     offsetDistance: ["2%","100%"]
-    // }, animateOpts); 
-    // const theWagon = sel('svg .wagon');
-    // theWagon.style.offsetPath=`path("${thePath}")`;
-    // theWagon.animate({
-    //     offsetDistance: ["0%","98%"]
-    // }, animateOpts);
-
-    theTrain.forEach((el, i) => {
+    function calcOffset(position, length) {
+        const multi = 0.45;
+        return position + length * multi;
+    }
+    let position = 0;
+    let prevLength = 1;
+    theTrain.forEach(({el, length}, i) => {
         el.style.offsetPath=`path("${thePath}")`;
-        const offset = i*2;
+        // el.style.pathLength=2000;
+        const offset = calcOffset(position, prevLength);
         const from = `${offset}%`; 
-        const till = `${102 - (theTrain.length * 2) + offset}%`;
-        // console.log(from, till) 
+        const till = `${100 + offset}%`;
+        position = offset;
+        prevLength = length;
+        // console.log(length, from, till) 
         el.animate({
             offsetDistance: [from, till]
         }, animateOpts);
