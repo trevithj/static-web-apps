@@ -1,0 +1,37 @@
+path.plot {
+    width: 100%;
+    height: 24%;
+    stroke: black;
+}
+path.a { fill: #999; }
+path.b { fill: #f66; }
+path.c { fill:#6f6; }
+path.d { fill:#66f; }
+textarea.input {
+    width: 100%;
+}
+textarea.a { border: solid 2px #999; }
+textarea.b { border: solid 2px #f66; }
+textarea.c { border: solid 2px #6f6; }
+textarea.d { border: solid 2px #66f; }
+
+.label {
+    display: inline-block;
+    text-align: right;
+    width: 10rem;
+    padding-right: 1rem;
+}
+input.data {
+    width: calc(100% - 12rem);
+    line-height: 2rem;
+    margin-bottom: 1rem;
+}
+input.a { border: solid 2px #999; }
+input.b { border: solid 2px #f66; }
+input.c { border: solid 2px #6f6; }
+input.d { border: solid 2px #66f; }
+
+.display {
+    display: grid;
+    grid-template-columns: 12rem auto;
+}

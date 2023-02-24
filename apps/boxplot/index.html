@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta name="keywords" content="boxplot, javascript, statistics. percentiles">
+    </meta>
+    <link rel="stylesheet" type="text/css" href="./style.css">
+    <style id="svg">
+        body {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div>
+        <p>
+            This Box and Whisker plot tool was inspired by the D3-based one at:
+            <a href="https://observablehq.com/@trevithj/comparative-horizontal-box-plots">ObservableHQ.com</a>
+        </p>
+        <p>
+            <span class="label">Set 1</span><input type="text" class="data a" id="in1"></input>
+            <span class="label">Set 2</span><input type="text" class="data b" id="in2"></input>
+            <span class="label">Set 3</span><input type="text" class="data c" id="in3"></input>
+            <span class="label">Set 4</span><input type="text" class="data d" id="in4"></input>
+        </p>
+        <div class="display">
+            <div class="stats"></div>
+            <div class="chart">
+                <svg width="1200" height="400">
+                    <rect x="0" y="0" width="100%" height="100%" fill="#ddd" />
+                    <g id="plots">
+                        <path class="a plot" d=""></path>
+                        <path class="b plot" d=""></path>
+                        <path class="c plot" d=""></path>
+                        <path class="d plot" d=""></path>
+                    </g>
+                </svg>
+            </div>
+        </div>
+        <div class="ctrl">
+            <button id="recalc">Recalc</button>
+        </div>
+    </div>
+    <div id="footerText"></div>
+</body>
+<script>
+</script>
+<!-- <script src="./ver1.js"></script> -->
+<script src="./calcs.js"></script>
+
+<script>
+    //Put this down here out of the way
+    document.querySelector('div#footerText').innerHTML = `
+    <hr />
+    <p>
+      The question this tool helps to answer is whether a difference between two or more small trials is significant.
+      Here, we compare up to four datasets on the same common x-axis, using box-and-whisker plots to show summary statistics of the datasets.
+      </p><p>
+        To populate, paste or enter a delimited* series of numbers into each textbox.
+        The plot expects a minimum of five values, and calculates max, min, median and quartile values. That is: the 0%, 25%, 50%, 75% and 100% percentile values.
+    </p><p>
+        *Note: any delimiter will work in the textareas except "." or "-".
+    </p><p>
+    </p><p>
+    </p>
+    `;
+</script>
+
+</html>
+<!-- <textarea class="input a" id="input1"></textarea>
+  <textarea class="input b" id="input2"></textarea>
+  <textarea class="input c" id="input3"></textarea>
+  <textarea class="input d" id="input4"></textarea> -->
