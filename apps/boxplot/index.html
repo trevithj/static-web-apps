@@ -21,15 +21,16 @@
             <a href="https://observablehq.com/@trevithj/comparative-horizontal-box-plots">ObservableHQ.com</a>
         </p>
         <p>
-            <span class="label">Set 1</span><input type="text" class="data a" id="in1"></input>
-            <span class="label">Set 2</span><input type="text" class="data b" id="in2"></input>
-            <span class="label">Set 3</span><input type="text" class="data c" id="in3"></input>
-            <span class="label">Set 4</span><input type="text" class="data d" id="in4"></input>
+            <label>Set 1</label><input type="text" class="data a" id="in1"></input>
+            <label>Set 2</label><input type="text" class="data b" id="in2"></input>
+            <label>Set 3</label><input type="text" class="data c" id="in3"></input>
+            <label>Set 4</label><input type="text" class="data d" id="in4"></input>
+            <label>Width</label>
+            <input type="range" id="wid" min="300" max="1200" step="10" value="800"></input>
         </p>
         <div class="display">
-            <div class="stats"></div>
             <div class="chart">
-                <svg width="1200" height="400">
+                <svg width="800" height="400">
                     <rect x="0" y="0" width="100%" height="100%" fill="#ddd" />
                     <g id="plots">
                         <path class="a plot" d=""></path>
@@ -39,6 +40,7 @@
                     </g>
                 </svg>
             </div>
+            <div class="stats"></div>
         </div>
         <div class="ctrl">
             <button id="recalc">Recalc</button>

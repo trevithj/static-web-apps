@@ -1,6 +1,9 @@
 (function() {
+    const select = sel => document.querySelector(sel);
     const values = {};
     const stats = {};
+    const svg = select("svg");
+    const state = { values, stats, svg, width: 800 };
     // Capture the data
     function strToArray(str) {
         //strip out any character that isn't a digit, period or minus, then split into numbers.
@@ -17,9 +20,16 @@
         values[id].sort((a,b) => a - b);
     }
     ["#in1","#in2","#in3","#in4"].forEach(sel => {
-        document.querySelector(sel).addEventListener("change", handleChange);
+        select(sel).addEventListener("change", handleChange);
+    });
+    // Update width if needed
+    select("#wid").addEventListener("change", evt => {
+        state.width = parseInt(evt.target.value);
+        svg.style.width = `${state.width}px`;
+        render();
     });
 
+    
     // Calculate the stats
     function quantile(sorted, q) {
         const pos = (sorted.length - 1) * q;
@@ -44,12 +54,17 @@
         return { min, lq, med, uq, max, iqr, ucl, lcl };
     }
 
-    const recalc = document.querySelector("#recalc");
+    const recalc = select("#recalc");
     recalc.addEventListener("click", () => {
         Object.keys(values).forEach(key => {
             const vals = values[key] || [];
             stats[key] = getStats(vals);
         })
-        console.log(values, stats);
+        render();
     })
+    
+    function render() {
+        // TODO
+        console.log(state);
+    }
 }())

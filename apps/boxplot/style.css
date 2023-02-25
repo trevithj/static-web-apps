@@ -7,22 +7,15 @@ path.a { fill: #999; }
 path.b { fill: #f66; }
 path.c { fill:#6f6; }
 path.d { fill:#66f; }
-textarea.input {
-    width: 100%;
-}
-textarea.a { border: solid 2px #999; }
-textarea.b { border: solid 2px #f66; }
-textarea.c { border: solid 2px #6f6; }
-textarea.d { border: solid 2px #66f; }
 
-.label {
+label {
     display: inline-block;
     text-align: right;
-    width: 10rem;
+    width: 5rem;
     padding-right: 1rem;
 }
 input.data {
-    width: calc(100% - 12rem);
+    width: calc(100% - 7rem);
     line-height: 2rem;
     margin-bottom: 1rem;
 }
@@ -33,5 +26,5 @@ input.d { border: solid 2px #66f; }
 
 .display {
     display: grid;
-    grid-template-columns: 12rem auto;
+    grid-template-columns: auto 10rem;
 }
