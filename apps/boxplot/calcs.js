@@ -1,5 +1,6 @@
+/* global BASE */
 (function() {
-    const select = sel => document.querySelector(sel);
+    const { select, listen, send } = BASE;
     const values = {};
     const stats = {};
     const svg = select("svg");
@@ -14,14 +15,7 @@
             return isNaN(n) ? [] : [n];
         });
     }
-    function handleChange(evt) {
-        const { id, value = ""} = evt.target;
-        values[id] = strToArray(value);
-        values[id].sort((a,b) => a - b);
-    }
-    ["#in1","#in2","#in3","#in4"].forEach(sel => {
-        select(sel).addEventListener("change", handleChange);
-    });
+    const ins = ["#in1","#in2","#in3","#in4"].map(select);
     // Update width if needed
     select("#wid").addEventListener("change", evt => {
         state.width = parseInt(evt.target.value);
@@ -42,6 +36,7 @@
         }
     };
     function getStats(vals) {
+        if (!vals.length) return null;
         const last = vals.length -1;
         const max = vals[last];
         const min = vals[0];
@@ -54,17 +49,74 @@
         return { min, lq, med, uq, max, iqr, ucl, lcl };
     }
 
+    function updateValues(inputElement) {
+        const { id, value = ""} = inputElement;
+        values[id] = strToArray(value);
+        values[id].sort((a,b) => a - b);
+    }
+
     const recalc = select("#recalc");
     recalc.addEventListener("click", () => {
+        ins.forEach(updateValues);
         Object.keys(values).forEach(key => {
             const vals = values[key] || [];
             stats[key] = getStats(vals);
         })
         render();
     })
+
+    function getToPercent({min, max}) {
+        return v => (v - min) / (max - min);
+    }
     
     function render() {
+        const pathClasses = ["a", "b", "c", "d"];
+        const statsList = ["in1","in2","in3","in4"].map((id, i) => {
+            const path = BASE.select(`path.${pathClasses[i]}`);
+            const stats = state.stats[id];
+            return {...stats, id, path, valid: !!stats };
+        });
+        const statsDiv = select(".stats");
+        const overview = { max: 0, min: 9999999, valid: false };
+
+        const html = statsList.map(stats => {
+            if (!stats.valid) return '';
+            overview.max = Math.max(overview.max, stats.max);
+            overview.min = Math.min(overview.min, stats.min);
+            // overview.valid = true;
+            return `<pre>${ JSON.stringify(stats)}</pre>`;
+        });
+        // overview.max - overview.min;
+        html.push(`<pre>${ JSON.stringify(overview)}</pre>`)
+        statsDiv.innerHTML = html.join("");
+
+        const toPercent = getToPercent(overview);
+        const { width } = state;
+        statsList.forEach(stats => {
+            if (!stats.valid) return;
+            const { min, lq, med, uq, max, path } = stats;
+            const result = [
+                toPercent(min), toPercent(lq), toPercent(med), toPercent(uq), toPercent(max)
+            ];
+            console.log(result, stats);
+            renderPath(path, result, state.width);
+        });
+        // const toPercent = state.width / overview.range;
+
         // TODO
         console.log(state);
     }
+
+    function renderPath(path, results, width) {
+        const ys = results.map(r => r * width);
+        console.log(ys);
+        const [ min, lq, med, uq, max ] = ys;
+        const d = [`M${min},40 V60 M${max},40 V60`];
+        d.push(`M${min},50 H${lq} M${max},50 H${uq}`);
+        d.push(`M${lq},20 H${med} V80 H${lq}Z`);
+        d.push(`M${uq},20 H${med} V80 H${uq}Z`);
+        path.setAttribute("d", d.join(" "))
+    }
+
+    render()
 }())

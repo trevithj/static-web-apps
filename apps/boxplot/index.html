@@ -21,10 +21,14 @@
             <a href="https://observablehq.com/@trevithj/comparative-horizontal-box-plots">ObservableHQ.com</a>
         </p>
         <p>
-            <label>Set 1</label><input type="text" class="data a" id="in1"></input>
-            <label>Set 2</label><input type="text" class="data b" id="in2"></input>
-            <label>Set 3</label><input type="text" class="data c" id="in3"></input>
-            <label>Set 4</label><input type="text" class="data d" id="in4"></input>
+            <label>Set 1</label>
+            <input type="text" class="data a" value="4 5 6 7 8" id="in1"></input>
+            <label>Set 2</label>
+            <input type="text" class="data b" value="3 4 5 6 7" id="in2"></input>
+            <label>Set 3</label>
+            <input type="text" class="data c" value="1 2 5 8 9" id="in3"></input>
+            <label>Set 4</label>
+            <input type="text" class="data d" value="1 2 3 4 9  " id="in4"></input>
             <label>Width</label>
             <input type="range" id="wid" min="300" max="1200" step="10" value="800"></input>
         </p>
@@ -33,10 +37,10 @@
                 <svg width="800" height="400">
                     <rect x="0" y="0" width="100%" height="100%" fill="#ddd" />
                     <g id="plots">
-                        <path class="a plot" d=""></path>
-                        <path class="b plot" d=""></path>
-                        <path class="c plot" d=""></path>
-                        <path class="d plot" d=""></path>
+                        <path class="a plot" d="M0,0 H800 V100 H-800 Z"></path>
+                        <path class="b plot" d="M0,0 H800 V100 H-800 Z"></path>
+                        <path class="c plot" d="M0,0 H800 V100 H-800 Z"></path>
+                        <path class="d plot" d="M0,0 H800 V100 H-800 Z"></path>
                     </g>
                 </svg>
             </div>
@@ -50,7 +54,7 @@
 </body>
 <script>
 </script>
-<!-- <script src="./ver1.js"></script> -->
+<script src="../../common/base.js"></script>
 <script src="./calcs.js"></script>
 
 <script>
