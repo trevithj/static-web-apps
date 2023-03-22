@@ -46,7 +46,7 @@
         const iqr = uq - lq;
         const ucl = uq + (1.5 * iqr);
         const lcl = lq - (1.5 * iqr);
-        return { min, lq, med, uq, max, iqr, ucl, lcl };
+        return { min, lq, med, uq, max, iqr, ucl, lcl, vals };
     }
 
     function updateValues(inputElement) {
@@ -91,15 +91,16 @@
         statsDiv.innerHTML = html.join("");
 
         const toPercent = getToPercent(overview);
-        const { width } = state;
         statsList.forEach(stats => {
             if (!stats.valid) return;
-            const { min, lq, med, uq, max, path } = stats;
+            const { min, lq, med, uq, max, path, lcl, ucl, vals } = stats;
+            const newVals = vals.map(toPercent);
             const result = [
-                toPercent(min), toPercent(lq), toPercent(med), toPercent(uq), toPercent(max)
+                toPercent(min), toPercent(lq), toPercent(med), toPercent(uq), toPercent(max),
+                toPercent(lcl), toPercent(ucl), ...newVals
             ];
             console.log(result, stats);
-            renderPath(path, result, state.width);
+            renderPath(path, result);
         });
         // const toPercent = state.width / overview.range;
 
@@ -107,14 +108,23 @@
         console.log(state);
     }
 
-    function renderPath(path, results, width) {
+    function renderPath(path, results) {
+        const { width } = state;
         const ys = results.map(r => r * width);
         console.log(ys);
-        const [ min, lq, med, uq, max ] = ys;
-        const d = [`M${min},40 V60 M${max},40 V60`];
-        d.push(`M${min},50 H${lq} M${max},50 H${uq}`);
+        const [ min, lq, med, uq, max, lcl, ucl, ...vals ] = ys;
+        const lmin = Math.max(min, lcl);
+        const lmax = Math.min(max, ucl);
+        const d = [`M${lmin},40 V60 M${lmax},40 V60`];
+        d.push(`M${lmin},50 H${lq} M${lmax},50 H${uq}`);
         d.push(`M${lq},20 H${med} V80 H${lq}Z`);
         d.push(`M${uq},20 H${med} V80 H${uq}Z`);
+        console.log(vals);
+        vals.forEach(v => {
+            if(v<lmin || v>lmax) {
+                d.push(`M${v},45 V55`)
+            }
+        })
         path.setAttribute("d", d.join(" "))
     }
 
