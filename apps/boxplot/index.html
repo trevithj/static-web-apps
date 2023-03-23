@@ -20,7 +20,7 @@
             This Box and Whisker plot tool was inspired by the D3-based one at:
             <a href="https://observablehq.com/@trevithj/comparative-horizontal-box-plots">ObservableHQ.com</a>
         </p>
-        <p>
+        <div class="inputs">
             <label>Set 1</label>
             <input type="text" class="data a" value="4 5 6 7 8" id="in1"></input>
             <label>Set 2</label>
@@ -29,10 +29,14 @@
             <input type="text" class="data c" value="1 2 5 8 9" id="in3"></input>
             <label>Set 4</label>
             <input type="text" class="data d" value="1 2 3 4 9  " id="in4"></input>
+        </div>
+        <div class="ctrl">
             <label>Width</label>
             <input type="range" id="wid" min="300" max="1200" step="10" value="800"></input>
-        </p>
+            <button id="recalc">Recalc</button>
+        </div>
         <div class="display">
+            <div class="stats"></div>
             <div class="chart">
                 <svg width="800" height="400">
                     <rect x="0" y="0" width="100%" height="100%" fill="#ddd" />
@@ -44,10 +48,6 @@
                     </g>
                 </svg>
             </div>
-            <div class="stats"></div>
-        </div>
-        <div class="ctrl">
-            <button id="recalc">Recalc</button>
         </div>
     </div>
     <div id="footerText"></div>

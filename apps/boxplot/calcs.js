@@ -81,13 +81,16 @@
 
         const html = statsList.map(stats => {
             if (!stats.valid) return '';
-            overview.max = Math.max(overview.max, stats.max);
-            overview.min = Math.min(overview.min, stats.min);
+            const { max, min, lq, uq, med, id } = stats;
+            overview.max = Math.max(overview.max, max);
+            overview.min = Math.min(overview.min, min);
             // overview.valid = true;
-            return `<pre>${ JSON.stringify(stats)}</pre>`;
+            return `<div class="row"><p>${id}</p><p>${lq}</p><p>${med}</p><p>${uq}</p></div>`;
+            // return `<div class="row"><p>${ JSON.stringify(stats)}</div>`;
         });
         // overview.max - overview.min;
         html.push(`<pre>${ JSON.stringify(overview)}</pre>`)
+        html.unshift(`<div class="row head"><p>ID</p><p>LQ</p><p>MD</p><p>UQ</p></div>`);
         statsDiv.innerHTML = html.join("");
 
         const toPercent = getToPercent(overview);
@@ -110,7 +113,7 @@
 
     function renderPath(path, results) {
         const { width } = state;
-        const ys = results.map(r => r * width);
+        const ys = results.map(r => r * (width-4)+2);
         console.log(ys);
         const [ min, lq, med, uq, max, lcl, ucl, ...vals ] = ys;
         const lmin = Math.max(min, lcl);
@@ -120,9 +123,10 @@
         d.push(`M${lq},20 H${med} V80 H${lq}Z`);
         d.push(`M${uq},20 H${med} V80 H${uq}Z`);
         console.log(vals);
+        // draw any outliers
         vals.forEach(v => {
             if(v<lmin || v>lmax) {
-                d.push(`M${v},45 V55`)
+                d.push(`M${v-2},50 l2,5 l2,-5 l-2,-5 Z`)
             }
         })
         path.setAttribute("d", d.join(" "))

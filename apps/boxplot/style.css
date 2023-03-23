@@ -23,8 +23,15 @@ input.a { border: solid 2px #999; }
 input.b { border: solid 2px #f66; }
 input.c { border: solid 2px #6f6; }
 input.d { border: solid 2px #66f; }
-
+.inputs { margin: 0; }
+.ctrl { margin-bottom: 0.5rem; }
 .display {
     display: grid;
-    grid-template-columns: auto 10rem;
+    grid-template-columns: 10rem auto;
 }
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr auto;
+    font-size: small;
+}
+.head { font-weight: bold; }
