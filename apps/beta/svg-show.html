@@ -14,63 +14,33 @@
   <meta name="twitter:title" value="WOW! Image" />
   <meta name="twitter:description" value="Seeing if animated SVGs can be unfurled on Twitter, Slack, etc." />
   <meta name="twitter:image" content="wow.svg" />
-  <style>
-    div#test {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        padding-bottom: 10rem;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg) }
-        100% { transform: rotate(360deg) }
-    }
-    .spinner {
-        transform-origin: center;
-        animation: spin 6s linear infinite;
-    }
-    path {
-        stroke: black;
-        stroke-opacity: 0.5;
-        stroke-width: 0.5px;
-        stroke-linecap: round;
-    }
-    
-  </style>
 </head>
 
 <body>
-    <div id="test">
-        <svg id="n1" width="300" height="300" class="spinner"></svg>
-        <svg id="n2" width="300" height="300" class="spinner"></svg>
-        <svg id="n3" width="300" height="300" class="spinner"></svg>
-        <svg id="n4" width="300" height="300" class="spinner"></svg>
+    <div class="control-panel">
+        <span>Size:</span>
+        <input id="size-control" type="range" max="200" min="2" value="100" />
+        <span>Position:</span>
+        <input id="pos-control" type="range" max="100" min="0" value="0" />
     </div>
-    <img src="wow.svg" />
+    <img id="target-svg" src="wow.svg" />
 </body>
-<script src="svg.js"></script>
 <script>
-    // Draws fully-connected networks
-    const makeAttribs = xy => {
-        const [ x, y ] = xy;
-        return { cx: Math.round(x+150), cy: Math.round(y+150) };
-    };
-
-    const svg1 = document.querySelector("svg#n1");
-    const net1 = SVG.generateCoordinates(140, 3).map(makeAttribs);
-    SVG.createNetworkDiagram(svg1, net1);
-
-    const svg2 = document.querySelector("svg#n2");
-    const net2 = SVG.generateCoordinates(140, 6).map(makeAttribs);
-    SVG.createNetworkDiagram(svg2, net2);
-
-    const svg3 = document.querySelector("svg#n3");
-    const net3 = SVG.generateCoordinates(140, 12).map(makeAttribs);
-    SVG.createNetworkDiagram(svg3, net3);
-
-    const svg4 = document.querySelector("svg#n4");
-    const net4 = SVG.generateCoordinates(140, 24).map(makeAttribs);
-    SVG.createNetworkDiagram(svg4, net4);
-
+    // Controls the size of the img
+    function select(sel) {
+        return document.querySelector(sel);
+    }
+    const sizeCtrl = select("input#size-control");
+    const posnCtrl = select("input#pos-control");
+    const target = select("img#target-svg");
+    sizeCtrl.addEventListener("input", evt => {
+        const size = evt.target.value;
+        target.style.width = `${size}%`;
+        target.style.height = `${size}%`;
+    })
+    posnCtrl.addEventListener("input", evt => {
+        const left = evt.target.value;
+        target.style.marginLeft = `${left}vw`;
+    })
 </script>
 </html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .view { background-color: #339933; width: 100%; height: 640px; overflow: scroll; }
+        svg { border: solid thin blue; }
+        input[type="range"] { width: 30rem; }
+    </style>
+</head>
+
+<body>
+    <div class="control-panel">
+        <span>Zoom:</span>
+        <input id="size-control" type="range" max="600" min="100" value="100" />
+    </div>
+
+    <div class="view">
+        <svg viewBox="0 0 2400 1200" xmlns="http://www.w3.org/2000/svg">
+            <style>
+                .loco, .wagon, .long {
+                    fill-opacity: 1;
+                    stroke: black;
+                    stroke-width: 1;
+                }
+                .loco { fill: #ff9966; }
+                .wagon { fill: #dddddd; }
+                .long { fill: #6666ff; }
+                path.fg {
+                    stroke: white;
+                    stroke-width: 4;
+                    stroke-dasharray: 3,1;
+                    fill: none;
+                }
+                path.bg {
+                    stroke: blue;
+                    stroke-width: 6;
+                    fill: none;
+                }
+            </style>
+            <path class="bg" />
+            <path class="fg" />
+            <g id="rolling-stock"></g>
+        </svg>
+    </div>
+</body>
+<script src="../../common/base.js"></script>
+<script src="./pathCalcs.js"></script>
+<script type="text/javascript">
+(function(){
+    const sel = BASE.select;
+    // const thePath = "M20,20 C20,100 200,0 200,100";
+    const thePath = [
+    // "M 10 10 C 200 12 200 12 300 38 S 385 64 594 65 S 656 52 900 48 S 1100 30 2270 30 C 2447 30 2450 275 2270 275 C 2107 271 2206 53 1918 53 C 1600 50 1232 53 898 72"
+    // "M 154 13 C 200 12 200 12 296 18 S 385 64 594 65 S 656 52 900 48 S 1100 7730 2270 30 C 2447 30 2450 275 2270 275 C 2107 271 2202 43 1918 42 C 1595 43 1232 44 898 61 C 656 66 773 81 594 79 C 357 68 407 238 157 228 C -32 234 -44 22 135 13 Z"
+    "M 300 10 H 2171 C 2460 10 2480 390 2160 390 H 200 C -50 389 -51 104 200 100 C 500 100 220 380 600 380 H 2160 C 2450 380 2450 20 2170 20 H 600 C 300 22 519 301 209 301 C -48 301 -47 11 209 11 Z"
+    ].join(' ');
+
+    const SIZE = 50;
+    const theTrain = makeTrain(SIZE, thePath);
+
+    sel('svg path.bg').setAttribute('d', thePath);
+    sel('svg path.fg').setAttribute('d', thePath);
+
+    const animateOpts = {
+        duration: 90000,
+        // easing: "ease-in-out",
+        // direction:"alternate",
+        iterations: Infinity
+    };
+
+    // Create the train elements
+    const rollingStock = sel("svg #rolling-stock");
+    theTrain.forEach(({el, from, till}) => {
+        rollingStock.appendChild(el);
+        el.animate({
+            offsetDistance: [from, till]
+        }, animateOpts);
+
+    });
+
+    // const view = sel('.view');
+    // window.VIEW = view;
+    // Add zoom control
+    const zoom = sel('input#size-control');
+    const svg = sel('svg');
+
+    zoom.addEventListener('input', evt => {
+        const size = evt.target.value;
+        svg.style.width = `${size}%`;
+    })
+
+}());
+</script>
+</html>

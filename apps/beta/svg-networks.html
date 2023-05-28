@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    div#test {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        padding-bottom: 10rem;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg) }
+        100% { transform: rotate(360deg) }
+    }
+    .spinner {
+        transform-origin: center;
+        animation: spin 6s linear infinite;
+    }
+    path {
+        stroke: black;
+        stroke-opacity: 0.5;
+        stroke-width: 0.5px;
+        stroke-linecap: round;
+    }
+    
+  </style>
+</head>
+
+<body>
+    <div id="test">
+        <svg id="n1" width="300" height="300" class="spinner"></svg>
+        <svg id="n2" width="300" height="300" class="spinner"></svg>
+        <svg id="n3" width="300" height="300" class="spinner"></svg>
+        <svg id="n4" width="300" height="300" class="spinner"></svg>
+    </div>
+</body>
+<script src="svg.js"></script>
+<script>
+    // Draws fully-connected networks
+    const makeAttribs = xy => {
+        const [ x, y ] = xy;
+        return { cx: Math.round(x+150), cy: Math.round(y+150) };
+    };
+
+    const svg1 = document.querySelector("svg#n1");
+    const net1 = SVG.generateCoordinates(140, 3).map(makeAttribs);
+    SVG.createNetworkDiagram(svg1, net1);
+
+    const svg2 = document.querySelector("svg#n2");
+    const net2 = SVG.generateCoordinates(140, 6).map(makeAttribs);
+    SVG.createNetworkDiagram(svg2, net2);
+
+    const svg3 = document.querySelector("svg#n3");
+    const net3 = SVG.generateCoordinates(140, 12).map(makeAttribs);
+    SVG.createNetworkDiagram(svg3, net3);
+
+    const svg4 = document.querySelector("svg#n4");
+    const net4 = SVG.generateCoordinates(140, 24).map(makeAttribs);
+    SVG.createNetworkDiagram(svg4, net4);
+
+</script>
+</html>
