@@ -55,7 +55,7 @@
     // Create the SVG view and add node elements
     const svg = document.querySelector('svg');
     const html = [
-        '<rect x=0 y=0 width=80 height=100 stroke-width=0.5 stroke=#eee fill=#fafafa />',
+        '<rect x=0 y=0 width=80 height=100 stroke-width=0.5 class="background" />',
         '<path id="links" fill=none stroke=silver stroke-width=0.5px />',
         '<g id="grid" />',
         '<g id="nodes" />',

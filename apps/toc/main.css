@@ -79,6 +79,10 @@ text.row, text.col {
     font-size: 3px;
     fill: silver;
 }
+.background {
+    stroke:#eee;
+    fill: #e9e9e9;
+}
 .ST {
     fill:white;
     stroke: black; 
