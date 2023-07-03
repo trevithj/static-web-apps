@@ -3,19 +3,7 @@
  * 2- a mediator one-to-one messaging system.
  * 3- a simple global value namespacer handler.
  **/
-const BASE = {
-    send: null,
-    listen: null,
-    pub: null,
-    sub: null,
-    initState: null,
-    dispatch: null,
-    getState: null,
-    value: null,
-    select: null,
-    selectAll: null,
-    logging: false,
-};
+const BASE = {};
 
 //Flux/Redux-like framework that acts as a single 'store'.
 let state, reduce;
@@ -97,7 +85,6 @@ BASE.sub = (subject, subFn) => {
         return () => subscriberMap[subject] = subscriberMap[subject].filter(fn => fn !== subFn);
     }
 }
-
 
 // Namespaces global values, so different scripts can pass values
 // to each other. Names must be unique across the applicaton.

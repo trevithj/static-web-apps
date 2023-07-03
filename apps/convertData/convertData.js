@@ -7,6 +7,10 @@ BASE.listen("SET_DATA", function(txt) {
 	localStorage.setItem("RawData", txt);
 	BASE.dispatch("SET_DATA", txt);
 });
+BASE.listen("INPUT", function(txt) {
+	localStorage.setItem("RawData", txt);
+	BASE.dispatch("SET_DATA", txt);
+});
 
 //
 BASE.listen("SET_VIEW", function(view) {

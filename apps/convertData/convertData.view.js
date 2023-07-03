@@ -1,6 +1,9 @@
 /* global d3 */
+import BASE from "../../common/modules/base.js";
+// TODO: rework this to do direct manipulation of top-level elements,
+// instead of re-rendering each time. Easier to set event-listeners.
 
-const display = document.querySelector(".view");
+const display = BASE.select(".view");
 //renderers
 
 function makeTextArea(name, content) {
@@ -33,12 +36,13 @@ function makeTableRows(cols) {
 }
 
 function makeTableView(state) {
-    console.dir(state.data);
+    const { cols } = state.data;
+    console.dir(cols);
     return [
         '<table><thead><tr>',
-        makeColHeaders(state.data),
+        makeColHeaders(cols),
         '</tr></thead><tbody>',
-        makeTableRows(state.data),
+        makeTableRows(cols),
         '</tbody></table>'
     ].join("");
 }
@@ -109,7 +113,7 @@ function makeView(state) {
 function render(state) {
     console.log(state);
     if (state.actionType === "SET_VIEW") {
-        Array.from(document.querySelectorAll("button.control-btn")).forEach(btn => {
+        Array.from(BASE.selectAll("button.control-btn")).forEach(btn => {
             if (state.view === btn.innerText) {
                 btn.classList.replace("btn-default", "btn-primary");
             } else {
@@ -119,7 +123,11 @@ function render(state) {
         display.innerHTML = makeView(state);
 
         if (state.view === "Input") {
-            // document.querySelector('textarea[name="data"]').focus();
+            const input = BASE.select('textarea[name="data"]');
+            input.focus();
+            input.addEventListener("blur", e => {
+                BASE.send("INPUT", e.target.value);
+            })
         } else if (state.view === "Sankey") {
             var rows = [
                 {_rows: 13, class: "Second Class", age: "Child", sex: "Female", survived: "Survived"},

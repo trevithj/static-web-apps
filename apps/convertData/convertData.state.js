@@ -1,3 +1,5 @@
+import {strToArray} from "../../common/modules/calcs.js";
+
 //useful helper function
 function setProp(prop, type, action) {
     return (action.type === type) ? action.payload : prop;
@@ -5,6 +7,7 @@ function setProp(prop, type, action) {
 
 //check for and remove duplicates, add a row-count field
 function collapseDuplicateLines(lines) {
+    // TODO: use a Set for this
     var map = {}, titleRow = "_rows\t";
     lines.forEach(function (line, r) {
         if (r === 0) {
@@ -25,9 +28,9 @@ function collapseDuplicateLines(lines) {
 function setRowHeadings(state, action) {
     var v = state.rowHeadings || [];
     if (action.type === "SET_DATA") {
-        var i = action.payload.indexOf("\n");
-        var line1 = action.payload.substr(0, i);
-        v = line1.split("\t");
+        const i = action.payload.indexOf("\n");
+        const line1 = action.payload.substr(0, i);
+        v = strToArray(line1);
     }
     return v;
 }
@@ -35,34 +38,45 @@ function setRowHeadings(state, action) {
 function setRowCount(state, action) {
     var v = state.rowCount || 0;
     if (action.type === "SET_DATA") {
-        var i = action.payload.indexOf("\n");
-        var line1 = action.payload.substr(0, i);
-        v = line1.split("\t");
+        const i = action.payload.indexOf("\n");
+        const line1 = action.payload.substr(0, i);
+        v = strToArray(line1).length;
     }
     return v;
 }
 
 function setData(state, action) {
-    var dt = state.data || [{name: "Empty", data: []}];//array of column objects
+//    var cols = state.data.cols || [{name: "Empty", data: []}];//array of column objects
+//    const colMap = state.columns || {}; //map of column-name => column-values-array
     if (action.type === "SET_DATA") {
-        dt = []; //new array
+        const cols = []; //new array
+        const colMap = {};
         var lines = action.payload.split("\n");
-        if (state.collapseDuplicates) {
-            lines = collapseDuplicateLines(lines);
-        }
+        // if (state.collapseDuplicates) {
+        //     lines = collapseDuplicateLines(lines);
+        // }
+        var colNames;
         lines.forEach(function (line, r) {
-            var cells = line.split("\t");
+            const cells = strToArray(line);
+            if (r === 0) colNames = cells;
             cells.forEach(function (cell, c) {
                 if (r === 0) {
-                    dt.push({name: cell, data: []});
+                    cols.push({name: cell, data: []});
                 } else {
                     var v = isNaN(cell) ? cell : +cell;
-                    dt[c].data.push(v);
+                    cols[c].data.push(v);
+
+                    const colName = colNames[c];
+                    const colData = colMap[colName] || [];
+                    colData.push(v);
+                    colMap[colName] = colData;
                 }
             });
         });
+        return { cols, colMap, colNames };
+    } else {
+        return state.data || { cols:[], colMap:{}, colNames:[]};
     }
-    return dt;
 }
 
 function getUniqueValuesMap(da) {
@@ -98,14 +112,13 @@ function getDataTypes(da) {
 function setStats(state, action) {
     var dt = state.stats || {};
     if (action.type === "CALC_STATS") {
+        const { cols, colMap } = state.data;
         dt = {
-            columnNames: state.data.map(function (d) {
-                return d.name;
-            }),
-            uniqueMaps: state.data.map(function (d) {
+            columnNames: Object.keys(colMap),
+            uniqueMaps: cols.map(function (d) {
                 return getUniqueValuesMap(d.data);
             }),
-            dataTypes: state.data.map(function (d) {
+            dataTypes: cols.map(function (d) {
                 return getDataTypes(d.data);
             })
         };
