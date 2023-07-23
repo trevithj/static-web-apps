@@ -1,5 +1,6 @@
-(function () {
+export function initNetwork(BASE) {
 
+    const { data:data310, macColors } = BASE.getState();
     // The network
     const SIZE = 'width=10 height=10';
     const textPos = "dominant-baseline=middle text-anchor=middle";
@@ -27,7 +28,6 @@
         op.element.innerHTML = html;
     }
 
-    const {data310, macColors} = STATIC;
     const nodesMap = {}; // Needed for line plotting
     function mapNode(node) {
         nodesMap[node.id] = node;
@@ -128,4 +128,4 @@
         `<text class="col" y=99 x=${10 * i + 4}>${col}</text>`
     );
     BASE.select("#grid").innerHTML = [...rows, ...cols].join("");
-}());
+};

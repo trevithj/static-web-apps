@@ -1,8 +1,8 @@
-(function(){
+export function initResources(BASE){
     // The resources
     //TODO: refactor to use one element per resource
 
-    const {data310, macColors} = STATIC;
+    const {data:data310, macColors} = BASE.getState();
     const macsEl = BASE.select(".resources");
     const macs = data310.macs.map(mac => {
         const element = BASE.createEl('div', 'macGrid');
@@ -59,5 +59,4 @@
         purchasesEl.appendChild(btn);
     })
     macsEl.appendChild(purchasesEl);
-
-}());
+};

@@ -1,27 +1,31 @@
 body {
     font-family: Helvetica, Arial, Verdana, sans-serif;
+    background-color: #ddd;
 }
 h3 {
     margin: 1.5rem 0 0.4rem;
 }
 .cell1 {
     font-size: large;
-    padding: 2rem;
+    padding: 1rem;
     border-right: solid thin silver;
-    margin-right: 2rem;
+    margin-right: 1rem;
 }
 .cell1 button, .cell1 select {
     font-size: large;
-    width: 9rem;
+    width: 7.5rem;
     opacity: 0.9;
+    padding: 4px;
 }
 .main {
     display: grid;
-    grid-template-columns: 40vw 55vw;
-    width: calc(100%-1rem);
-    border: solid 0.5rem #ddd;
-    border-radius: 1rem;
-    height: 95vh;
+    grid-template-columns: auto auto 16px;
+    width: calc(100% - 16px);
+    background-color: white;
+    border: solid 7px white;
+    border-radius: 8px;
+    /* height: 800px; */
+    justify-content: start;
 }
 .info p {
     display: block;
@@ -64,13 +68,17 @@ h3 {
     padding: 0.1rem 0.4rem 0.1rem 0;
     margin: 0;
 }
+.purchases {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
 .display {
-    width: 100%;
-    height: inherit;
+    width: 560px;
+    /* height: inherit; */
 }
 svg {
-    width: 100%;
-    height: inherit;
+    /* width: 100%; */
+    /* height: inherit; */
     max-height: 94vh;
     overflow: visible;
     margin-left: 1.8rem;

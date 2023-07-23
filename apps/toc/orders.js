@@ -1,5 +1,5 @@
-(function() {
-    const {data310, macColors} = STATIC;
+export function initOrders(BASE) {
+    const {data:data310} = BASE.getState();
     const ordersEl = BASE.select(".orders");
     const orderHTML = [
         '<div class="orderGrid">',
@@ -14,4 +14,4 @@
     });
     orderHTML.push('</div>');
     ordersEl.innerHTML = orderHTML.join('');
-}());
+};

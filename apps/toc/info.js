@@ -1,4 +1,4 @@
-(function () {
+export function initInfo(BASE) {
     const view = BASE.select(".info");
     view.innerHTML = `
     <div id="time"></div>
@@ -86,5 +86,4 @@
         updateCash(info.cash);
         // if info.cash < 0 throw Error"end of sim"
     })
-
-}());
+};
