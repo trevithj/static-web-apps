@@ -1,5 +1,5 @@
-import BASE from "../../common/modules/base.js";
-import * as DATA from "../../data/sims/310.module.js";
+import BASE from "../../../common/modules/base.js";
+import * as DATA from "../../../data/sims/310.module.js";
 import { initInfo } from "./info.js";
 import { initNetwork } from "./network.js";
 import { initResources } from "./resources.js";
