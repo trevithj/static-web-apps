@@ -2,3 +2,8 @@ body {
     font-family: Helvetica, Arial, Verdana, sans-serif;
     background-color: #ddd;
 }
+
+.displays {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
