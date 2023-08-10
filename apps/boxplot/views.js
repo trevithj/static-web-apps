@@ -37,7 +37,8 @@ export function getPath(results, width) {
 export const StatsHeader = `<div class="row head"><p>ID</p><p>LQ</p><p>MD</p><p>UQ</p></div>`;
 
 export function makeStatsRow(stats) {
-    const { id, lq, med, uq } = stats;
+    const { id, lq, med, uq, valid } = stats;
+    if (!valid) return '';
     return `<div class="row"><p>${id}</p><p>${lq}</p><p>${med}</p><p>${uq}</p></div>`;
 }
 
