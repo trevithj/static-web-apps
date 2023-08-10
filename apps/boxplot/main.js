@@ -1,15 +1,15 @@
 import BASE from "../../common/modules/base.js";
 import {calcStatsOverview, getStats, strToArray} from "./calcs.js";
-import { StatsHeader, getPath, makeChart, makeInputs, makeStatsRow } from "./views.js";
+import {StatsHeader, getPath, makeInputs, makePlotChart, makeStatsRow} from "./views.js";
 
 const {select, selectAll, listen, send} = BASE;
-const values = {};
-const stats = {};
-const svg = select("svg");
-const state = {values, stats, svg, width: 800};
+const state = {stats: [], width: 800};
+const views = {};
 
-// Initialize
+// Initialize the display
 const inputDiv = select("div.inputs");
+const chartsDiv = select("div.charts");
+chartsDiv.style.width = `${state.width}px`;
 const inputValues = [
     "4 5 6 7 8",
     "3 4 5 6 7",
@@ -17,65 +17,72 @@ const inputValues = [
     "1 2 3 4 9",
 ];
 makeInputs(inputDiv, inputValues);
-const chartDiv = select("div.chart");
-chartDiv.innerHTML = makeChart();
+chartsDiv.innerHTML = inputValues.map((v, i) => {
+    return makePlotChart("M0,0 H800 V100 H-800 Z", i + 1);
+}).join("\n");
 
-const ins = Array.from(selectAll("input.data"));
+// Locate the updatable elements
+views.svgs = Array.from(selectAll("svg", chartsDiv));
+views.recalc = select("#recalc");
+views.addRow = select("#add");
+views.dataInputs = Array.from(selectAll("input.data", inputDiv));
+views.statsDiv = select(".stats");
+
 // Update width if needed
 select("#wid").addEventListener("change", evt => {
     state.width = parseInt(evt.target.value);
-    svg.style.width = `${state.width}px`;
+    chartsDiv.style.width = `${state.width}px`;
     render();
 });
 
-
-function updateValues(inputElement) {
-    const {id, value = ""} = inputElement;
-    values[id] = strToArray(value);
-    values[id].sort((a, b) => a - b);
+function getValues(inputElement) {
+    const { value = ""} = inputElement;
+    const values = strToArray(value);
+    values.sort((a, b) => a - b);
+    return values;
 }
 
-const recalc = select("#recalc");
+function calcStats() {
+    const values = views.dataInputs.map(getValues);
+    state.stats = values.map(getStats);
+}
+
 recalc.addEventListener("click", () => {
-    ins.forEach(updateValues);
-    Object.keys(values).forEach(key => {
-        const vals = values[key] || [];
-        stats[key] = getStats(vals);
-    })
+    calcStats();
     render();
 })
 
-function getToPercent({min, max}) {
-    return v => (v - min) / (max - min);
-}
-
+// Update the display as required
 function render() {
-    const pathClasses = ["a", "b", "c", "d"];
-    const statsList = ["in1", "in2", "in3", "in4"].map((id, i) => {
-        const path = BASE.select(`path.${pathClasses[i]}`);
-        const stats = state.stats[id];
-        return {...stats, id, path, valid: !!stats};
-    });
-    const statsDiv = select(".stats");
+    // const pathClasses = ["a", "b", "c", "d"];
+    const statsList = state.stats;
     const overview = calcStatsOverview(statsList);
 
     const html = statsList.map(makeStatsRow);
     // overview.max - overview.min;
     html.push(`<pre>${JSON.stringify(overview)}</pre>`)
     html.unshift(StatsHeader);
-    statsDiv.innerHTML = html.join("");
+    views.statsDiv.innerHTML = html.join("");
 
-    const { toPercent } = overview;
-    statsList.forEach(stats => {
-        if (!stats.valid) return;
-        const {min, lq, med, uq, max, path, lcl, ucl, vals} = stats;
+    const {toPercent} = overview;
+    statsList.forEach((stats, row) => {
+        if (!stats) return;
+        const {min, lq, med, uq, max, lcl, ucl, vals} = stats;
         const newVals = vals.map(toPercent);
         const result = [
-            toPercent(min), toPercent(lq), toPercent(med), toPercent(uq), toPercent(max),
-            toPercent(lcl), toPercent(ucl), ...newVals
+            toPercent(min),
+            toPercent(lq),
+            toPercent(med),
+            toPercent(uq),
+            toPercent(max),
+            toPercent(lcl),
+            toPercent(ucl),
+            ...newVals
         ];
-        console.log(result, stats);
-        renderPath(path, result);
+        const d = getPath(result, state.width);
+        const path = views.svgs[row].querySelector("path");
+        path.setAttribute("d", d);
+        console.log({row, result, stats});
     });
     // const toPercent = state.width / overview.range;
 
@@ -83,10 +90,6 @@ function render() {
     console.log(state);
 }
 
-function renderPath(path, results) {
-    const {width} = state;
-    const d = getPath(results, width);
-    path.setAttribute("d", d);
-}
-
+// Initial plots
+calcStats();
 render()

@@ -37,19 +37,17 @@ export function getPath(results, width) {
 export const StatsHeader = `<div class="row head"><p>ID</p><p>LQ</p><p>MD</p><p>UQ</p></div>`;
 
 export function makeStatsRow(stats) {
-    const { id, lq, med, uq, valid } = stats;
-    if (!valid) return '';
+    const { id, lq, med, uq } = stats;
+    if (!med) return '';
     return `<div class="row"><p>${id}</p><p>${lq}</p><p>${med}</p><p>${uq}</p></div>`;
 }
 
-export function makeChart() {
-    return `<svg width="800" height="400">
+export function makePlotChart(d, i) {
+    const plotClass = `plot row${i}`;
+    return `<svg width="100%" height="100">
     <rect x="0" y="0" width="100%" height="100%" fill="#ddd" />
     <g id="plots">
-        <path class="a plot" d="M0,0 H800 V100 H-800 Z"></path>
-        <path class="b plot" d="M0,0 H800 V100 H-800 Z"></path>
-        <path class="c plot" d="M0,0 H800 V100 H-800 Z"></path>
-        <path class="d plot" d="M0,0 H800 V100 H-800 Z"></path>
+        <path class="${plotClass}" d="${d}"></path>
     </g>
 </svg>`
 }

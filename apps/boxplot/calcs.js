@@ -41,7 +41,7 @@ function getToPercent({min, max}) {
 export function calcStatsOverview(statsList) {
     const overview = {max: 0, min: 9999999, valid: false};
     statsList.forEach(stats => {
-        if (!stats.valid) return '';
+        if (!stats) return '';
         const {max, min} = stats;
         overview.max = Math.max(overview.max, max);
         overview.min = Math.min(overview.min, min);
