@@ -23,6 +23,10 @@ input.a { border: solid 2px #999; }
 input.b { border: solid 2px #f66; }
 input.c { border: solid 2px #6f6; }
 input.d { border: solid 2px #66f; }
+input.set1 { border: solid 2px #999; }
+input.set2 { border: solid 2px #f66; }
+input.set3 { border: solid 2px #6f6; }
+input.set4 { border: solid 2px #66f; }
 .inputs { margin: 0; }
 .ctrl { margin-bottom: 0.5rem; }
 .display {

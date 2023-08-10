@@ -1,15 +1,14 @@
+import { makeAlloc } from "./allocated.js";
+
 const makeOp = (id, steps) => ({ id, steps });
 const makeStock = (id, soh) => ({ id, soh });
+const makeMac = (id, type, setup) => ({ id, type, setup, steps:0, status: "free" });
 const makeIdMap = (arr) => arr.reduce((map, item) => {
     map[item.id] = item;
     return map;
 }, {});
-const makeMac = (id, type, setup) => ({ id, type, setup, steps:0, status: "free" });
 const makeCanDo = (macId, opId) => ({ macId, opId});
 const makeFeed = (stockId, opId, conversion = 1) => ({ stockId, opId, conversion});
-const makeAlloc = (mac, op, fedBy, fedTo) => ({
-    id: `${mac.id}->${op.id}`, mac, op, fedBy, fedTo, wip:0 , stepsLeft:0
-});
 
 const net = {
     ops: [
@@ -34,9 +33,10 @@ const net = {
     ], allocs:[]
 }
 net.stockMap = makeIdMap(net.stock);
+net.opMap = makeIdMap(net.ops);
 
 function deAllocate(net, mac, op) {
-    const alloc = net.allocs.find(a => a.op.id === op.id && a.mac.id === mac.id);
+    const alloc = net.allocs.find(a => a.mac.id === mac.id);
     if(!alloc) return net; // no change
     // const fedByStock = alloc.fedBy.map(feed => net.stock.find(s => s.id===feed.stockId));
     const stock = net.stock.map(s => {
@@ -46,21 +46,41 @@ function deAllocate(net, mac, op) {
         const soh = s.soh + wip;
         return {...s, soh };
     });
-
+    const stockMap = makeIdMap(stock);
     const allocs = net.allocs.filter(a => a !== alloc);
-    return {...net, allocs, stock};
+    return {...net, allocs, stock, stockMap};
 }
 
-function allocate(net, macId, opId) {
+function allocate(net, {mac, op}) {
+    const macId = mac.id;
+    const opId = op.id;
     const canDo = net.canDos.find(c => c.macId===macId && c.opId===opId);
     if (!canDo) throw new Error(`Bad allocation: mac ${macId} cannot do op ${opId}`);
-    const mac = net.macs.find(m => m.id===macId);
-    if (!mac) throw new Error(`Unknown macId ${macId} `);
-    const op = net.ops.find(o => o.id===opId);
-    if (!op) throw new Error(`Unknown opId ${opId} `);
     net = deAllocate(net, mac, op);
     const fedBy = net.fedBys.filter(f => f.opId === opId);
     const fedTo = net.fedTos.filter(f => f.opId === opId);
     const allocs = [...net.allocs, makeAlloc(mac, op, fedBy, fedTo)];
-    return {...net, allocs};
+    const macs = net.macs.map(m => {
+        if (m.id !== macId) return m;
+        return {...m, status: "setup", steps: m.setup };
+    })
+    return {...net, allocs, macs};
 }
+
+function finishOp(net, alloc) {
+    if(alloc.wip===0) return net; //ignore
+    // const fedToStocks = alloc.fedTo.map()
+
+}
+
+//
+
+//
+
+export default function calcNet(state,  type, payload) {
+    console.log(state, type, payload);
+    if(type==="ALLOCATE") return allocate(state.net, payload);
+    return state.net || net;
+}
+
+export { net, allocate, deAllocate, finishOp };
