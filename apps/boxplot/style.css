@@ -1,47 +1,53 @@
-path.row {
+/* path.row {
     width: 100%;
     height: 24%;
-}
-path.plot {
-    stroke: black;
-}
-path.a { fill: #999; transform: translateY(0px) }
-path.b { fill: #f66; transform: translateY(100px) }
-path.c { fill: #6f6; transform: translateY(200px) }
-path.d { fill: #66f; transform: translateY(300px) }
+} */
+path.plot { stroke: black; }
 path.row1 { fill: #999; }
 path.row2 { fill: #f66; }
 path.row3 { fill: #6f6; }
 path.row4 { fill: #66f; }
+path.row5 { fill: #6ff; }
+path.row6 { fill: #f6f; }
+path.row7 { fill: #ff6; }
+path.row8 { fill: #666; }
 
-label {
-    display: inline-block;
+input.label {
     text-align: right;
     width: 5rem;
+    font-weight: bold;
+    line-height: 2rem;
     padding-right: 1rem;
+    border: solid thin silver;
 }
 input.data {
     width: calc(100% - 7rem);
     line-height: 2rem;
-    margin-bottom: 1rem;
+    border: none;
 }
-input.a { border: solid 2px #999; }
-input.b { border: solid 2px #f66; }
-input.c { border: solid 2px #6f6; }
-input.d { border: solid 2px #66f; }
-input.set1 { border: solid 2px #999; }
-input.set2 { border: solid 2px #f66; }
-input.set3 { border: solid 2px #6f6; }
-input.set4 { border: solid 2px #66f; }
+div.inputs > div {
+    margin-bottom: 0.6rem;
+}
+div.set1 { border: solid 3px #999; }
+div.set2 { border: solid 3px #f66; }
+div.set3 { border: solid 3px #6f6; }
+div.set4 { border: solid 3px #66f; }
+div.set5 { border: solid 3px #6ff; }
+div.set6 { border: solid 3px #f6f; }
+div.set7 { border: solid 3px #ff6; }
+div.set8 { border: solid 3px #666; }
+
 .inputs { margin: 0; }
 .ctrl { margin-bottom: 0.5rem; }
-.display {
+.display-row {
     display: grid;
-    grid-template-columns: 10rem auto;
-}
-.row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr auto;
+    grid-template-columns: 8rem auto;
     font-size: small;
+    margin-bottom: 2px;
 }
+div.stats p {
+    margin: 0;
+    padding: 0;
+}
+
 .head { font-weight: bold; }

@@ -49,3 +49,32 @@ export function calcStatsOverview(statsList) {
     overview.toPercent = getToPercent(overview);
     return overview;
 }
+
+const INPUT_VALS = "InputValues";
+const INPUT_TEXT = "InputLabels";
+
+export function getInputValues() {
+    const json = localStorage.getItem(INPUT_VALS);
+    if (!json) return [
+        "4 5 6 7 8",
+        "3 4 5 6 7",
+        "1 2 5 8 9",
+    ];
+    return JSON.parse(json);
+}
+
+export function setInputValues(values, labels) {
+    localStorage.setItem(INPUT_VALS, JSON.stringify(values));
+    if (labels) localStorage.setItem(INPUT_TEXT, JSON.stringify(labels));
+}
+
+export function getInputLabels() {
+    const json = localStorage.getItem(INPUT_TEXT);
+    if (!json) return ["Set 1", "Set 2", "Set 3"];
+    return JSON.parse(json);
+}
+
+export function clearInputs() {
+    localStorage.removeItem(INPUT_VALS);
+    localStorage.removeItem(INPUT_TEXT);
+}
