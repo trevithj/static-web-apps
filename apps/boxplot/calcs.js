@@ -20,8 +20,9 @@ export function quantile(sorted, q) {
     }
 };
 
-export function getStats(vals) {
+export function getStats(vals, index) {
     if (!vals.length) return null;
+    vals.sort();
     const last = vals.length - 1;
     const max = vals[last];
     const min = vals[0];
@@ -31,7 +32,7 @@ export function getStats(vals) {
     const iqr = uq - lq;
     const ucl = uq + (1.5 * iqr);
     const lcl = lq - (1.5 * iqr);
-    return {min, lq, med, uq, max, iqr, ucl, lcl, vals};
+    return {min, lq, med, uq, max, iqr, ucl, lcl, vals, index};
 }
 
 function getToPercent({min, max}) {
@@ -48,6 +49,21 @@ export function calcStatsOverview(statsList) {
     });
     overview.toPercent = getToPercent(overview);
     return overview;
+}
+
+export function calcPercents(statsList) {
+    const fields = "min lq med uq max lcl ucl".split(" ");
+    const {toPercent} = calcStatsOverview(statsList);
+    return statsList.map(stats => {
+        console.log(9999, stats);
+        const vals = stats.vals.map(toPercent);
+
+        return fields.reduce((map, field) => {
+            const v = stats[field];
+            map[field] = toPercent(v);
+            return map;
+        }, {vals});
+    });
 }
 
 const INPUT_VALS = "InputValues";

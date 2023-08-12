@@ -6,7 +6,7 @@ export function makeInput(value, i, label) {
     return `<div class="${className
     }"><input type="text" class="label" name="text${i}" value="${label || defaultLabel
     }"></input><input type="text" class="data" name="data${i}" value="${value || "1 2 3 4 5"
-    }"></input></div>`;
+    }"></input><button class="remove">&#x274C;</button></div>`;
     // return `<label>${defaultLabel
     // }</label>\n<input type="text" class="data ${className
     // }" value="${value}" id="${inputId}"></input>`;
@@ -27,7 +27,6 @@ export function makeInputs(values, labels) {
 
 export function getPath(results, width) {
     const ys = results.map(r => r * (width - 4) + 2);
-    console.log(ys);
     const [min, lq, med, uq, max, lcl, ucl, ...vals] = ys;
     const lmin = Math.max(min, lcl);
     const lmax = Math.min(max, ucl);
@@ -35,11 +34,32 @@ export function getPath(results, width) {
     d.push(`M${lmin},50 H${lq} M${lmax},50 H${uq}`);
     d.push(`M${lq},20 H${med} V80 H${lq}Z`);
     d.push(`M${uq},20 H${med} V80 H${uq}Z`);
-    console.log(vals);
     // draw any outliers
     vals.forEach(v => {
         if (v < lmin || v > lmax) {
             d.push(`M${v - 2},50 l2,5 l2,-5 l-2,-5 Z`)
+        }
+    })
+    return d.join(" ");
+}
+
+export function getPath2(percents, width) {
+    const y = p => p * (width - 4) + 2;
+    const {min, lq, med, uq, max, lcl, ucl, vals} = percents;
+    const lmin = y(Math.max(min, lcl));
+    const lmax = y(Math.min(max, ucl));
+    const ylq = y(lq);
+    const yuq = y(uq);
+    const ymed= y(med);
+    const d = [`M${lmin},40 V60 M${lmax},40 V60`];
+    d.push(`M${lmin},50 H${ylq} M${lmax},50 H${yuq}`);
+    d.push(`M${ylq},20 H${ymed} V80 H${ylq}Z`);
+    d.push(`M${yuq},20 H${ymed} V80 H${yuq}Z`);
+    // draw any outliers
+    vals.forEach(v => {
+        const yv = y(v);
+        if (yv < lmin || yv > lmax) {
+            d.push(`M${yv - 2},50 l2,5 l2,-5 l-2,-5 Z`)
         }
     })
     return d.join(" ");

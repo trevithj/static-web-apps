@@ -1,9 +1,12 @@
 import BASE from "../../common/modules/base.js";
-import {calcStatsOverview, clearInputs, getInputLabels, getInputValues, getStats, setInputValues, strToArray} from "./calcs.js";
-import {getPath, makeDisplayRow, makeInputs} from "./views.js";
+import {getInputLabels, getInputValues, strToArray} from "./calcs.js";
+import {reducer} from "./state.js";
+import {getPath2, makeDisplayRow, makeInputs} from "./views.js";
 
-const {select, selectAll, listen, send} = BASE;
-const state = {stats: [], width: 800};
+const {select, selectAll, listen, dispatch} = BASE;
+BASE.initState(reducer);
+BASE.logging = true;
+
 const views = {};
 
 // Initialize the display
@@ -19,6 +22,12 @@ function updateInputs(values, labels) {
     inputDiv.innerHTML = makeInputs(values, labels);
     views.dataInputs = Array.from(selectAll("input.data", inputDiv));
     views.dataLabels = Array.from(selectAll("input.label", inputDiv));
+    // add listeners
+    Array.from(selectAll("button.remove", inputDiv)).forEach((btn, index) => {
+        btn.addEventListener("click", () => {
+            dispatch("ROW_REMOVED", { index });
+        })
+    });
 }
 
 updateInputs(inputValues, inputLabels);
@@ -31,92 +40,59 @@ views.addRow = select("#add");
 views.statsDiv = select(".stats");
 
 views.inputForm.addEventListener("change", () => {
-    // const { name, value } = event.target;
-    // const index = parseInt(name.substring(4));
-    // console.log(name, value, index);
-    calcStats();
-    render();
+    const fm = views.inputForm;
+    const values = Array.from(selectAll("input.data", fm)).map(e => strToArray(e.value));
+    const labels = Array.from(selectAll("input.label", fm)).map(e => e.value);
+    dispatch("INPUTS_CHANGED", {values, labels});
 })
 
 views.addRow.addEventListener("click", () => {
-    const values = views.dataInputs.map(getValues);
-    const labels = views.dataLabels.map(el => el.value);
-    values.push([1,2,3,4,5]);
-    labels.push(`Set ${labels.length+1}`);
-    setInputValues(values, labels);
+    const value = [1, 2, 3, 4, 5];
+    const label = "New row";
+    dispatch("ROW_ADDED", {value, label});
+    // const values = views.dataInputs.map(getValues);
+    // const labels = views.dataLabels.map(el => el.value);
+    // values.push([1,2,3,4,5]);
+    // labels.push(`Set ${labels.length+1}`);
+    // setInputValues(values, labels);
 
-    updateInputs(values, labels);
+//    updateInputs(values, labels);
 
-    if (values.length >=8) views.addRow.setAttribute("disabled", true);
-    send("REFRESH");
+    // if (values.length >=8) views.addRow.setAttribute("disabled", true);
+    // send("REFRESH");
 });
 
 // Update width if needed. TODO: replace with resizeObserver
 select("#wid").addEventListener("change", evt => {
-    state.width = parseInt(evt.target.value);
-    render();
+    const width = parseInt(evt.target.value);
+    dispatch("WIDTH_CHANGED", {width});
 });
 
 function getValues(inputElement) {
-    const { value = ""} = inputElement;
+    const {value = ""} = inputElement;
     const values = strToArray(value);
     values.sort((a, b) => a - b);
     return values;
 }
 
-function calcStats() {
-    const values = views.dataInputs.map(getValues);
-    const labels = views.dataLabels.map(el => el.value);
-    setInputValues(values, labels);
-    state.stats = values.map(getStats);
-    state.stats.forEach((stat, i) => {
-        stat.label = labels[i];
-    });
-}
-
 views.reset.addEventListener("click", () => {
-    clearInputs();
-    const inputValues = getInputValues();
-    const inputLabels = getInputLabels();
-    updateInputs(inputValues, inputLabels);
-    send("REFRESH");
+    dispatch("RESET");
 })
 
-listen("REFRESH", () => {
-    setTimeout(() => {
-        calcStats();
-        render();
-    }, 0);
-})
 // Update the display as required
-function render() {
-    // const pathClasses = ["a", "b", "c", "d"];
-    const statsList = state.stats;
-    const overview = calcStatsOverview(statsList);
+listen("STATE_CHANGED", state => {
+    const {stats, percents, actionType} = state;
+    if (actionType.includes("ROW_")) {
+        updateInputs(state.values, state.labels);
+    }
 
-    const {toPercent} = overview;
-    const displayRows = statsList.map((stats, row) => {
-        const {min, lq, med, uq, max, lcl, ucl, vals} = stats;
-        const newVals = vals.map(toPercent);
-        const result = [
-            toPercent(min),
-            toPercent(lq),
-            toPercent(med),
-            toPercent(uq),
-            toPercent(max),
-            toPercent(lcl),
-            toPercent(ucl),
-            ...newVals
-        ];
-        const d = getPath(result, state.width);
-        return makeDisplayRow(stats, d, row);
+    const displayRows = percents.map((result, row) => {
+        const d = getPath2(result, state.width);
+        return makeDisplayRow(stats[row], d, row);
     });
     displayDiv.innerHTML = displayRows.join("\n");
     // const toPercent = state.width / overview.range;
-
-    // TODO
-    console.log(state);
-}
+})
 
 // Initial plots
-send("REFRESH");
+dispatch("START");
