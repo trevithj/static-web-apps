@@ -1,6 +1,7 @@
-import {calcPercents, getInputLabels, getInputValues, getStats} from "./calcs.js";
+import {calcPercents, clearInputs, getInputLabels, getInputValues, getStats, setInputValues} from "./calcs.js";
 
 function calcStats(values, labels) {
+    setInputValues(values, labels);
     const stats = values.map(getStats);
     return stats.map(stat => {
         const label = labels[stat.index];
@@ -8,19 +9,18 @@ function calcStats(values, labels) {
     });
 }
 
-function getInitState() {
+function getInitState(actionType) {
     const values = getInputValues();
     const labels = getInputLabels();
     const stats = calcStats(values, labels);
     const percents = calcPercents(stats);
     const width = 800;
-    const actionType = '';
     return {stats, percents, values, labels, width, actionType}
 }
 
-const InitState = getInitState();
 
-export function reducer(state = InitState, action) {
+export function reducer(state, action) {
+    state = state || getInitState("INIT");
     const { type:actionType, payload} = action;
     switch (actionType) {
         case "INPUTS_CHANGED": {
@@ -47,7 +47,8 @@ export function reducer(state = InitState, action) {
             return {...state, stats, percents, values, labels, actionType};
         }
         case "RESET": {
-            return InitState;
+            clearInputs();
+            return getInitState("RESET");
         }
         default: return state;
     }

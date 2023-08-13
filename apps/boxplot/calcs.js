@@ -22,7 +22,7 @@ export function quantile(sorted, q) {
 
 export function getStats(vals, index) {
     if (!vals.length) return null;
-    vals.sort();
+    vals.sort((a,b) => a - b);
     const last = vals.length - 1;
     const max = vals[last];
     const min = vals[0];
@@ -72,9 +72,8 @@ const INPUT_TEXT = "InputLabels";
 export function getInputValues() {
     const json = localStorage.getItem(INPUT_VALS);
     if (!json) return [
-        "4 5 6 7 8",
-        "3 4 5 6 7",
-        "1 2 5 8 9",
+        [4,5,6,7,8],
+        [5,6,7,8,9]
     ];
     return JSON.parse(json);
 }
@@ -86,7 +85,7 @@ export function setInputValues(values, labels) {
 
 export function getInputLabels() {
     const json = localStorage.getItem(INPUT_TEXT);
-    if (!json) return ["Set 1", "Set 2", "Set 3"];
+    if (!json) return ["Set 1", "Set 2"];
     return JSON.parse(json);
 }
 

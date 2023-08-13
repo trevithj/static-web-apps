@@ -82,16 +82,20 @@ views.reset.addEventListener("click", () => {
 // Update the display as required
 listen("STATE_CHANGED", state => {
     const {stats, percents, actionType} = state;
-    if (actionType.includes("ROW_")) {
-        updateInputs(state.values, state.labels);
+    switch(actionType) {
+        case "ROW_ADDED":
+        case "ROW_REMOVED":
+        case "RESET":
+            updateInputs(state.values, state.labels);
+        default: {
+            const displayRows = percents.map((result, row) => {
+                const d = getPath2(result, state.width);
+                return makeDisplayRow(stats[row], d, row);
+            });
+            displayDiv.innerHTML = displayRows.join("\n");
+            // const toPercent = state.width / overview.range;
+        }
     }
-
-    const displayRows = percents.map((result, row) => {
-        const d = getPath2(result, state.width);
-        return makeDisplayRow(stats[row], d, row);
-    });
-    displayDiv.innerHTML = displayRows.join("\n");
-    // const toPercent = state.width / overview.range;
 })
 
 // Initial plots
