@@ -27,7 +27,8 @@ export function reducer(state, action) {
             const {values, labels} = payload;
             const stats = calcStats(values, labels);
             const percents = calcPercents(stats);
-            return {...state, stats, percents, values, actionType};
+            console.log(9999, percents);
+            return {...state, stats, percents, values, labels, actionType};
         }
         case "ROW_ADDED": {
             const {values: oldVals, labels: oldText} = state;
@@ -49,6 +50,9 @@ export function reducer(state, action) {
         case "RESET": {
             clearInputs();
             return getInitState("RESET");
+        }
+        case "WIDTH_CHANGED": {
+            return { ...state, width: payload.width };
         }
         default: return state;
     }

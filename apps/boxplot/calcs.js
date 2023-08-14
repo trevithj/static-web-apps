@@ -35,25 +35,22 @@ export function getStats(vals, index) {
     return {min, lq, med, uq, max, iqr, ucl, lcl, vals, index};
 }
 
-function getToPercent({min, max}) {
-    return v => (v - min) / (max - min);
-}
-
-export function calcStatsOverview(statsList) {
-    const overview = {max: 0, min: 9999999, valid: false};
+function getToPercent(statsList) {
+    const pc = {max: 0, min: 9999999};
     statsList.forEach(stats => {
         if (!stats) return '';
         const {max, min} = stats;
-        overview.max = Math.max(overview.max, max);
-        overview.min = Math.min(overview.min, min);
+        pc.max = Math.max(pc.max, max);
+        pc.min = Math.min(pc.min, min);
     });
-    overview.toPercent = getToPercent(overview);
-    return overview;
+    pc.range = pc.max - pc.min;
+    console.log(9999, pc);
+    return v => (v - pc.min) / pc.range;
 }
 
 export function calcPercents(statsList) {
     const fields = "min lq med uq max lcl ucl".split(" ");
-    const {toPercent} = calcStatsOverview(statsList);
+    const toPercent = getToPercent(statsList);
     return statsList.map(stats => {
         console.log(9999, stats);
         const vals = stats.vals.map(toPercent);

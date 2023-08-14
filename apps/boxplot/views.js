@@ -1,15 +1,11 @@
 export function makeInput(value, i, label) {
     // For now, return an html string. TODO: create elements directly
-    const index = i+1;
-    const className = `set${index}`;
-    const defaultLabel = `Set ${index}`;
+     const className = `set${i % 8}`;
+    const defaultLabel = `Set ${i + 1}`;
     return `<div class="${className
     }"><input type="text" class="label" name="text${i}" value="${label || defaultLabel
     }"></input><input type="text" class="data" name="data${i}" value="${value || "1 2 3 4 5"
-    }"></input><button class="remove">&#x274C;</button></div>`;
-    // return `<label>${defaultLabel
-    // }</label>\n<input type="text" class="data ${className
-    // }" value="${value}" id="${inputId}"></input>`;
+    }"></input><button class="remove" title="Delete this row">&minus;</button></div>`;
 }
 
 export function makeInputs(values, labels) {
@@ -19,31 +15,8 @@ export function makeInputs(values, labels) {
     });
     return html.join("\n");
 }
-// export function makeInputs(inputEl, values) {
-//     inputEl.innerHTML = values.map((v, i) => {
-//         return makeInput(i+1, v);
-//     }).join("\n");
-// }
 
-export function getPath(results, width) {
-    const ys = results.map(r => r * (width - 4) + 2);
-    const [min, lq, med, uq, max, lcl, ucl, ...vals] = ys;
-    const lmin = Math.max(min, lcl);
-    const lmax = Math.min(max, ucl);
-    const d = [`M${lmin},40 V60 M${lmax},40 V60`];
-    d.push(`M${lmin},50 H${lq} M${lmax},50 H${uq}`);
-    d.push(`M${lq},20 H${med} V80 H${lq}Z`);
-    d.push(`M${uq},20 H${med} V80 H${uq}Z`);
-    // draw any outliers
-    vals.forEach(v => {
-        if (v < lmin || v > lmax) {
-            d.push(`M${v - 2},50 l2,5 l2,-5 l-2,-5 Z`)
-        }
-    })
-    return d.join(" ");
-}
-
-export function getPath2(percents, width) {
+export function getPath(percents, width) {
     const y = p => p * (width - 4) + 2;
     const {min, lq, med, uq, max, lcl, ucl, vals} = percents;
     const lmin = y(Math.max(min, lcl));
@@ -81,23 +54,28 @@ export function makeStatsTable(statsList) {
     return html.join("\n");
 }
 
-export function makePlotChart(d, i) {
-    const plotClass = `plot row${i}`;
-    return `<svg width="100%" height="100">
-    <rect x="0" y="0" width="100%" height="100%" fill="#ddd" />
+const makePlotChart = width => (d, i) => {
+    const plotClass = `plot row${i % 8}`;
+    return `<svg height="75" viewbox="0 0 ${width*4/3}, 100">
+    <rect x="0" y="0" width="${width}" height="100%" class="row-back" />
     <g id="plots">
         <path class="${plotClass}" d="${d}"></path>
     </g>
 </svg>`
 }
 
+function rounded(n) {
+    return Math.round(n*1000) / 1000;
+}
 function makeStats(stats, id) {
     const { min, max, lq, med, uq, label } = stats;
-    return `<div class="stats"><strong>${label}</strong><p>Median: ${med}</p><p>IQR: ${lq} - ${uq}</p><p>Range: ${min} - ${max}</p></div>`;
+    return `<div class="stats"><strong>${label}</strong><p>Median: ${rounded(med)
+    }</p><p>IQR: ${rounded(lq)} - ${rounded(uq)
+    }</p><p>Range: ${rounded(min)} - ${rounded(max)}</p></div>`;
 }
 
-export function makeDisplayRow(stats, d, i) {
+export const makeDisplayRow = width => (stats, d, i) => {
     const statsBlock = makeStats(stats, i);
-    const plotBlock = makePlotChart(d, i+1);
+    const plotBlock = makePlotChart(width)(d, i);
     return ['<div class="display-row">', statsBlock, plotBlock, "</div>"].join("");
 }

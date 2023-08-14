@@ -1,7 +1,7 @@
 import BASE from "../../common/modules/base.js";
 import {getInputLabels, getInputValues, strToArray} from "./calcs.js";
 import {reducer} from "./state.js";
-import {getPath2, makeDisplayRow, makeInputs} from "./views.js";
+import {getPath, makeDisplayRow, makeInputs} from "./views.js";
 
 const {select, selectAll, listen, dispatch} = BASE;
 BASE.initState(reducer);
@@ -89,8 +89,8 @@ listen("STATE_CHANGED", state => {
             updateInputs(state.values, state.labels);
         default: {
             const displayRows = percents.map((result, row) => {
-                const d = getPath2(result, state.width);
-                return makeDisplayRow(stats[row], d, row);
+                const d = getPath(result, state.width);
+                return makeDisplayRow(state.width)(stats[row], d, row);
             });
             displayDiv.innerHTML = displayRows.join("\n");
             // const toPercent = state.width / overview.range;
