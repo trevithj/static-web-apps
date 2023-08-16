@@ -1,3 +1,5 @@
+import {generateNumericScale} from "../../common/modules/calcs.js";
+
 export function strToArray(str) {
     //strip out any character that isn't a digit, period or minus, then split into numbers.
     return str.replace(/[^\d.-]/g, '|')
@@ -36,31 +38,31 @@ export function getStats(vals, index) {
 }
 
 function getToPercent(statsList) {
-    const pc = {max: 0, min: 9999999};
+    const all = {max: 0, min: 9999999};
     statsList.forEach(stats => {
         if (!stats) return '';
         const {max, min} = stats;
-        pc.max = Math.max(pc.max, max);
-        pc.min = Math.min(pc.min, min);
+        all.max = Math.max(all.max, max);
+        all.min = Math.min(all.min, min);
     });
-    pc.range = pc.max - pc.min;
-    console.log(9999, pc);
-    return v => (v - pc.min) / pc.range;
+    all.range = all.max - all.min;
+    const toPercent = v => (v - all.min) / all.range;
+    return { toPercent, ...all };
 }
 
 export function calcPercents(statsList) {
     const fields = "min lq med uq max lcl ucl".split(" ");
-    const toPercent = getToPercent(statsList);
-    return statsList.map(stats => {
-        console.log(9999, stats);
+    const { toPercent, ...range } = getToPercent(statsList);
+    const percents = statsList.map(stats => {
         const vals = stats.vals.map(toPercent);
-
         return fields.reduce((map, field) => {
             const v = stats[field];
             map[field] = toPercent(v);
             return map;
         }, {vals});
     });
+    const scale = generateNumericScale(range);
+    return { percents, scale };
 }
 
 const INPUT_VALS = "InputValues";

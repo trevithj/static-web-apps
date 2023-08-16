@@ -67,7 +67,7 @@ const makePlotChart = width => (d, i) => {
 function rounded(n) {
     return Math.round(n*1000) / 1000;
 }
-function makeStats(stats, id) {
+function makeStats(stats) {
     const { min, max, lq, med, uq, label } = stats;
     return `<div class="stats"><strong>${label}</strong><p>Median: ${rounded(med)
     }</p><p>IQR: ${rounded(lq)} - ${rounded(uq)
