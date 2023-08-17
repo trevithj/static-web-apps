@@ -8,6 +8,10 @@ export function makeInput(value, i, label) {
     }"></input><button class="remove" title="Delete this row">&minus;</button></div>`;
 }
 
+function rounded(n) {
+    return Math.round(n*1000) / 1000;
+}
+
 export function makeInputs(values, labels) {
     const html = values.map((v, i) => {
         const label = labels[i];
@@ -16,8 +20,19 @@ export function makeInputs(values, labels) {
     return html.join("\n");
 }
 
+export function getScaleData(scale, width) {
+    const path = [];
+    const text = scale.map(s => {
+        const { label, percent } = s;
+        const x = rounded(percent * width);
+        path.push(`M${x},0 V100`);
+        return `<text y="100" x="${x}">${label}</text>`;
+    });
+    return { scalePath: path.join(""), labels: text.join("")};
+}
+
 export function getPath(percents, width) {
-    const y = p => p * (width - 4) + 2;
+    const y = p => rounded(p * (width - 4) + 2);
     const {min, lq, med, uq, max, lcl, ucl, vals} = percents;
     const lmin = y(Math.max(min, lcl));
     const lmax = y(Math.min(max, ucl));
@@ -54,19 +69,19 @@ export function makeStatsTable(statsList) {
     return html.join("\n");
 }
 
-const makePlotChart = width => (d, i) => {
+const makePlotChart = (width, scaleData) => (d, i) => {
+    const { labels, scalePath} = scaleData;
     const plotClass = `plot row${i % 8}`;
     return `<svg height="75" viewbox="0 0 ${width*4/3}, 100">
     <rect x="0" y="0" width="${width}" height="100%" class="row-back" />
     <g id="plots">
+        <path class="scale" d="${scalePath}"></path>
+        ${labels}
         <path class="${plotClass}" d="${d}"></path>
     </g>
 </svg>`
 }
 
-function rounded(n) {
-    return Math.round(n*1000) / 1000;
-}
 function makeStats(stats) {
     const { min, max, lq, med, uq, label } = stats;
     return `<div class="stats"><strong>${label}</strong><p>Median: ${rounded(med)
@@ -74,8 +89,11 @@ function makeStats(stats) {
     }</p><p>Range: ${rounded(min)} - ${rounded(max)}</p></div>`;
 }
 
-export const makeDisplayRow = width => (stats, d, i) => {
-    const statsBlock = makeStats(stats, i);
-    const plotBlock = makePlotChart(width)(d, i);
-    return ['<div class="display-row">', statsBlock, plotBlock, "</div>"].join("");
+export const makeDisplayRow = (width, scaleData) => {
+    const plotChart = makePlotChart(width, scaleData);
+    return (stats, d, i) => {
+        const statsBlock = makeStats(stats, i);
+        const plotBlock = plotChart(d, i);
+        return ['<div class="display-row">', statsBlock, plotBlock, "</div>"].join("");
+    }
 }

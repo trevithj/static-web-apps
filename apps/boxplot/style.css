@@ -27,6 +27,8 @@ div.set5 { border: solid 3px #9d9; }
 div.set6 { border: solid 3px #99d; }
 div.set7 { border: solid 3px #999; }
 
+g#plots text { fill:#aaa; }
+path.scale { stroke: #ccc; stroke-width: 1px;}
 path.plot { stroke: black; }
 path.row0 { fill: #ddd; }
 path.row1 { fill: #dd9; }

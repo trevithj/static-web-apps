@@ -1,7 +1,7 @@
 import BASE from "../../common/modules/base.js";
 import {getInputLabels, getInputValues, strToArray} from "./calcs.js";
 import {reducer} from "./state.js";
-import {getPath, makeDisplayRow, makeInputs} from "./views.js";
+import {getPath, getScaleData, makeDisplayRow, makeInputs} from "./views.js";
 
 const {select, selectAll, listen, dispatch} = BASE;
 BASE.initState(reducer);
@@ -81,16 +81,18 @@ views.reset.addEventListener("click", () => {
 
 // Update the display as required
 listen("STATE_CHANGED", state => {
-    const {stats, percents, actionType} = state;
+    const {stats, percents, scale, actionType} = state;
     switch(actionType) {
         case "ROW_ADDED":
         case "ROW_REMOVED":
         case "RESET":
             updateInputs(state.values, state.labels);
         default: {
+            const scaleData = getScaleData(scale, state.width);
+            const displayRow = makeDisplayRow(state.width, scaleData);
             const displayRows = percents.map((result, row) => {
                 const d = getPath(result, state.width);
-                return makeDisplayRow(state.width)(stats[row], d, row);
+                return displayRow(stats[row], d, row);
             });
             displayDiv.innerHTML = displayRows.join("\n");
             // const toPercent = state.width / overview.range;

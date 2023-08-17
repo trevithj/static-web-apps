@@ -61,7 +61,10 @@ export function calcPercents(statsList) {
             return map;
         }, {vals});
     });
-    const scale = generateNumericScale(range);
+    const scale = generateNumericScale(range).map(label => {
+        const percent = toPercent(label);
+        return { label, percent };
+    });
     return { percents, scale };
 }
 
