@@ -1,4 +1,5 @@
 const Default = {
+    id: "Mac1",
     output: 0,
     status: 'free',
     // op: null,
@@ -24,8 +25,7 @@ function handleStep(machine) {
     }
 }
 
-function calcMachine(state, type, payload) {
-    const { machine = Default } = state;
+function calcMachine(machine = Default, type, payload) {
     switch(type) {
         case "STEP": return handleStep(machine);
         case "ALLOCATE": {
@@ -39,12 +39,12 @@ function calcMachine(state, type, payload) {
             return {...machine, status: "setup", process, opId };
         }
         case "TAKE": {
-            const { opId } = payload;
+            const { opId, net } = payload;
             if(machine.status !=="taking" || machine.opId !== opId) {
                 // ignore take request
                 return machine;
             }
-            const op = state.net.operations[payload.opId];
+            const op = net.ops.find(op => op.id ===opId);
             const process = op.steps;
             return {...machine, status: "work", process };
         }

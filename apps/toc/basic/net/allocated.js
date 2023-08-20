@@ -5,10 +5,10 @@ function mapFeed(feed) {
 
 export function makeAlloc(mac, op, fedBy, fedTo) {
     const alloc = {
-        id: `${mac.id}->${op.id}`, status: "idle", mac, op, wip: 0, stepsLeft: 0
+        id: `${mac.id}->${op.id}`, status: "idle", macId: mac.id, opId:op.id, fedBy, fedTo, wip: 0, stepsLeft: 0
     }
-    alloc.fedBy = fedBy.map(mapFeed);
-    alloc.fedTo = fedTo.map(mapFeed);
+    // alloc.fedBy = fedBy.map(mapFeed);
+    // alloc.fedTo = fedTo.map(mapFeed);
     return alloc;
 };
 

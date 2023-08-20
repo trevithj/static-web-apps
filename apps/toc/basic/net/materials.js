@@ -4,7 +4,7 @@ export function makeMaterial(matId, soh) {
 
 const Default = {
     RMA: makeMaterial("RMA", 100),
-    RMB: makeMaterial("RMB",  100),
+    RMB: makeMaterial("RMB",  20),
     FGA: makeMaterial("FGA",  0),
     FGB: makeMaterial("FGB",  0)
 };

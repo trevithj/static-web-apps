@@ -1,32 +1,30 @@
 import BASE from "../../../common/modules/base.js";
 import calcMachine from "./machine.js";
 import calcNet from "./net/net.js";
+import * as NET from "./net/netRender.js";
 
-function calcStats(state, type, payload) {
-    const stats = state.stats || { time: 0 };
+function calcStats(stats = { time: 0, cashOnHand: 10000 }, type, payload) {
     switch(type) {
         case "STEP": {
+            //payload = state to allow full context for calc?
             const time = stats.time +1;
-            return {...stats, time }
+            return {...stats, time };
         }
         default: return stats;
     }
 }
 
-const Default = {
-    machine: calcMachine({}, "INIT"),
-    net: calcNet({}, "INIT"),
-    stats: calcStats({}, "INIT"),
-    actionType:''
-};
-
-
-BASE.initState((state = Default, {type, payload}) => {
+BASE.initState((state = {}, {type, payload}) => {
     console.log(type, payload);
-    const machine = calcMachine(state, type, payload);
-    const net = calcNet(state, type, payload);
-    const stats = calcStats(state, type, payload);
+    const machine = calcMachine(state.machine, type, payload);
+    const net = calcNet(state.net, type, payload);
+    const stats = calcStats(state.stats, type, payload);
     const actionType = type;
+    // TODO: the overall step calcs here?
+    // Or break them down... update setups first
+    // then update ops
+    // then handle stock movements
+    // sort of like micro-steps within each clock tick
     return {machine, net, stats, actionType };
 });
 
@@ -35,40 +33,30 @@ const pnet = BASE.select("pre#net");
 const pops = BASE.select("pre#ops");
 BASE.listen("STATE_CHANGED", (state) => {
     console.dir(state.net);
-    const ops = state.net.ops.map(op => JSON.stringify(op));
-    const mats = state.net.stock.map(op => JSON.stringify(op));
-    pnet.innerText = JSON.stringify(state.net, null, 3);
 
     // TODO: divide screen up into areas for independent rendering
     // TODO: render conditionally on state.actionType
 
     const stats = JSON.stringify(state.stats, null, 3);
-    const macs = state.net.macs.map(m => JSON.stringify(m, null, 3));
-    const alloc = state.net.allocs.map(a => JSON.stringify(a, null, 2));
-
-    // const { materials, operations } = state.net;
-    // const mats = Object.values(materials).map(m => JSON.stringify(m)).join("\n");
-    // const ops = Object.values(operations).map(o => JSON.stringify(o, (key, value) => {
-    //     if (key==="fedBy" || key==="fedTo") return JSON.stringify(Object.values(value[0]));
-    //     if (key==="wip") return value[0];
-    //     return value;
-    // }, 3)).join("\n");
-    plog.innerText = `Machine: ${macs.join("\n")}\nStats: ${stats}`;
-    // \n=====\nNet.materials:\n${mats
-    // }\nNet.operations:\n${ops}`;
-    pops.innerText = `Allocated:\n${alloc.join("\n")}`;
-    pnet.innerText = `Net.materials:\n${mats.join("\n")}\n\nNet.operations:\n${ops.join("\n")}`;
+    plog.innerText = `Machine: ${NET.renderMacs(state)}\nStats: ${stats}`;
+    pops.innerText = `Allocated:\n${NET.renderAllocs(state)}`;
+    pnet.innerText = `Net.materials:\n${NET.renderStock(state)
+    }\n\nNet.operations:\n${NET.renderOps(state)
+    }\n\nNet.FedBys:\n${NET.renderFedBys(state)
+    }\n\nNet.FedTos:\n${NET.renderFedTos(state)
+    }`;
     // // TODO: check for when machine is in "taking" status, and dispatch a TAKE action.
 });
 
 function getPayload(state, opId) {
     const mac = state.net.macs[0];
     const op = state.net.opMap[opId];
-    return { mac, op };
+    return { mac, op, net: state.net, opId };
 }
 const btns = BASE.selectAll(".controls button");
 btns[0].addEventListener("click", () => {
-    BASE.dispatch("STEP");
+    const state = BASE.getState();
+    BASE.dispatch("STEP", state); // pass the whole state tree in
 });
 btns[1].addEventListener("click", () => {
     const state = BASE.getState();

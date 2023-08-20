@@ -10,7 +10,7 @@ const makeIdMap = (arr) => arr.reduce((map, item) => {
 const makeCanDo = (macId, opId) => ({ macId, opId});
 const makeFeed = (stockId, opId, conversion = 1) => ({ stockId, opId, conversion});
 
-const net = {
+const theNet = {
     ops: [
         makeOp("Op-A", 5),
         makeOp("Op-B", 8)
@@ -32,8 +32,8 @@ const net = {
         makeFeed("FG-B", "Op-B")
     ], allocs:[]
 }
-net.stockMap = makeIdMap(net.stock);
-net.opMap = makeIdMap(net.ops);
+theNet.stockMap = makeIdMap(theNet.stock);
+theNet.opMap = makeIdMap(theNet.ops);
 
 function deAllocate(net, mac, op) {
     const alloc = net.allocs.find(a => a.mac.id === mac.id);
@@ -77,10 +77,10 @@ function finishOp(net, alloc) {
 
 //
 
-export default function calcNet(state,  type, payload) {
-    console.log(state, type, payload);
-    if(type==="ALLOCATE") return allocate(state.net, payload);
-    return state.net || net;
+export default function calcNet(net = theNet,  type, payload) {
+    console.log(net, type, payload);
+    if(type==="ALLOCATE") return allocate(net, payload);
+    return net;
 }
 
-export { net, allocate, deAllocate, finishOp };
+export { allocate, deAllocate, finishOp };
