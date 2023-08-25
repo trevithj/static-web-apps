@@ -25,8 +25,9 @@ export function getScaleData(scale, width) {
     const text = scale.map(s => {
         const { label, percent } = s;
         const x = rounded(percent * width);
+        const val = rounded(label);
         path.push(`M${x},0 V100`);
-        return `<text y="100" x="${x}">${label}</text>`;
+        return `<text y="100" x="${x}">${val}</text>`;
     });
     return { scalePath: path.join(""), labels: text.join("")};
 }

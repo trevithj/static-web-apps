@@ -101,8 +101,8 @@ BASE.value = (name, val) => {
 }
 
 // Misc helper functions
-BASE.select = (selector) => document.querySelector(selector);
-BASE.selectAll = (selector) => document.querySelectorAll(selector);
+BASE.select = (selector, el = document) => el.querySelector(selector);
+BASE.selectAll = (selector, el = document) => el.querySelectorAll(selector);
 BASE.createEl = (type, className) => {
     const el = document.createElement(type);
     if (className) el.classList.add(className);
