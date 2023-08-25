@@ -86,8 +86,8 @@ const makePlotChart = (width, scaleData) => (d, i) => {
 function makeStats(stats) {
     const { min, max, lq, med, uq, label } = stats;
     return `<div class="stats"><strong>${label}</strong><p>Median: ${rounded(med)
-    }</p><p>IQR: ${rounded(lq)} - ${rounded(uq)
-    }</p><p>Range: ${rounded(min)} - ${rounded(max)}</p></div>`;
+    }</p><p>IQR: ${rounded(lq)} to ${rounded(uq)
+    }</p><p>Range: ${rounded(min)} to ${rounded(max)}</p></div>`;
 }
 
 export const makeDisplayRow = (width, scaleData) => {
@@ -97,4 +97,17 @@ export const makeDisplayRow = (width, scaleData) => {
         const plotBlock = plotChart(d, i);
         return ['<div class="display-row">', statsBlock, plotBlock, "</div>"].join("");
     }
+}
+
+export function stringify(state) {
+    return [
+        "{", 
+        '\n   "labels": [',
+        state.labels.map(label => `\n      "${label}"`),
+        "\n   ],",
+        '\n   "values": [',
+        state.values.map(vals => `\n      ${JSON.stringify(vals)}`),
+        "\n   ]",
+        "\n}"
+    ].join("")
 }

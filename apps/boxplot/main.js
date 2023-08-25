@@ -1,7 +1,7 @@
 import BASE from "../../common/modules/base.js";
 import {getInputLabels, getInputValues, strToArray} from "./calcs.js";
 import {reducer} from "./state.js";
-import {getPath, getScaleData, makeDisplayRow, makeInputs} from "./views.js";
+import {getPath, getScaleData, makeDisplayRow, makeInputs, stringify} from "./views.js";
 
 const {select, selectAll, listen, dispatch} = BASE;
 BASE.initState(reducer);
@@ -35,8 +35,11 @@ updateInputs(inputValues, inputLabels);
 // Locate the updatable elements
 // views.svgs = Array.from(selectAll("svg", chartsDiv));
 views.inputForm = select("#input-form");
-views.reset = select("#reset");
-views.addRow = select("#add");
+views.addRow = select("button#add");
+views.reset = select("button#reset");
+views.data = select("button#data");
+views.dataDiv = select("div.data");
+views.dataText = select("div.data textarea");
 views.statsDiv = select(".stats");
 
 views.inputForm.addEventListener("change", () => {
@@ -68,21 +71,27 @@ select("#wid").addEventListener("change", evt => {
     dispatch("WIDTH_CHANGED", {width});
 });
 
-function getValues(inputElement) {
-    const {value = ""} = inputElement;
-    const values = strToArray(value);
-    values.sort((a, b) => a - b);
-    return values;
-}
-
 views.reset.addEventListener("click", () => {
     dispatch("RESET");
+})
+views.data.addEventListener("click", () => {
+    dispatch("DATA_TOGGLED");
+})
+views.dataText.addEventListener("change", (evt) => {
+    const payload = JSON.parse(evt.target.value);
+    updateInputs(payload.values, payload.labels);
+    dispatch("INPUTS_CHANGED", payload);
 })
 
 // Update the display as required
 listen("STATE_CHANGED", state => {
     const {stats, percents, scale, actionType} = state;
     switch(actionType) {
+        case "DATA_TOGGLED": {
+            console.log(views.dataDiv);
+            views.dataDiv.classList.toggle("hidden");
+            break;
+        }
         case "ROW_ADDED":
         case "ROW_REMOVED":
         case "RESET":
@@ -95,6 +104,7 @@ listen("STATE_CHANGED", state => {
                 return displayRow(stats[row], d, row);
             });
             displayDiv.innerHTML = displayRows.join("\n");
+            views.dataText.value = stringify(state);
             // const toPercent = state.width / overview.range;
         }
     }
@@ -102,3 +112,16 @@ listen("STATE_CHANGED", state => {
 
 // Initial plots
 dispatch("START");
+
+/*
+{
+   labels: [
+      "Set 1",
+      "SET BBB"
+   ],
+   values: [
+      [1,2,3,4,4,5,5,6,6,7,7,8],
+      [5,6,7,8,9]
+   ]
+}
+*/

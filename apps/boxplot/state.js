@@ -16,25 +16,27 @@ function getInitState(actionType) {
     const labels = getInputLabels();
     const { stats, percents, scale } = calcStats(values, labels);
     const width = 800;
-    return {stats, percents, values, labels, width, scale, actionType}
+    const showData = false;
+    return {stats, percents, values, labels, width, showData, scale, actionType}
 }
 
 
 export function reducer(state, action) {
     state = state || getInitState("INIT");
     const { type:actionType, payload} = action;
+    const s2 = {...state, actionType };
     switch (actionType) {
         case "INPUTS_CHANGED": {
             const {values, labels} = payload;
             const { stats, percents, scale } = calcStats(values, labels);
-            return {...state, stats, percents, values, labels, scale, actionType};
+            return {...s2, stats, percents, values, labels, scale};
         }
         case "ROW_ADDED": {
             const {values: oldVals, labels: oldText} = state;
             const values = [...oldVals, payload.value];
             const labels = [...oldText, payload.label];
             const { stats, percents, scale } = calcStats(values, labels);
-            return {...state, stats, percents, values, labels, scale, actionType};
+            return {...s2, stats, percents, values, labels, scale};
         }
         case "ROW_REMOVED": {
             const {index} = payload;
@@ -42,15 +44,18 @@ export function reducer(state, action) {
             const values = oldVals.filter((v, i) => i !== index);
             const labels = oldText.filter((v, i) => i !== index);
             const { stats, percents, scale } = calcStats(values, labels);
-            return {...state, stats, percents, values, labels, scale, actionType};
+            return {...s2, stats, percents, values, labels, scale};
         }
         case "RESET": {
             clearInputs();
             return getInitState("RESET");
         }
         case "WIDTH_CHANGED": {
-            return { ...state, width: payload.width };
+            return { ...s2, width: payload.width };
         }
-        default: return state;
+        case "DATA_TOGGLED": {
+            return { ...s2, showData: !state.showData };
+        }
+        default: return s2;
     }
 }
