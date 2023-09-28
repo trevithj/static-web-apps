@@ -36,6 +36,8 @@
         </form>
         <div class="display"></div>
     </div>
+    <input name="description" type="text" class="footnote"/>
+    <hr />
     <div id="footerText"></div>
 </body>
 <script src="main.js" type="module"></script>
@@ -43,7 +45,6 @@
 <script>
     //Put this down here out of the way
     document.querySelector('div#footerText').innerHTML = `
-    <hr />
     <p>
       The question this tool helps to answer is whether a difference between two or more small trials is significant.
       Here, we compare multiple datasets on the same common x-axis, using box-and-whisker plots to show summary statistics of the datasets.

@@ -53,16 +53,6 @@ views.addRow.addEventListener("click", () => {
     const value = [1, 2, 3, 4, 5];
     const label = "New row";
     dispatch("ROW_ADDED", {value, label});
-    // const values = views.dataInputs.map(getValues);
-    // const labels = views.dataLabels.map(el => el.value);
-    // values.push([1,2,3,4,5]);
-    // labels.push(`Set ${labels.length+1}`);
-    // setInputValues(values, labels);
-
-//    updateInputs(values, labels);
-
-    // if (values.length >=8) views.addRow.setAttribute("disabled", true);
-    // send("REFRESH");
 });
 
 // Update width if needed. TODO: replace with resizeObserver
