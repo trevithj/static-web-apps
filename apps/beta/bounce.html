@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<!-- 
+TODO: try doing this by animating along a path. Easy enough to calculate points that approximate a fall under gravity.
+Maybe even see if we can animate the sideways linear motion separately, and move the G-path that way.
+Hmm. Can we animate on a path in an accelerating way?
+Maybe it is just simpler to animate the object using old-fashioned JS intervals.
+fn bounce(el, dx, dy, duration)
+-->
+
+<head>
+    <style>
+        svg {
+            overflow: visible;
+            border: solid thin blue;
+        }
+    </style>
+</head>
+
+<body>
+    <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+        <g style="transform: translate(130px, 30px)">
+            <circle id="ball" cx="0" cy="0" r="20" fill="blue" />
+        </g>
+    </svg>
+    <button id="l">Go Left</button>
+    <button id="r">Go Right</button>
+    <script>
+        (function () {
+            const B = {}; // scope
+            function bounce(toX, yArray) {
+                const xDelta = toX / yArray.length;
+                return yArray.map((y, i) => {
+                    const x = (i + 1) * xDelta;
+                    return {x, y};
+                });
+            }
+            function displacement(acceleration, ticks, initV = 0) {
+                const a = new Array(ticks).fill(0);
+                return a.map((y, i) => {
+                    const t = i + 1;
+                    const tsq = t ** 2;
+                    return initV * t + (acceleration * tsq) / 2;
+                })
+            }
+
+            function accelerate(delta, limit) {
+                const a = [0];
+                let v = 0;
+                let distance = 0;
+                while (distance < limit) {
+                    v += delta;
+                    distance += v;
+                    a.push(distance);
+                }
+                return a;
+            }
+            const fallY = displacement(0.5, 30, -5);
+            const left = bounce(-100, fallY);
+            const right = bounce(100, fallY);
+
+            const ball = document.querySelector("#ball");
+            function makeRunner(arr) {
+                return () => {
+                    let i = 0;
+                    function run() {
+                        if (i >= arr.length) return;
+                        setTimeout(() => {
+                            const {x, y} = arr[i];
+                            i += 1;
+                            ball.setAttribute("cx", x);
+                            ball.setAttribute("cy", y);
+                            console.log(ball.getAttribute("cy"));
+                            run();
+                        }, 50);
+                    }
+                    run();
+                };
+            };
+
+
+            document.querySelector("button#l").addEventListener("click", makeRunner(left));
+            document.querySelector("button#r").addEventListener("click", makeRunner(right));
+            // Start the bouncing animation
+            // bounceBall();
+        }());
+    </script>
+</body>
+
+</html>
