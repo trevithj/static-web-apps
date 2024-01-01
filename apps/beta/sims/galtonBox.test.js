@@ -1,5 +1,5 @@
 // import { bounce } from "./galtonBoxV2";
-const {bounce, velocity, displacement} = require("./galtonBoxV2");
+const {bounce, bouncer, velocity, displacement} = require("./galtonBoxV2");
 
 test("displacement fn", () => {
     {
@@ -39,3 +39,22 @@ test("bounce fn", () => {
         expect(result[4].y).toBe(10);
     }
 });
+
+test("Bounce iterator", () => {
+    //todo: mock the Math.random() fn)
+    {
+        const it = bouncer({});
+        const result = [...it];
+        expect(result.length).toBe(3);
+        expect(result.map(r => r.dy)).toEqual([0,1,2]);
+        expect(result.map(r => r.index)).toEqual([0,0,0]);
+    }
+    {
+        const it = bouncer({levels: 3, balls: 2});
+        const result = [...it];
+        expect(result.length).toBe(6);
+        expect(result.map(r => r.dy)).toEqual([0,1,2,0,1,2]);
+        expect(result.map(r => r.index)).toEqual([0,0,0,1,1,1]);
+        // console.log(result);
+    }
+})
