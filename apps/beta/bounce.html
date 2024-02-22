@@ -8,51 +8,74 @@
             border: solid thin blue;
         }
 
-        #ball {
+        .bouncex {
             /* transition: cx 1s linear, cy 1s cubic-bezier(0.2, 0.0, 0.9, 0.07); */
             /* transition: cx 1s linear, cy 1s cubic-bezier(0.95, 0.05, 0.795, 0.035); */
-            transition: cx 1s linear, cy 1s cubic-bezier(0.75, 0, 1, 1);
+            transition: cx 600ms linear, cy 600ms cubic-bezier(0.75, 0, 1, 1);
         }
     </style>
 </head>
 
 <body>
-    <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
-        <g style="transform: translate(130px, 30px)">
-            <circle id="ball" cx="0" cy="0" r="20" fill="blue" />
+    <svg width="600" height="300" xmlns="http://www.w3.org/2000/svg">
+        <g style="transform: translate(300px, 30px)">
+            <circle id="ball" class="bounce" cx="0" cy="0" r="20" fill="blue" />
         </g>
     </svg>
     <button id="test">Test</button>
-    <button id="reset">Reset</button>
     <script>
         (function () {
-            const B = {}; // scope
-            const ball = document.querySelector("#ball");
-            function reset() {
+            const B = {delay: 600, cx: 0 }; // scope
+            B.ball = document.querySelector("#ball");
+
+            function* bouncer(options) {
+                const {balls = 1, levels = 3} = options;
+                let b = balls;
+                while (b > 0) {
+                    let count = levels;
+                    while (count > 0) {
+                        const dx = Math.random() > 0.5 ? 1 : -1;
+                        yield {dy: 1 + levels - count, index: balls - b, dx};
+                        count -= 1;
+                    }
+                    b -= 1;
+                }
+                return;
+            }
+
+            function restart() {
                 B.cx = 0;
-                B.cy = 0;
-                B.r = new Array(5).fill(0).map(() => Math.random());
-                B.i = 0;
-                ball.setAttribute("cx", B.cx);
-                ball.setAttribute("cy", B.cy);
-            }
-            reset();
- 
-            function run() {
-                const { i, r } = B;
-                if (i >= r.length) return;
-                const dx = r[i] > 0.5 ? -50 : 50;
-                B.cx += dx;
-                B.cy += 50;
-                B.i += 1;
-                ball.setAttribute("cx", B.cx);
-                ball.setAttribute("cy", B.cy);
+                B.ball.style.transition = "";
+                run({});
                 setTimeout(() => {
-                    run();
-                }, 1000);
+                    B.ball.style.transition = `cx ${B.delay}ms linear, cy ${B.delay}ms cubic-bezier(0.75, 0, 1, 1)`;
+                }, 0);
             }
-            document.querySelector("button#test").addEventListener("click", run);
-            document.querySelector("button#reset").addEventListener("click", reset);
+
+            function run(value) {
+                const { dx = 0, dy = 0, index = 0 } = value;
+                B.cx += (dx * 50);
+                B.cy = dy * 50;
+                B.i = index;
+                B.ball.setAttribute("cx", B.cx);
+                B.ball.setAttribute("cy", B.cy);
+            }
+
+            function runTest() {
+                restart();
+                const runner = bouncer({levels: 6});
+                const interval = setInterval(() => {
+                    const v = runner.next();
+                    if (!v.done) {
+                        run(v.value);
+                    } else {
+                        run({dx: 8, dy: 6});
+                        clearInterval(interval);
+                    };
+                }, B.delay);
+            }
+
+            document.querySelector("button#test").addEventListener("click", runTest);
 
         }());
     </script>

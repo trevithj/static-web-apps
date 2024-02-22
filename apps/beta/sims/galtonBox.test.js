@@ -53,6 +53,8 @@ test("Bounce iterator", () => {
         const it = bouncer({levels: 3, balls: 2});
         const result = [...it];
         expect(result.length).toBe(6);
+        expect(result.map(r => Math.abs(r.dx))).toEqual([1,1,1,1,1,1]);
+        expect(result.map(r => r.dx)).not.toEqual([1,1,1,1,1,1]);
         expect(result.map(r => r.dy)).toEqual([0,1,2,0,1,2]);
         expect(result.map(r => r.index)).toEqual([0,0,0,1,1,1]);
         // console.log(result);
