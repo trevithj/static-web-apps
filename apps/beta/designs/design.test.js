@@ -40,6 +40,25 @@ digraph {
 }
 `;
 
+const result2 = `
+digraph {
+    label = "My Awesome Sketch"
+    node [color="blue"]
+    a [label="First State"]
+    b [label="Second State"]
+    node [color="silver" shape="box" fontsize="10pt"]
+    ab [label="some event"]
+    bb [label="same event"]
+    ba [label="other event"]
+    a -> ab
+    ab -> b
+    b -> bb
+    bb -> b
+    b -> ba
+    ba -> a
+}
+`; // use a bipartite digraph
+
 test.skip("conversion function", () => {
     expect(convert()).toEqual("digraph {}");
     expect(convert(input)).toEqual('digraph {\n    label = "My Awesome Sketch"\n}')
