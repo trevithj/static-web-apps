@@ -36,16 +36,17 @@
       <button id="b0">Update</button>
     </div>
 
-
     <div class="the-display">
     </div>
   </div>
-  <a href="./graphConvert.html">Graph data converter</a>
+  <a href="./stateChartEdit.html">State Chart Editor</a>
+  <a href="./structureChartEdit.html">Structure Chart Editor</a>
   <script>
     {
       const input = document.querySelector("textarea");
+      const display = document.querySelector(".the-display");
       document.querySelector("button#b0").addEventListener("click", evt => {
-        document.querySelector(".the-display").innerHTML = input.value;
+        display.innerHTML = input.value;
       })
     }
   </script>
