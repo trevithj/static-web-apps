@@ -42,7 +42,7 @@
       <button id="b0">Raw</button>
       <button id="b1">DOT</button>
       <button id="b2">DOT2</button>
-      <button id="b3">Sketch</button>
+      <button id="b3">Bi-graph</button>
       <!-- <button id="b4">XState</button> -->
     </div>
 
@@ -115,34 +115,7 @@
       return newNode;
     }
 
-    // Simple parser
-    // function parser(txt) {
-    //   const pairs = txt.split(/#[^\n]*\n/);
-    //   if (pairs.length !== 2) return { err: "no edge divider found" };
-    //   const nodes = toArray(pairs[0])
-    //     .map(line => line.split(/\s+/))
-    //     .map(cells => {
-    //       const [id, ...rest] = cells;
-    //       const name = rest.join(" ");
-    //       return {id, name};
-    //     });
-    //   const links = toArray(pairs[1])
-    //     .map(line => line.split(/\s+/))
-    //     .map(cells => {
-    //       const [src, tgt, ...rest] = cells;
-    //       const label = rest.join(" ");
-    //       return {src, tgt, label};
-    //     });
-    //   const nodeMap = Object.fromEntries(nodes.map(n => [n.id, n]));
-    //   return { nodes, links, nodeMap };
-    // }
-
     let parsed = {};
-
-    // function parse() {
-    //   const txt = input.value;
-    //   return parser(txt);
-    // }
 
     input.addEventListener("blur", evt => {
       parsed = parser(evt.target.value);
@@ -181,25 +154,34 @@
       display.value = output.join("\n");
     })
 
-    // Sketch systems format
+    // Bi-graph systems format
     document.querySelector("button#b3").addEventListener("click", evt => {
-      const output = [];
       const { nodes, links, nodeMap } = parsed;
       if (!nodes) return;
-      nodes.forEach(node => {
-        const { id, name } = node;
-        output.push(name);
-        const fedbys = links.filter(link => link.src === id);
-        fedbys.forEach(link => {
-          const tgt = nodeMap[link.tgt];
-          output.push(`  ${link.label} -> ${tgt.name}`);
-        });
-      })
-      display.value = output.join("\n");
+      const output = { stateNodes: nodes };
+      const linkSet = new Set();
+      const txnNodes = Object.fromEntries(links.map(lnk => {
+        const { src, tgt, label:name } = lnk;
+        const id = `${name}_${tgt}`;
+        linkSet.add(`${src}:${id}`);
+        linkSet.add(`${id}:${tgt}`);
+        return [id, {id, name}];
+      }));
+      output.txnNodes = Object.values(txnNodes);
+      output.links = [...linkSet].map(line => {
+        const [src, tgt] = line.split(":");
+        return { src, tgt };
+      });
+      console.dir(output);
+      const stringified = {
+        stateNodes: output.stateNodes.map(node => `${node.id}:${node.name}`),
+        transNodes: output.txnNodes.map(node => `${node.id}:${node.name}`),
+        links: output.links.map(link => `${link.src} --> ${link.tgt}`)
+      }
+      display.value = JSON.stringify(stringified, null, 3);
     })
 
     input.focus();
-
   }
 </script>
 
