@@ -60,27 +60,6 @@ class Customer {
 */
 import * as Movie from "./movie.mjs";
 
-function amountForRental(aRental) {
-    let result = 0;
-    // determine amounts for each line
-    switch (aRental.getMovie().getPriceCode()) {
-        case Movie.REGULAR:
-            result += 2;
-            if (aRental.getDaysRented() > 2)
-                result += (aRental.getDaysRented() - 2) * 1.5;
-            break;
-        case Movie.NEW_RELEASE:
-            result += aRental.getDaysRented() * 3;
-            break;
-        case Movie.CHILDRENS:
-            result += 1.5;
-            if (aRental.getDaysRented() > 3)
-                result += (aRental.getDaysRented() - 3) * 1.5;
-            break;
-    }
-    return result;
-}
-
 export function createCustomer(name) {
     const rentals = new Set();
 
@@ -92,8 +71,6 @@ export function createCustomer(name) {
         let frequentRenterPoints = 0;
         let result = "Rentals record for " + getName() + "\n";
         rentals.forEach(each => {
-            const thisAmount = amountForRental(each);
-
             // add frequent renter points
             frequentRenterPoints++;
             // add bonus for a two day new release rental
@@ -101,8 +78,8 @@ export function createCustomer(name) {
                 each.getDaysRented() > 1) frequentRenterPoints++;
 
             // Show figures for this rental
-            result += "\t" + each.getMovie().getTitle() + "\t" + thisAmount + "\n";
-            totalAmount += thisAmount;
+            result += "\t" + each.getMovie().getTitle() + "\t" + each.getCharge() + "\n";
+            totalAmount += each.getCharge(); // this feels wrong, calling twice. But let's see.
         })
         // add footer lines
         result += "Amount owed is " + totalAmount + "\n";
