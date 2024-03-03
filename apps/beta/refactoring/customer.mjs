@@ -64,21 +64,43 @@ export function createCustomer(name) {
     const getName = () => name;
     const addRental = rental => rentals.add(rental);
 
-    const statement = () => {
-        let totalAmount = 0;
-        let frequentRenterPoints = 0;
-        let result = "Rentals record for " + getName() + "\n";
-        rentals.forEach(each => {
-            frequentRenterPoints += each.getFrequentRenterPoints();
-
-            // Show figures for this rental
-            result += "\t" + each.getMovie().getTitle() + "\t" + each.getCharge() + "\n";
-            totalAmount += each.getCharge(); // this feels wrong, calling twice. But let's see.
-        })
-        // add footer lines
-        result += "Amount owed is " + totalAmount + "\n";
-        result += "You earned " + frequentRenterPoints + " frequent renter points.";
+    function getTotalAmount() {
+        // return [...rentals].reduce((total, rental) => total + rental.getCharge(), 0);
+        let result = 0;
+        rentals.forEach(aRental => result += aRental.getCharge());
         return result;
     }
-    return Object.freeze({addRental, getName, statement});
+
+    function getTotalFrequentRenterPoints() {
+        // return [...rentals].reduce((total, rental) => total + rental.getFrequentRenterPoints(), 0);
+        let result = 0;
+        rentals.forEach(aRental => result += aRental.getFrequentRenterPoints());
+        return result;
+    }
+
+    const statement = () => {
+        let result = "Rentals record for " + getName() + "\n";
+        rentals.forEach(each => {
+            // Show figures for this rental
+            result += "\t" + each.getMovie().getTitle() + "\t" + each.getCharge() + "\n";
+        })
+        // add footer lines
+        result += "Amount owed is " + getTotalAmount() + "\n";
+        result += "You earned " + getTotalFrequentRenterPoints() + " frequent renter points.";
+        return result;
+    }
+
+    const htmlStatement = () => {
+        let result = "<h1>Rentals record for <em>" + getName() + "</em></h1>\n";
+        rentals.forEach(each => {
+            // Show figures for this rental
+            result += "<p>" + each.getMovie().getTitle() + ": " + each.getCharge() + "</p>\n";
+        })
+        // add footer lines
+        result += "<p>You owe <em>" + getTotalAmount() + "</em></p>\n";
+        result += "<p>On this rental you earned <em>" + getTotalFrequentRenterPoints() + "</em> frequent renter points.</p>";
+        return result;
+    }
+
+    return Object.freeze({addRental, getName, statement, htmlStatement});
 }
