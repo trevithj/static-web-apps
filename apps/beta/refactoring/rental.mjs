@@ -21,7 +21,7 @@ import * as Movie from "./movie.mjs";
 
 
 export function createRental(movie, daysRented) {
-    
+
     const getMovie = () => movie;
 
     const getDaysRented = () => daysRented;
@@ -47,7 +47,15 @@ export function createRental(movie, daysRented) {
         return result;
     }
 
+    function getFrequentRenterPoints() {
+        if ((getMovie().getPriceCode() == Movie.NEW_RELEASE) && getDaysRented() > 1) {
+            return 2;
+        } else {
+            return 1;
+        }
+    }
+
     return Object.freeze({
-        getMovie, getDaysRented, getCharge
+        getMovie, getDaysRented, getCharge, getFrequentRenterPoints
     });
 }
