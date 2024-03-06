@@ -62,8 +62,15 @@ export function createMovie(title, priceCode) {
         return result;
     }
 
+    function getFrequentRenterPoints(daysRented) {
+        if ((getPriceCode() === NEW_RELEASE) && daysRented > 1) {
+            return 2;
+        } else {
+            return 1;
+        }
+    }
 
     return Object.freeze({
-        getPriceCode, getTitle, setPriceCode, getCharge, _TYPE: "Movie"
+        getPriceCode, getTitle, setPriceCode, getCharge, getFrequentRenterPoints, _TYPE: "Movie"
     });
 }

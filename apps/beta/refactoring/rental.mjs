@@ -28,13 +28,7 @@ export function createRental(movie, daysRented) {
 
     const getCharge = () => getMovie().getCharge(daysRented);
 
-    function getFrequentRenterPoints() {
-        if ((getMovie().getPriceCode() == Movie.NEW_RELEASE) && getDaysRented() > 1) {
-            return 2;
-        } else {
-            return 1;
-        }
-    }
+    const getFrequentRenterPoints = () => getMovie().getFrequentRenterPoints(daysRented);
 
     return Object.freeze({
         getMovie, getDaysRented, getCharge, getFrequentRenterPoints
