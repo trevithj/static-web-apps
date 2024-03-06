@@ -41,24 +41,29 @@ export function createMovie(title, priceCode) {
     const getTitle = () => title;
     const setPriceCode = args => priceCode = checkIsInt(args, "priceCode");
 
-    return Object.freeze({
-        getPriceCode, getTitle, setPriceCode, _TYPE: "Movie"
-    });
-}
-
-export function createMovie2(title, priceCode) {
-    if(typeof title !== "string") throw new TypeError("title must be a string");
-    priceCode = checkIsInt(priceCode, "priceCode");
-
-    return Object.freeze({
-        get title() {
-            return title;
-        },
-        get priceCode() {
-            return priceCode;
-        },
-        set priceCode(arg) {
-            priceCode = checkIsInt(arg, "priceCode");
+    function getCharge(daysRented) {
+        let result = 0;
+        // determine amounts for each line
+        switch (getPriceCode()) {
+            case REGULAR:
+                result += 2;
+                if (daysRented > 2)
+                    result += (daysRented - 2) * 1.5;
+                break;
+            case NEW_RELEASE:
+                result += daysRented * 3;
+                break;
+            case CHILDRENS:
+                result += 1.5;
+                if (daysRented > 3)
+                    result += (daysRented - 3) * 1.5;
+                break;
         }
+        return result;
+    }
+
+
+    return Object.freeze({
+        getPriceCode, getTitle, setPriceCode, getCharge, _TYPE: "Movie"
     });
 }
