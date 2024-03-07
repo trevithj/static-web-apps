@@ -1,11 +1,12 @@
 import * as Customer from "./customer.mjs";
 import * as Movie from "./movie.mjs";
 import * as Rental from "./rental.mjs";
+import * as Price from "./price.mjs";
 
 const movies = [
-    Movie.createMovie("Rambo 3", Movie.REGULAR),
-    Movie.createMovie("Finding Nemo", Movie.CHILDRENS),
-    Movie.createMovie("Dune 2", Movie.NEW_RELEASE)
+    Movie.createMovie("Rambo 3", Price.REGULAR),
+    Movie.createMovie("Finding Nemo", Price.CHILDRENS),
+    Movie.createMovie("Dune 2", Price.NEW_RELEASE)
 ];
 
 const rentals = [

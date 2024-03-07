@@ -23,10 +23,9 @@ public class Movie {
     }
 }
 */
+import * as Price from "./price.mjs";
 
-export const CHILDRENS = 2
-export const REGULAR = 1
-export const NEW_RELEASE = 0
+const { CHILDRENS, REGULAR, NEW_RELEASE, createPrice } = Price;
 
 function checkIsInt(n, field) {
     if(isNaN(n)) throw new TypeError(`${field} must be numeric`);
@@ -35,11 +34,13 @@ function checkIsInt(n, field) {
 
 export function createMovie(title, priceCode) {
     if(typeof title !== "string") throw new TypeError("title must be a string");
-    priceCode = checkIsInt(priceCode, "priceCode");
+    const price = createPrice(priceCode);
 
-    const getPriceCode = () => priceCode;
+    const setPriceCode = args => price = createPrice(args);
+
+    const getPriceCode = () =>price.getPriceCode();
+
     const getTitle = () => title;
-    const setPriceCode = args => priceCode = checkIsInt(args, "priceCode");
 
     function getCharge(daysRented) {
         let result = 0;
