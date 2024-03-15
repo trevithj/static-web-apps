@@ -72,6 +72,7 @@ function makeLink(stack) {
 
 // Structure-format parser
 export function structureParser(txt) {
+    index = 0;
     const nodeStack = [];
     const lines = toArray(txt);
     const nodeMap = {}; // map id -> node

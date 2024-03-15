@@ -14,7 +14,20 @@
     .the-input {
       border: solid thin silver;
     }
-
+    .the-log {
+        height: 500px;
+        width: 100%;
+    }
+    svg div.text-container { font-size: 10px; }
+    svg div.noun {
+        border: solid thin blue;
+        padding: 0.2rem;
+    }
+    svg div.verb {
+        border: solid thin silver;
+        border-radius: 0.5rem;
+        padding: 0 0.4rem;
+    }
     button {
       width: 100%;
     }
@@ -49,7 +62,7 @@
       <textarea rows="30" cols="80" spellcheck="false" autocomplete="off" autocorrect="off"></textarea>
     </div>
   </div>
-  <pre class="the-log"></pre>
+  <div class="the-log"></div>
   <a href="./svgEdit.html">Simple SVG editor</a>
   <a href="./stateChartEdit.html">State Chart editor</a>
 </body>
