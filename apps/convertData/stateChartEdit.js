@@ -1,4 +1,5 @@
 import { stateParser as parser, stringify } from "./chartEdit.js";
+import {digraph2Dot, digraph2DotBipartite} from "./formatters.js";
 // Initial view.
 const SAMPLE_INPUT = `Green\n  tick -> Yellow\nYellow\n  tick -> Red\nRed\n  tick -> Green`;
 const input = document.querySelector(".the-input > textarea");

@@ -1,47 +1,17 @@
 import {structureParser as parser, stringify} from "./chartEdit.js";
 import {digraph2Dot, digraph2DotBipartite} from "./formatters.js";
-import {setNodeSizes, updateDivPositions, updateNodeLayout, updateNodePositions} from "./layouter.js";
+import Layout, {Helpers} from "./layouter.js";
+
+const { link2VerbDiv, node2NounDiv, setNodeSizes } = Helpers;
+
 // Initial view.
 const SAMPLE_INPUT = `Grandmother\n  Mother\n    Daughter1\n    Daughter2\n      GrandDaughter`;
 const input = document.querySelector(".the-input > textarea");
 const display = document.querySelector(".the-display > textarea");
-const theLog = document.querySelector(".the-log");
+const theChart = document.querySelector(".the-chart");
 input.value = window.localStorage.getItem("INPUT_STRUCTURE") || SAMPLE_INPUT;
 
 let parsed = {};
-
-function node2NounDiv(node, i) {
-    const x = 50 * i + 20;
-    const y = 25 * i + 20;
-    const div = document.createElement("div");
-    div.className = "noun";
-    div.style = `left:${x}px;top:${y}px;`;
-    div.innerHTML = node.name.replace("\\n", "<br/>");
-    return {
-        x, y,
-        get node() {return node},
-        get div() {return div},
-        get type() {return "noun"}
-    }
-}
-
-function link2VerbDiv(nodeMap) {
-    return link => {
-        const {src, tgt, label = "feeds"} = link;
-        const x = nodeMap.get(src).x;
-        const y = nodeMap.get(tgt).y;
-        const div = document.createElement("div");
-        div.className = "verb";
-        div.style = `left:${x}px;top:${y}px;`;
-        div.innerHTML = label.replace("\\n", "<br/>");
-        return {
-            x, y,
-            get node() {return link},
-            get div() {return div},
-            get type() {return "verb"}
-        }
-    }
-}
 
 function svgFormat() {
     const output = ['<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">',
@@ -49,6 +19,7 @@ function svgFormat() {
         '.text-container { position: relative; }',
         '.text-container > div { position: absolute; text-align: center; max-width: 10rem; }',
         '</style>',
+        '<g class="links"/>',
         '<foreignObject x="0" y="0" width="100%" height="100%">',
         '<div xmlns="http://www.w3.org/1999/xhtml" class="text-container">',
         '</div>',
@@ -58,15 +29,15 @@ function svgFormat() {
     return output.join("\n");
 }
 
-theLog.innerHTML = svgFormat(parsed);
+theChart.innerHTML = svgFormat(parsed);
 
 function calcNodeSizes(nodes) {
-    const {a: dw, d: dh} = theLog.querySelector("svg").getScreenCTM().inverse();
+    const {a: dw, d: dh} = theChart.querySelector("svg").getScreenCTM().inverse();
     return setNodeSizes(nodes, dw, dh);
 }
 
 function drawChart(parsed) {
-    const container = theLog.querySelector(".text-container");
+    const container = theChart.querySelector(".text-container");
     container.innerHTML = "";
 
     const {nodes, links} = parsed;
@@ -81,19 +52,31 @@ function drawChart(parsed) {
     container.append(...verbElements);
 
     const dataNodes = calcNodeSizes([...nounNodes, ...verbNodes]);
-    updateNodeLayout(dataNodes, nodeMap);
-    updateNodePositions(dataNodes);
+    const layout = Layout(dataNodes, nodeMap);
+    // console.log(dataNodes);
+    layout.updateNodeLayout();
+    layout.updateNodePositions();
     const interval = setInterval(() => {
-        updateNodeLayout(dataNodes, nodeMap);
-        updateNodePositions(dataNodes);
-        updateDivPositions(dataNodes);
+        layout.updateNodeLayout();
+        layout.updateNodePositions();
+        layout.updateDivPositions();
     }, 0);
     setTimeout(() => {
         clearInterval(interval);
-        updateDivPositions(dataNodes);
-        console.log(dataNodes[5]);
-    }, 1000)
-    // 
+        layout.updateDivPositions();
+        layout.drawLinks(theChart.querySelector("g.links"));
+        // redraw the nodes, so lines aren't on top
+        // container.innerHTML = "";
+        // dataNodes.forEach(n => container.append(n.div));
+        // console.log(dataNodes[5]);
+    }, 500)
+
+    // console.log(dataNodes[24].dx);
+    // layout.updateNodeLayout();
+    // // console.log(dataNodes[24].dx);
+    // layout.updateNodePositions();
+    // layout.updateDivPositions();
+    // layout.drawLinks(theChart.querySelector("g.links"));
 }
 
 input.addEventListener("blur", evt => {
@@ -116,14 +99,9 @@ document.querySelector("button#b2").addEventListener("click", evt => {
     display.value = digraph2DotBipartite(parsed);
 })
 
-// Structure format
-// document.querySelector("button#b3").addEventListener("click", evt => {
-//     display.value = sketchFormat(parsed);
-// })
 // SVG format
 document.querySelector("button#b3").addEventListener("click", evt => {
     // display.value = svgFormat(parsed);
-    // theLog.innerHTML = display.value;
     drawChart(parsed); //, theLog.querySelector(".text-container"));
 })
 
