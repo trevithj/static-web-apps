@@ -63,11 +63,18 @@ function updateStack(stack, node) {
     }
 }
 
-function makeLink(stack) {
+function makeLink(stack, label) {
     const len = stack.length;
     const src = stack[len - 2].id;
     const tgt = stack[len - 1].id;
-    return {src, tgt};
+    return label ? {src, tgt, label} : {src, tgt};
+}
+
+function checkNode(node) {
+    const [part1, part2] = node.name.split("->");
+    if (!part2) return [null, node];
+    node.name = part2.trim();
+    return [part1.trim(), node];
 }
 
 // Structure-format parser
@@ -92,8 +99,9 @@ export function structureParser(txt) {
         if (node.indent === 0) {
             throw new Error("Invalid format: must only have one parent node");
         }
-        updateStack(nodeStack, node);
-        links.push(makeLink(nodeStack));
+        const [label, checkedNode] = checkNode(node);
+        updateStack(nodeStack, checkedNode);
+        links.push(makeLink(nodeStack, label));
     })
 
     return {nodes, links, nodeMap};
@@ -101,9 +109,14 @@ export function structureParser(txt) {
 
 function parseLineWithIndent(raw) {
     const indent = raw.search(/\S/);
-    const name = raw.trim();
+    let name = raw.trim();
     const id = `n${index++}`;
-    return {id, indent, name};
+    return Object.freeze({
+        id,
+        indent,
+        get name() {return name},
+        set name(arg) {name = arg}
+    });
 }
 
 export function stringify(parsed) {

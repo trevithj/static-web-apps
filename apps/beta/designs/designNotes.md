@@ -71,7 +71,7 @@ Meaning that we can create an element, and add the node data to it just fine. Bu
 foreach node: create element; link node to element; append to parent;
 foreach node: read element location into node;
 for x tries:
-  foreach node: move away from close nodes; move towards linked nodes;
+  foreach node: move away from near nodes; move towards linked nodes;
 foreach node: update element with node location values;
 ```
 
@@ -79,3 +79,9 @@ foreach node: update element with node location values;
 First, each node needs to identify its closest neigbours. That means calculating a rough distance.
 It makes sense for the calculation to return a set of distances for the node to respond to. In what form?
 I guess the x,y coordinates relative to the subject node should work. Also, some sort of distance factor: x*x + y*y?
+Or for now, the full calculation: sqrt(x**2 + y**2). Worry about speed if it becomes an issue.
+
+# Performance of NZH: Note Header rendering insights.
+# Learnings: All development is iterative - question only of how fast.
+
+# --- #

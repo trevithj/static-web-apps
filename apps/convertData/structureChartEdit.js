@@ -18,6 +18,7 @@ function svgFormat() {
         '<style>',
         '.text-container { position: relative; }',
         '.text-container > div { position: absolute; text-align: center; max-width: 10rem; }',
+        'foreignObject { overflow: scroll }',
         '</style>',
         '<g class="links"/>',
         '<foreignObject x="0" y="0" width="100%" height="100%">',

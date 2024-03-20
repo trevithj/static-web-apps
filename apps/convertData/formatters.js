@@ -26,14 +26,16 @@ export function digraph2Dot(parsed) {
     return output.join("\n");
 }
 
-export function digraph2DotBipartite(parsed) {
+
+export function digraph2DotBipartite(parsed, defaultVerb = "feeds") {
     const {nodes, links} = parsed;
     if (!nodes) return;
+    const makeLabel = l => `"${l.label || defaultVerb}" ${l.label ? "fontcolor=blue" : ""}`;
     const output = ["digraph {",
-        "  node [color=blue shape=box]",
+        "  node [color=blue shape=box fontsize=20]",
         ...nodes.map(n => `  ${n.id} [label="${n.name}"]`),
-        '  node [color="#A0A0A0" shape=oval fontsize="10pt"]',
-        ...links.map(l => `  ${l.src}_${l.tgt} [label="${l.label || "feeds"}"]`),
+        '  node [color="#A0A0A0" shape=oval fontsize=10]',
+        ...links.map(l => `  ${l.src}_${l.tgt} [label=${makeLabel(l)}]`),
         ...links.map(l => `  ${l.src} -> ${l.src}_${l.tgt}`),
         ...links.map(l => `  ${l.src}_${l.tgt} -> ${l.tgt}`),
         "}"
