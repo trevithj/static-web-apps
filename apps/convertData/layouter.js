@@ -73,7 +73,7 @@ function calcNeigbourDistance(tgt, nbr) {
 }
 
 function updateDataNodeLayout(dataNodes) {
-    const DELTA = 7;
+    const DELTA = 5;
     dataNodes.forEach(dNode => {
         const closeNeigbours = dataNodes.flatMap(dn => {
             return calcNeigbourDistance(dNode, dn);
@@ -129,23 +129,20 @@ export function updateDivPositions(dataNodes) {
     })
 };
 
-function getDrawLink(group) {
+function getDrawLink(d) {
+    const rnd = Math.round;
     return (srcPoint, tgtPoint) => {
         const {cx: x1, cy: y1} = srcPoint;
         const {cx: x2, cy: y2} = tgtPoint;
-        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        line.setAttribute("x1", mRound(x1));
-        line.setAttribute("y1", mRound(y1));
-        line.setAttribute("x2", mRound(x2));
-        line.setAttribute("y2", mRound(y2));
-        line.setAttribute("stroke", "blue");
-        // TODO: calc points
-        group.appendChild(line);
+        const midX = rnd((x1 + x2) / 2);
+        const midY = rnd((y1 + y2) / 2);
+        d.push(`M${rnd(x1)} ${rnd(y1)} L${midX} ${midY} L${rnd(x2)} ${rnd(y2)}`);
     }
 }
 
-export function drawLinks(dataNodes, nodeMap, group) {
-    const drawLink = getDrawLink(group);
+export function drawLinks(dataNodes, nodeMap, path) {
+    const d = [];
+    const drawLink = getDrawLink(d);
     const verbNodes = dataNodes.filter(n => n.type === "verb");
     // console.log(verbNodes, group);
     verbNodes.forEach(verb => {
@@ -156,7 +153,8 @@ export function drawLinks(dataNodes, nodeMap, group) {
         drawLink(getCenter(srcNode), refPoint);
         drawLink(refPoint, getCenter(tgtNode));
     });
-    console.log(group);
+    path.setAttribute("d", d.join(" "));
+    console.log(path);
 }
 
 export default function constructor(dataNodes, nodeMap) {

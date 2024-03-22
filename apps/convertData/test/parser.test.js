@@ -16,8 +16,16 @@ Draw an SVG Chart
         Position links
   step3 -> Render result`;
 
-it("should fail", () => {
-    const parsed = structureParser(data1);
-    console.log(parsed);
-    assert(parsed !== null);
+describe("structureParser happy path", () => {
+    const {nodes, links, nodeMap} = structureParser(data1);
+    it("should parse nodes correctly", () => {
+        assert(nodes.length === 13);
+        assert(nodeMap.n0 === nodes[0]);
+    })
+
+    it("should handle named links", () => {
+        assert(links.length === 12);
+        const namedLinks = links.filter(l => !!l.label);
+        assert(namedLinks.length === 5);
+    })
 })

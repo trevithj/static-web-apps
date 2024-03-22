@@ -18,10 +18,17 @@
         height: 500px;
         width: 100%;
     }
-    svg div.text-container { font-size: 10px; }
+    svg {
+        overflow: visible;
+    }
+    svg .viz {
+        overflow: scroll;
+    }
+    svg div.text-container { font-size: 10px; text-align: center; }
     svg div.noun {
         border: solid thin blue;
         padding: 0.2rem;
+        width: 8em;
     }
     svg div.verb {
         border: solid thin silver;

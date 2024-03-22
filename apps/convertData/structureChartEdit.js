@@ -12,19 +12,28 @@ const theChart = document.querySelector(".the-chart");
 input.value = window.localStorage.getItem("INPUT_STRUCTURE") || SAMPLE_INPUT;
 
 let parsed = {};
+const ArrowHead = `
+<marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+  <path d="M 0 0 L 10 5 L 0 10 z" />
+</marker>`;
 
 function svgFormat() {
     const output = ['<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">',
         '<style>',
         '.text-container { position: relative; }',
-        '.text-container > div { position: absolute; text-align: center; max-width: 10rem; }',
-        'foreignObject { overflow: scroll }',
+        '.text-container > div { position: absolute; background-color: white }',
+        'foreignObject { overflow: visible }',
         '</style>',
-        '<g class="links"/>',
+        '<defs>', ArrowHead, '</defs>',
+        '<g class="viz">',
+        '<g class="links">',
+        '<path d="" stroke="blue" marker-mid="url(#arrow)">',
+        '</g>',
         '<foreignObject x="0" y="0" width="100%" height="100%">',
         '<div xmlns="http://www.w3.org/1999/xhtml" class="text-container">',
         '</div>',
         '</foreignObject>',
+        '</g>',
         "</svg>"
     ];
     return output.join("\n");
@@ -61,23 +70,14 @@ function drawChart(parsed) {
         layout.updateNodeLayout();
         layout.updateNodePositions();
         layout.updateDivPositions();
+        layout.drawLinks(theChart.querySelector("g.links > path"));
     }, 0);
     setTimeout(() => {
         clearInterval(interval);
         layout.updateDivPositions();
-        layout.drawLinks(theChart.querySelector("g.links"));
-        // redraw the nodes, so lines aren't on top
-        // container.innerHTML = "";
-        // dataNodes.forEach(n => container.append(n.div));
-        // console.log(dataNodes[5]);
-    }, 500)
+        layout.drawLinks(theChart.querySelector("g.links > path"));
+    }, 5500)
 
-    // console.log(dataNodes[24].dx);
-    // layout.updateNodeLayout();
-    // // console.log(dataNodes[24].dx);
-    // layout.updateNodePositions();
-    // layout.updateDivPositions();
-    // layout.drawLinks(theChart.querySelector("g.links"));
 }
 
 input.addEventListener("blur", evt => {
