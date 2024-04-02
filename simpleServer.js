@@ -1,8 +1,12 @@
 // Serves static files relative to this file.
-const http = require('http');
-const	url = require('url');
-const	path = require('path');
-const	fs = require('fs');
+// const http = require('http');
+// const	url = require('url');
+// const	path = require('path');
+// const	fs = require('fs');
+import http from 'http';
+import url from 'url';
+import path from 'path';
+import fs from 'fs';
 
 const PORT = process.argv[2] || 8888;
 

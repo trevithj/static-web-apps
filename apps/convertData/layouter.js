@@ -94,13 +94,22 @@ function updateVerbNodeLayout(dataNodes, nodeMap) {
         const {src, tgt} = dNode.node;
         const srcNode = nodeMap.get(src);
         const tgtNode = nodeMap.get(tgt);
+        const D = 2 * Math.random();
         const pos1 = calcOffsets(dNode, srcNode);
-        dNode.dx += (pos1.offsetX / pos1.dist);
-        dNode.dy += (pos1.offsetY / pos1.dist);
-
+        if (pos1.dist > 200) {
+            dNode.dx += (D * pos1.offsetX / pos1.dist);
+            dNode.dy += (D * pos1.offsetY / pos1.dist);
+            srcNode.dx -= (D * pos1.offsetX / pos1.dist);
+            srcNode.dy -= (D * pos1.offsetY / pos1.dist);
+        }
+        
         const pos2 = calcOffsets(dNode, tgtNode);
-        dNode.dx += (pos2.offsetX / pos2.dist);
-        dNode.dy += (pos2.offsetY / pos2.dist);
+        if (pos2.dist > 200) {
+            dNode.dx += (D * pos2.offsetX / pos2.dist);
+            dNode.dy += (D * pos2.offsetY / pos2.dist);
+            tgtNode.dx -= (D * pos2.offsetX / pos2.dist);
+            tgtNode.dy -= (D * pos2.offsetY / pos2.dist);
+        }
     })
 };
 
@@ -154,7 +163,7 @@ export function drawLinks(dataNodes, nodeMap, path) {
         drawLink(refPoint, getCenter(tgtNode));
     });
     path.setAttribute("d", d.join(" "));
-    console.log(path);
+    // console.log(path);
 }
 
 export default function constructor(dataNodes, nodeMap) {

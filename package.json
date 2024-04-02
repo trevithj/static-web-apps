@@ -9,8 +9,8 @@
   },
   "scripts": {
     "dev": "node .\\simpleServer.js",
-    "test2": "mocha",
-    "test": "jest --watch"
+    "test": "mocha --recursive './apps/**/test/*.js'",
+    "jest": "jest --watch"
   },
   "author": "John Trevithick <trevithj@gmail.com>",
   "license": "MIT",

@@ -16,22 +16,21 @@ const ArrowHead = `
 <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
   <path d="M 0 0 L 10 5 L 0 10 z" />
 </marker>`;
+const Style = `
+.text-container { position: relative; }
+.text-container > div { position: absolute; background-color: white }
+foreignObject { overflow: visible }`;
 
 function svgFormat() {
     const output = ['<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">',
-        '<style>',
-        '.text-container { position: relative; }',
-        '.text-container > div { position: absolute; background-color: white }',
-        'foreignObject { overflow: visible }',
-        '</style>',
+        '<style>', Style, '</style>',
         '<defs>', ArrowHead, '</defs>',
         '<g class="viz">',
         '<g class="links">',
         '<path d="" stroke="blue" marker-mid="url(#arrow)">',
         '</g>',
         '<foreignObject x="0" y="0" width="100%" height="100%">',
-        '<div xmlns="http://www.w3.org/1999/xhtml" class="text-container">',
-        '</div>',
+        '<div xmlns="http://www.w3.org/1999/xhtml" class="text-container"></div>',
         '</foreignObject>',
         '</g>',
         "</svg>"
@@ -39,7 +38,7 @@ function svgFormat() {
     return output.join("\n");
 }
 
-theChart.innerHTML = svgFormat(parsed);
+theChart.innerHTML = svgFormat();
 
 function calcNodeSizes(nodes) {
     const {a: dw, d: dh} = theChart.querySelector("svg").getScreenCTM().inverse();
@@ -66,18 +65,18 @@ function drawChart(parsed) {
     // console.log(dataNodes);
     layout.updateNodeLayout();
     layout.updateNodePositions();
+    const theLinksPath = theChart.querySelector("g.links > path");
     const interval = setInterval(() => {
         layout.updateNodeLayout();
         layout.updateNodePositions();
         layout.updateDivPositions();
-        layout.drawLinks(theChart.querySelector("g.links > path"));
+        layout.drawLinks(theLinksPath);
     }, 0);
     setTimeout(() => {
         clearInterval(interval);
         layout.updateDivPositions();
-        layout.drawLinks(theChart.querySelector("g.links > path"));
-    }, 5500)
-
+        layout.drawLinks(theLinksPath);
+    }, 3000)
 }
 
 input.addEventListener("blur", evt => {
@@ -97,7 +96,8 @@ document.querySelector("button#b1").addEventListener("click", evt => {
 })
 // DOT format, bipartite graph
 document.querySelector("button#b2").addEventListener("click", evt => {
-    display.value = digraph2DotBipartite(parsed);
+    const defaultVerb = document.querySelector("input[name='verb']").value;
+    display.value = digraph2DotBipartite(parsed, defaultVerb);
 })
 
 // SVG format

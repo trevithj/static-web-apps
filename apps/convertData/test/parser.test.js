@@ -29,3 +29,20 @@ describe("structureParser happy path", () => {
         assert(namedLinks.length === 5);
     })
 })
+
+const data2 = `
+Root node 1
+  with -> child
+Root node 2
+  with -> child
+`
+describe("structureParser edge cases", () => {
+
+    const {nodes, links, nodeMap} = structureParser(data2);
+    it("should parse nodes correctly", () => {
+        console.log(links);
+        assert(links.length === 2);
+        assert(nodes.length === 4);
+        assert(nodeMap.n0 === nodes[0]);
+    })
+})
