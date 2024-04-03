@@ -35,7 +35,7 @@ export function stateParser(txt) {
 function parseLine(raw) {
     const indent = raw.search(/\S/);
     const name = raw.trim();
-    const link = name.split(" -> ");
+    const link = name.split("->").map(s => s.trim());
     if (link.length > 1) {
         const [label, target] = link;
         return {indent, type: "link", label, target};
@@ -54,6 +54,10 @@ function processNode(data, nameMap) {
 }
 
 function updateStack(stack, node) {
+    if (stack.length === 0 || node.indent === 0) {
+        stack.push(node);
+        return;
+    }
     const peek = stack[stack.length - 1];
     if (node.indent > peek.indent) {
         stack.push(node);
@@ -65,8 +69,9 @@ function updateStack(stack, node) {
 
 function makeLink(stack, label) {
     const len = stack.length;
-    const src = stack[len - 2].id;
-    const tgt = stack[len - 1].id;
+    const {id: src, indent: srcI} = stack[len - 2];
+    const {id: tgt, indent: tgtI} = stack[len - 1];
+    if (srcI > tgtI) return null;
     return label ? {src, tgt, label} : {src, tgt};
 }
 
@@ -96,12 +101,13 @@ export function structureParser(txt) {
             nodeStack.push(node);
             return;
         }
-        if (node.indent === 0) {
-            throw new Error("Invalid format: must only have one parent node");
-        }
+        // if (node.indent === 0) {
+        //     throw new Error("Invalid format: must only have one parent node");
+        // }
         const [label, checkedNode] = checkNode(node);
         updateStack(nodeStack, checkedNode);
-        links.push(makeLink(nodeStack, label));
+        const link = makeLink(nodeStack, label);
+        if (link) links.push(link);
     })
 
     return {nodes, links, nodeMap};

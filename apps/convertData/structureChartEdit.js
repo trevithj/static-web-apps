@@ -1,8 +1,9 @@
 import {structureParser as parser, stringify} from "./chartEdit.js";
 import {digraph2Dot, digraph2DotBipartite} from "./formatters.js";
-import Layout, {Helpers} from "./layouter.js";
+import { DrawChart } from "./structureChartDraw.js";
+// import Layout, {Helpers} from "./layouter.js";
 
-const { link2VerbDiv, node2NounDiv, setNodeSizes } = Helpers;
+// const { link2VerbDiv, node2NounDiv, setNodeSizes } = Helpers;
 
 // Initial view.
 const SAMPLE_INPUT = `Grandmother\n  Mother\n    Daughter1\n    Daughter2\n      GrandDaughter`;
@@ -40,44 +41,7 @@ function svgFormat() {
 
 theChart.innerHTML = svgFormat();
 
-function calcNodeSizes(nodes) {
-    const {a: dw, d: dh} = theChart.querySelector("svg").getScreenCTM().inverse();
-    return setNodeSizes(nodes, dw, dh);
-}
-
-function drawChart(parsed) {
-    const container = theChart.querySelector(".text-container");
-    container.innerHTML = "";
-
-    const {nodes, links} = parsed;
-    if (!nodes) return;
-    const nounNodes = nodes.map(node2NounDiv);
-    const nodeMap = new Map(nounNodes.map(n => [n.node.id, n]));
-    const verbNodes = links.map(link2VerbDiv(nodeMap));
-    const nounElements = nounNodes.map(n => n.div);
-    const verbElements = verbNodes.map(n => n.div);
-    // const verbElements = links.map(link2VerbDiv(nodeMap));
-    container.append(...nounElements);
-    container.append(...verbElements);
-
-    const dataNodes = calcNodeSizes([...nounNodes, ...verbNodes]);
-    const layout = Layout(dataNodes, nodeMap);
-    // console.log(dataNodes);
-    layout.updateNodeLayout();
-    layout.updateNodePositions();
-    const theLinksPath = theChart.querySelector("g.links > path");
-    const interval = setInterval(() => {
-        layout.updateNodeLayout();
-        layout.updateNodePositions();
-        layout.updateDivPositions();
-        layout.drawLinks(theLinksPath);
-    }, 0);
-    setTimeout(() => {
-        clearInterval(interval);
-        layout.updateDivPositions();
-        layout.drawLinks(theLinksPath);
-    }, 3000)
-}
+//setSVG(theChart.querySelector("svg"));
 
 input.addEventListener("blur", evt => {
     parsed = parser(evt.target.value);
@@ -103,8 +67,12 @@ document.querySelector("button#b2").addEventListener("click", evt => {
 // SVG format
 document.querySelector("button#b3").addEventListener("click", evt => {
     // display.value = svgFormat(parsed);
-    drawChart(parsed); //, theLog.querySelector(".text-container"));
+    const { drawChart } = DrawChart(
+        parsed,
+        theChart.querySelector(".text-container"),
+        theChart.querySelector("svg")
+    );
+    drawChart();
 })
 
 input.focus();
-
