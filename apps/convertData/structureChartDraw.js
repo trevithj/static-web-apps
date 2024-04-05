@@ -43,7 +43,7 @@ function layoutNodes() {
         clearInterval(interval);
         layout.updateDivPositions();
         layout.drawLinks(theLinksPath);
-    }, 3000)
+    }, 2000)
 }
 
 function drawChart(parsed, container) {
@@ -54,6 +54,9 @@ function drawChart(parsed, container) {
     const { dataNodes, nodeMap } = createNodes(nodes, links, container);
     // console.log(dataNodes);
     STORE.theLayout = Layout(dataNodes, nodeMap);
+    STORE.nodeMap = nodeMap;
+    window.DATA.dataNodes = dataNodes;
+    window.DATA.nodeMap = nodeMap;
     layoutNodes();
 }
 
@@ -64,6 +67,14 @@ export function DrawChart(parsed, container, svg) {
     STORE.theLinksPath = svg.querySelector("g.links > path");
     return {
         drawChart: () => drawChart(parsed, container),
-        drawLinks: () => STORE.theLayout.drawLinks(STORE.theLinksPath)
+        drawLinks: () => STORE.theLayout.drawLinks(STORE.theLinksPath),
+        redraw: () => {
+            const { theLayout, theLinksPath } = STORE;
+            theLayout.centerVerbNodes();
+            theLayout.updateVerbNodePositions();
+            theLayout.updateDivPositions();
+            theLayout.drawLinks(theLinksPath);
+        },
+        getNodeById: id => STORE.nodeMap.get(id)
     }
 }

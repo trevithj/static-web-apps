@@ -1,5 +1,5 @@
 function getCenter(node) {
-    if(isNaN(node.x)) throw new TypeError("??");
+    if (isNaN(node.x)) throw new TypeError("??");
     return {cx: node.x + (node.width / 2), cy: node.y + (node.height / 2)};
 };
 
@@ -7,7 +7,7 @@ function getCenter(node) {
 
 function setNodeSizes(nodes, dw = 1, dh = 1) {
     nodes.forEach(n => {
-        const {width: w, height: h } = n.div.getBoundingClientRect();
+        const {width: w, height: h} = n.div.getBoundingClientRect();
         n.width = w * dw;
         n.height = h * dh;
         n.dx = 0;
@@ -23,6 +23,7 @@ function node2NounDiv(node, i) {
     div.className = "noun";
     div.style = `left:${x}px;top:${y}px;`;
     div.innerHTML = node.name.replace("\\n", "<br/>");
+    div.dataset.id = node.id;
     return {
         x, y,
         get node() {return node},
@@ -88,34 +89,54 @@ function updateDataNodeLayout(dataNodes) {
     })
 };
 
+const D = 2;// * Math.random();
+
+function updateLinkedNode(dNode, linkedNode) {
+    const pos = calcOffsets(dNode, linkedNode);
+    if (pos.dist > 200) {
+        dNode.dx += (D * pos.offsetX / pos.dist);
+        dNode.dy += (D * pos.offsetY / pos.dist);
+        linkedNode.dx -= (D * pos.offsetX / pos.dist);
+        linkedNode.dy -= (D * pos.offsetY / pos.dist);
+    }
+}
+
 function updateVerbNodeLayout(dataNodes, nodeMap) {
     dataNodes.forEach(dNode => {
         if (dNode.type !== "verb") return;
         const {src, tgt} = dNode.node;
         const srcNode = nodeMap.get(src);
         const tgtNode = nodeMap.get(tgt);
-        const D = 2 * Math.random();
-        const pos1 = calcOffsets(dNode, srcNode);
-        if (pos1.dist > 200) {
-            dNode.dx += (D * pos1.offsetX / pos1.dist);
-            dNode.dy += (D * pos1.offsetY / pos1.dist);
-            srcNode.dx -= (D * pos1.offsetX / pos1.dist);
-            srcNode.dy -= (D * pos1.offsetY / pos1.dist);
-        }
-        
-        const pos2 = calcOffsets(dNode, tgtNode);
-        if (pos2.dist > 200) {
-            dNode.dx += (D * pos2.offsetX / pos2.dist);
-            dNode.dy += (D * pos2.offsetY / pos2.dist);
-            tgtNode.dx -= (D * pos2.offsetX / pos2.dist);
-            tgtNode.dy -= (D * pos2.offsetY / pos2.dist);
-        }
+        updateLinkedNode(dNode, srcNode);
+        updateLinkedNode(dNode, tgtNode);
+        // centerVerbNode(dNode, srcNode, tgtNode);
+    })
+};
+
+function centerVerbNode(verbNode, src, tgt) {
+    const cx = (src.x + tgt.x) / 2;
+    const cy = (src.y + tgt.y) / 2;
+    const dx = verbNode.x < cx ? 2 : -2;
+    const dy = verbNode.y < cy ? 2 : -2;
+    verbNode.dx += dx;
+    verbNode.dy += dy;
+    // if (verbNode.node.label === "step1") console.log(verbNode);
+}
+
+function centerVerbNodes(dataNodes, nodeMap) {
+    dataNodes.forEach(dNode => {
+        if (dNode.type !== "verb") return;
+        const {src, tgt} = dNode.node;
+        const srcNode = nodeMap.get(src);
+        const tgtNode = nodeMap.get(tgt);
+        centerVerbNode(dNode, srcNode, tgtNode);
     })
 };
 
 export function updateNodeLayout(dataNodes, nodeMap) {
     updateDataNodeLayout(dataNodes);
     updateVerbNodeLayout(dataNodes, nodeMap);
+    centerVerbNodes(dataNodes, nodeMap);
 }
 
 function mRound(n) {
@@ -127,6 +148,19 @@ export function updateNodePositions(dataNodes) {
         const {dx, dy} = dn;
         dn.x = mRound(dn.x + dx);
         dn.y = mRound(dn.y + dy);
+        dn.dx = 0;
+        dn.dy = 0;
+    })
+};
+
+function updateVerbNodePositions(dataNodes) {
+    dataNodes.forEach(dn => {
+        if(dn.type !== "verb") return;
+        const {dx, dy} = dn;
+        dn.x = mRound(dn.x + dx);
+        dn.y = mRound(dn.y + dy);
+        dn.dx = 0;
+        dn.dy = 0;
     })
 };
 
@@ -135,6 +169,7 @@ export function updateDivPositions(dataNodes) {
         const {x, y, div} = dn;
         div.style.left = `${x}px`;
         div.style.top = `${y}px`;
+        // if (dn.node.label === "step1") console.log(verbNode);
     })
 };
 
@@ -169,7 +204,9 @@ export function drawLinks(dataNodes, nodeMap, path) {
 export default function constructor(dataNodes, nodeMap) {
     return Object.freeze({
         updateNodeLayout: () => updateNodeLayout(dataNodes, nodeMap),
+        centerVerbNodes: () => centerVerbNodes(dataNodes, nodeMap),
         updateNodePositions: () => updateNodePositions(dataNodes),
+        updateVerbNodePositions: () => updateVerbNodePositions(dataNodes),
         updateDivPositions: () => updateDivPositions(dataNodes),
         drawLinks: group => drawLinks(dataNodes, nodeMap, group),
     });

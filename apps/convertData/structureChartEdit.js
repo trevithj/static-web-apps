@@ -1,9 +1,11 @@
 import {structureParser as parser, stringify} from "./chartEdit.js";
 import {digraph2Dot, digraph2DotBipartite} from "./formatters.js";
-import { DrawChart } from "./structureChartDraw.js";
+import {DrawChart} from "./structureChartDraw.js";
 // import Layout, {Helpers} from "./layouter.js";
 
 // const { link2VerbDiv, node2NounDiv, setNodeSizes } = Helpers;
+
+window.DATA = {};
 
 // Initial view.
 const SAMPLE_INPUT = `Grandmother\n  Mother\n    Daughter1\n    Daughter2\n      GrandDaughter`;
@@ -64,15 +66,51 @@ document.querySelector("button#b2").addEventListener("click", evt => {
     display.value = digraph2DotBipartite(parsed, defaultVerb);
 })
 
+function Pointer(getNode, redraw) {
+    const ref = {node: null, x: 0, y: 0};
+    function setRefXY(evt) {
+        ref.x = evt.clientX;
+        ref.y = evt.clientY;
+    }
+    return Object.freeze({
+        down: evt => {
+            ref.node = getNode(evt.target.dataset.id);
+            setRefXY(evt);
+        },
+        move: evt => {
+            if (evt.buttons === 0) return;
+            if (!ref.node) return;
+            // { movementX:dx, movementY:dy } = evt;
+            const dx = evt.clientX - ref.x;
+            const dy = evt.clientY - ref.y;
+            // const dx = Math.round(evt.clientX - ref.x);
+            // const dy = Math.round(evt.clientY - ref.y);
+            setRefXY(evt);
+            ref.node.x += dx;
+            ref.node.y += dy;
+            redraw();
+        }
+    });
+}
+
 // SVG format
 document.querySelector("button#b3").addEventListener("click", evt => {
     // display.value = svgFormat(parsed);
-    const { drawChart } = DrawChart(
+    const container = theChart.querySelector(".text-container");
+    const {drawChart, redraw, getNodeById} = DrawChart(
         parsed,
-        theChart.querySelector(".text-container"),
+        container,
         theChart.querySelector("svg")
     );
     drawChart();
+    const pointer = Pointer(getNodeById, redraw);
+    // function pointerDown(evt) {
+    //     const nodeId = evt.target.dataset.id;
+    //     console.log(getNodeById(nodeId));
+    // }
+    container.addEventListener("pointerdown", pointer.down);
+    container.addEventListener("pointermove", pointer.move);
+    // container.addEventListener("pointerup", pointer.up);
 })
 
 input.focus();
