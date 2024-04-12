@@ -146,20 +146,3 @@ export function stringify(parsed) {
     }
     return value.join("\n");
 }
-// export function stringify(parsed) {
-//     const {nodes, links, nodeMap} = parsed;
-//     const value = [
-//         "nodes:[",
-//         nodes.map(node => "  " + JSON.stringify(node)).join(",\n"),
-//         "],",
-//         "links: [",
-//         links.map(link => "  " + JSON.stringify(link)).join(",\n"),
-//         "],",
-//         "nodeMap: {",
-//         Object.entries(nodeMap).map(([k, v]) => {
-//             return `  "${k}": ${JSON.stringify(v)}`;
-//         }).join(",\n"),
-//         "}"
-//     ].join("\n");
-//     return value;
-// }

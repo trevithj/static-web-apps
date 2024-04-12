@@ -32,9 +32,9 @@ function node2NounDiv(node, i) {
     }
 }
 
-function link2VerbDiv(nodeMap) {
+function link2VerbDiv(nodeMap, defaultLabel = "feeds") {
     return link => {
-        const {src, tgt, label = "feeds"} = link;
+        const {src, tgt, label = defaultLabel} = link;
         const x = nodeMap.get(src).x;
         const y = nodeMap.get(tgt).y;
         const div = document.createElement("div");

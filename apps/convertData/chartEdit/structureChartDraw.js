@@ -17,7 +17,7 @@ function calcNodeSizes(nodes) {
 function createNodes(nodes, links, container) {
     const nounNodes = nodes.map(node2NounDiv);
     const nodeMap = new Map(nounNodes.map(n => [n.node.id, n]));
-    const verbNodes = links.map(link2VerbDiv(nodeMap));
+    const verbNodes = links.map(link2VerbDiv(nodeMap, "feeds"));
     const nounElements = nounNodes.map(n => n.div);
     const verbElements = verbNodes.map(n => n.div);
     // const verbElements = links.map(link2VerbDiv(nodeMap));
@@ -60,7 +60,7 @@ function drawChart(parsed, container) {
     layoutNodes();
 }
 
-export function DrawChart(parsed, container, svg) {
+export function DrawChart(parsed, container, svg, defaultVerb) {
     STORE.theNetwork = parsed;
     STORE.theContainer = container;
     STORE.theSvg = svg;

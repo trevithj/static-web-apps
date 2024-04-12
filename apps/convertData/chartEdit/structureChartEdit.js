@@ -97,10 +97,12 @@ function Pointer(getNode, redraw) {
 document.querySelector("button#b3").addEventListener("click", evt => {
     // display.value = svgFormat(parsed);
     const container = theChart.querySelector(".text-container");
+    const defaultVerb = document.querySelector("input[name='verb']").value;
     const {drawChart, redraw, getNodeById} = DrawChart(
         parsed,
         container,
-        theChart.querySelector("svg")
+        theChart.querySelector("svg"),
+        defaultVerb
     );
     drawChart();
     const pointer = Pointer(getNodeById, redraw);

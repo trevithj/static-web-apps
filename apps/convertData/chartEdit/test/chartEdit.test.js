@@ -1,5 +1,5 @@
 import assert from "assert"; // built-in Node assertions
-import {structureParser} from "../chartEdit.js";
+import {structureParser, stateParser, stringify } from "../chartEdit.js";
 
 const data1 = `
 Draw an SVG Chart
@@ -40,9 +40,34 @@ describe("structureParser edge cases", () => {
 
     const {nodes, links, nodeMap} = structureParser(data2);
     it("should parse nodes correctly", () => {
-        console.log(links);
+        // console.log(links);
         assert(links.length === 2);
         assert(nodes.length === 4);
         assert(nodeMap.n0 === nodes[0]);
+    })
+})
+
+describe("stateParser", () => {
+
+    const {nodes, links, nodeMap} = stateParser(data2);
+    it("should parse nodes correctly", () => {
+        assert.equal(links.length, 2);
+        assert.equal(nodes.length, 3);
+        
+        // check that links poth feed the child node
+        assert.equal(links[0].tgt, links[1].tgt);
+        assert(nodeMap.n0 === nodes[0]);
+    })
+})
+
+describe("stringify", () => {
+
+    it("should render as expected", () => {
+        const net = {nodes: [1,2,{x:3, y:4}]};
+        const result = stringify(net);
+        // console.log(result);
+        assert.match(result, /\"nodes\":\[\n/);
+        assert.match(result, /\n  2,\n/);
+        assert.match(result, /\{"x\":3,\"y\":4}\n/);
     })
 })
