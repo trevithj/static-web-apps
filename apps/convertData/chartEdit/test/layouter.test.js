@@ -43,3 +43,22 @@ it("should getCenter with zero values", () => {
     assert(result.cx === 5);
     assert(result.cy === 5);
 })
+
+it("should create a verb dataNode", () => {
+    // link2VerbDiv, node2NounDiv,
+    globalThis.document = {
+        createElement: (type) => ({type})
+    };
+    const nodeMap = new Map([
+        ["A", {}],
+        ["B", {}]
+    ]); 
+    const theLink = {src:"A", tgt:"B"};
+    const result = Helpers.link2VerbDiv(nodeMap, "link")(theLink);
+    const { type, node, div } = result;
+
+    assert.equal(node, theLink);
+    assert.equal(type, "verb");
+    assert.equal(div.className, "verb");
+    assert.equal(div.type, "div");
+})
