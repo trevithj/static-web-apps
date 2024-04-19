@@ -1,15 +1,15 @@
 const frame = document.querySelector('.frame2');
 const rm = frame.querySelector('.rm');
-const op = frame.querySelector('.op2');
+const op = frame.querySelector('.op');
 const fg = frame.querySelector('.fg');
 const btn = document.querySelector('#tick');
 const data = {
     rm: 10, wip: 0, fg: 0
 }
 const render = () => {
-    rm.innerHTML = data.rm;
-    op.innerHTML = data.wip ? data.wip : '_';
-    fg.innerHTML = data.fg;
+    rm.textContent = data.rm;
+    op.textContent = data.wip ? data.wip : '_';
+    fg.textContent = data.fg;
 };
 
 const doStart = () => {
@@ -33,8 +33,8 @@ const playAnimation = (duration) => {
     doStart();
     // Play the animation with the newly specified duration
     const animator = op.animate([
-        {left: '50px'},
-        {left: 'calc(100% - 150px)'}
+        {left: '0px'},
+        {left: 'calc(100% - 100px)'}
     ], duration);
     animator.onfinish = doFinish;
 };

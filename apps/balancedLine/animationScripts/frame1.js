@@ -35,4 +35,11 @@ op.addEventListener('animationend', () => {
     render();
 });
 
-export default render;
+function init() {
+    op.style.setProperty("animation-name", "example");
+    op.style.setProperty("animation-duration", "2s");
+    op.style.setProperty("animation-iteration-count", "8");
+    render();
+}
+
+export default init;

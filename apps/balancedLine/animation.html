@@ -24,36 +24,37 @@
             height: 50px;
             text-align: center;
         }
-
+        
         div.rm {
             left: 0px;
             border: solid thin silver;
+            background-color: white;
         }
-
+        
         div.fg {
             right: 0px;
             border: solid thin silver;
         }
-
+        
         div.op {
-            left: 50px;
+            left: 0px;
             /* color: white; */
-            /* background-color: red; */
-            animation-name: example;
-            animation-duration: 2s;
-            animation-iteration-count: 8;
+            background-color: #ddd;
+            border-radius: 25px;
+            z-index: -2;
         }
 
         @keyframes example {
             0% {
-                left: 50px
+                left: 0px
             }
 
             100% {
-                left: calc(100% - 150px)
+                left: calc(100% - 100px)
             }
         }
     </style>
+    <title>Animated Processes</title>
 </head>
 
 <body>
@@ -63,13 +64,24 @@
         <div class="op box"></div>
         <div class="fg box"></div>
     </div>
+
     <hr />
+
     <div class="frame frame2">
         <div class="rm box"></div>
-        <div class="op2 box"></div>
+        <div class="op box"></div>
         <div class="fg box"></div>
     </div>
     <button id="tick">Tick</button>
+    
+    <hr />
+    
+    <div class="frame frame3">
+        <div class="rm box"></div>
+        <div class="op box"></div>
+        <div class="fg box"></div>
+    </div>
+    <button id="run">Transition</button>
 
 </body>
 <script src="./animationScripts/main.js" type="module"></script>
