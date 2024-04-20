@@ -3,13 +3,15 @@ const frame = document.querySelector('.frame3');
 const rm = frame.querySelector('.rm');
 const op = frame.querySelector('.op');
 const fg = frame.querySelector('.fg');
+const ctrl = document.querySelector('div#control');
 const data = {
-    rm: 10, wip: 0, fg: 0
+    rm: 10, wip: 0, fg: 0, speed: 3000
 }
 const render = () => {7
     rm.textContent = data.rm;
     op.textContent = data.wip ? data.wip : '';
     fg.textContent = data.fg;
+    ctrl.querySelector("span").textContent = `${data.speed}ms`;
 };
 
 op.addEventListener('transitionstart', () => {
@@ -17,12 +19,6 @@ op.addEventListener('transitionstart', () => {
     data.rm -= data.wip;
     render();
 });
-
-// op.addEventListener('transitionRun', () => {
-//     data.rm -= data.wip;
-//     data.fg += data.wip;
-//     render();
-// });
 
 op.addEventListener('transitionend', () => {
     data.fg += data.wip;
@@ -34,8 +30,7 @@ op.addEventListener('transitionend', () => {
 });
 
 function run(op) {
-    const speed = 1 + 3 * Math.random();
-    op.style.setProperty("transition", `left ${speed}s ease`);
+    op.style.setProperty("transition", `left ${data.speed}ms linear 0s`);
     op.style.setProperty("left", "calc(100% - 100px)");
     render();
 }
@@ -47,11 +42,23 @@ function run(op) {
 //     op.style.removeProperty("transition");
 //     // op.classList.remove('horizTranslate');
 // }
-
-const runMe = document.querySelector('button#run');
+console.log(ctrl);
+const speed = ctrl.querySelector('input#run-speed');
+speed.addEventListener("change", () => {
+    const percent = +speed.value;
+    data.speed = Math.round(5000 - (4000 * percent/100));
+    ctrl.querySelector("span").textContent = `${data.speed}ms`;
+})
+const runMe = ctrl.querySelector('button');
 runMe.addEventListener("click", () => {
     runMe.setAttribute("disabled", true);
     run(op);
 })
 
-export default { run };
+rm.addEventListener("click", () => {
+    data.rm += 1;
+    rm.textContent = data.rm;
+    if(data.wip === 0) runMe.removeAttribute("disabled");
+})
+
+export default { run, render };
