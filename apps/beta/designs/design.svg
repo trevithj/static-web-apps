@@ -4,40 +4,6 @@ svg {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-svg .node .node-shape {
-    stroke: #AAA;
-    fill: #EEE;
-    stroke-width: 2px;
-}
-
-svg .node .square {
-    shape-rendering: crispEdges;
-}
-
-svg .node.active .node-shape {
-    fill: rgb(255, 225, 225);
-}
-
-svg .box {
-    fill: rgb(230, 237, 255);
-    fill-opacity: 0.5;
-    stroke: #999;
-    stroke-width: 1px;
-    shape-rendering: crispEdges;
-}
-
-text.label, text.edge-label {
-    cursor: default;
-    stroke: none;
-    fill: #000;
-}
-text.label {
-    font-size: 12px 
-}
-text.edge-label {
-    font-size: 8px 
-}
-
 marker#arrow {
     fill: #333;
 }
@@ -46,6 +12,31 @@ marker#arrow {
     fill: none;
     stroke: #333;
     stroke-width: 1px;
+}
+
+.text-container {
+    position: relative;
+    font-size: 10px;
+}
+.text-container > div {
+    position: absolute;
+    text-align: center;
+    max-width: 10rem;
+    border: solid thin;
+}
+div.noun {
+    border-color: blue;
+    background-color: white;
+    border-radius: 0.2rem;
+    padding: 0.2rem;
+}
+div.verb {
+    border-color: grey;
+    background-color: #ddd;
+    border-radius: 0.5rem;
+    padding: 0.1rem;
+}
+foreignObject {
 }
 
 </style>
@@ -57,35 +48,18 @@ marker#arrow {
   </defs>
 
   <g class="line-group">
-    <line x1="52" y1="52" x2="132" y2="132" class="line" marker-end="url(#arrow)"></line>
-    <text x="0" y="0" text-anchor="middle" class="edge-label" style="transform: translate(101px, 101px) rotate(45deg)">
-        <tspan dy="-1em">caring for</tspan>
-    </text>
+    <polyline points="95,100 90,154 85,208" class="line" marker-mid="url(#arrow)"/>
+    <polyline points="85,208 88,259 91,310" class="line" marker-mid="url(#arrow)"/>
   </g>
 
-  <g class="node">
-    <circle cx="52" cy="52" r="18" class="node-shape"></circle>
-    <text x="52" y="52" text-anchor="middle" class="label">
-      <tspan dy="0.3em">Parent</tspan>
-    </text>
-  </g>
-  <g class="node">
-    <circle cx="150" cy="150" r="18" class="node-shape circle"></circle>
-    <text x="150" y="150" text-anchor="middle" class="label">
-      <tspan dy="0.3em">Child</tspan>
-    </text>
-  </g>
+  <foreignObject x="0" y="0" width="100%" height="100%">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="text-container">
+      <div class="noun" style="top:100px;left:50px;">The Road to HELL</div>
+      <div class="verb" style="top:200px;left:50px;">is paved with</div>
+      <div class="noun" style="top:300px;left:50px;">Good Intentions</div>
+    </div>
+  </foreignObject>
 
-
-  <g class="line-group">
-    <path d="M 4 0 C 7 4 1 4 4 8 C 7 12 1 12 4 16" />
-  </g>
-
-  <g class="node-group">
-    <path d="M 4 0 C 7 4 1 4 4 8 C 7 12 1 12 4 16" />
-  </g>
-
-  <g class="text-group">
-    <path d="M 4 0 C 7 4 1 4 4 8 C 7 12 1 12 4 16" />
-  </g>
+  <!-- <rect x="82" y="152" width="138" height="29" stroke="red" fill="none" /> -->
+  <!-- <rect x="50" y="100" width="91" height="19" stroke="blue" fill="none" /> -->
 </svg>

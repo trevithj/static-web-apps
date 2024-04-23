@@ -1,0 +1,91 @@
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+<style>
+svg {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+svg .node .node-shape {
+    stroke: #AAA;
+    fill: #EEE;
+    stroke-width: 2px;
+}
+
+svg .node .square {
+    shape-rendering: crispEdges;
+}
+
+svg .node.active .node-shape {
+    fill: rgb(255, 225, 225);
+}
+
+svg .box {
+    fill: rgb(230, 237, 255);
+    fill-opacity: 0.5;
+    stroke: #999;
+    stroke-width: 1px;
+    shape-rendering: crispEdges;
+}
+
+text.label, text.edge-label {
+    cursor: default;
+    stroke: none;
+    fill: #000;
+}
+text.label {
+    font-size: 12px 
+}
+text.edge-label {
+    font-size: 8px 
+}
+
+marker#arrow {
+    fill: #333;
+}
+
+.line {
+    fill: none;
+    stroke: #333;
+    stroke-width: 1px;
+}
+
+</style>
+
+  <defs>
+    <marker id="arrow" refX="8" refY="3" markerUnit="userSpaceOnUse" markerWidth="8" markerHeight="6" orient="auto">
+      <path d="M 0 0 8 3 0 6 Z"></path>
+    </marker>
+  </defs>
+
+  <g class="line-group">
+    <line x1="52" y1="52" x2="132" y2="132" class="line" marker-end="url(#arrow)"></line>
+    <text x="0" y="0" text-anchor="middle" class="edge-label" style="transform: translate(101px, 101px) rotate(45deg)">
+        <tspan dy="-1em">caring for</tspan>
+    </text>
+  </g>
+
+  <g class="node">
+    <circle cx="52" cy="52" r="18" class="node-shape"></circle>
+    <text x="52" y="52" text-anchor="middle" class="label">
+      <tspan dy="0.3em">Parent</tspan>
+    </text>
+  </g>
+  <g class="node">
+    <circle cx="150" cy="150" r="18" class="node-shape circle"></circle>
+    <text x="150" y="150" text-anchor="middle" class="label">
+      <tspan dy="0.3em">Child</tspan>
+    </text>
+  </g>
+
+
+  <g class="line-group">
+    <path d="M 4 0 C 7 4 1 4 4 8 C 7 12 1 12 4 16" />
+  </g>
+
+  <g class="node-group">
+    <path d="M 4 0 C 7 4 1 4 4 8 C 7 12 1 12 4 16" />
+  </g>
+
+  <g class="text-group">
+    <path d="M 4 0 C 7 4 1 4 4 8 C 7 12 1 12 4 16" />
+  </g>
+</svg>
