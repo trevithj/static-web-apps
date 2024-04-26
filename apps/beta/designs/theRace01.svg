@@ -1,9 +1,9 @@
-<svg viewBox="0 0 1200 800" width="1000" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 500 600" width="800" xmlns="http://www.w3.org/2000/svg">
 <style>
 .op {
     stroke: blue;
     fill: white;
-    fill-opacity: 0.5;
+    fill-opacity: 0.7;
 }
 .item {
     stroke: blue;
@@ -34,9 +34,19 @@
     100% { y: 100 }
 }
 .move1 {
-    animation: move1 800ms linear infinite;
+    animation: move1 2000ms linear infinite;
+}
+@keyframes move2 {
+    0% { y: 500 }
+    100% { y: 300 }
+}
+.move2 {
+    animation: move2 500ms linear infinite;
 }
 
+.swap {
+    transition: cx 12s linear 0s;
+}
 </style>
   <defs>
     <circle id="op" r="30" fill="none" class="op" />
@@ -51,11 +61,13 @@
   </g>
 
   <g class="stores">
-    <g id="items">
+    <g id="items300">
         <use href="#item" x="100" y="300" class="move1"/>
-        <use href="#item" x="400" y="300"/>
-        <use href="#item" x="100" y="500"/>
-        <use href="#item" x="400" y="500"/>
+        <use href="#item" x="400" y="300" class="move1"/>
+    </g>
+    <g id="items500">
+        <use href="#item" x="100" y="500" class="move2"/>
+        <use href="#item" x="400" y="500" />
     </g>
 
     <g id="fg-a">
@@ -97,6 +109,6 @@
   <g class="active">
     <circle id="worker1" cx="100" cy="200" class="worker busy" />
     <circle id="worker2" cx="400" cy="200" class="worker busy" />
-    <circle id="worker3" cx="100" cy="400" class="worker" />
+    <circle id="worker3" cx="100" cy="400" class="worker busy swap" />
   </g>
 </svg>
