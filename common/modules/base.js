@@ -1,3 +1,4 @@
+import { publish, subscribe } from "./pubsub.js";
 /* Global object that implements:
  * 1- a diy Flux/Redux-based framework.
  * 2- a mediator one-to-one messaging system.
@@ -59,18 +60,13 @@ BASE.listen = (subject, listenFn) => {
 }
 
 // Proper PubSub methods, to allow broadcasting messages to multiple nodes.
-// The sub function returns an unsubscribe fn.
-const subscriberMap = {};
+// Wraps the pubsub functions with additional logging.
 
 BASE.pub = (subject, message) => {
-    const subscribers = subscriberMap[subject] || [];
-    subscribers.forEach(subFn => {
-        if (subFn && typeof subFn === "function") {
-            subFn(message);
-        }
-    })
+    publish(subject, message);
     if (BASE.logging) {
-        console.log({subject, message, subs: subscribers.length});
+        console.log({subject, message});
+        // console.log({subject, message, subs: subscribers.length});
     }
 }
 
@@ -78,12 +74,7 @@ BASE.sub = (subject, subFn) => {
     if (BASE.logging) {
         console.log({subject, subFn});
     }
-    if (typeof subFn === 'function') {
-        const subscribers = subscriberMap[subject] || [];
-        subscribers.push(subFn);
-        subscriberMap[subject] = subscribers;
-        return () => subscriberMap[subject] = subscriberMap[subject].filter(fn => fn !== subFn);
-    }
+    return subscribe(subject, subFn);
 }
 
 // Namespaces global values, so different scripts can pass values

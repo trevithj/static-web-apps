@@ -1,4 +1,4 @@
-<svg viewBox="0 0 500 600" width="800" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 50 500 500" width="600" xmlns="http://www.w3.org/2000/svg">
 <style>
 .op {
     stroke: blue;
@@ -61,14 +61,10 @@
   </g>
 
   <g class="stores">
-    <g id="items300">
-        <use href="#item" x="100" y="300" class="move1"/>
-        <use href="#item" x="400" y="300" class="move1"/>
-    </g>
-    <g id="items500">
-        <use href="#item" x="100" y="500" class="move2"/>
-        <use href="#item" x="400" y="500" />
-    </g>
+    <use id="item-a1" href="#item" x="100" y="300" class="move1"/>
+    <use id="item-b1" href="#item" x="400" y="300" class="move1"/>
+    <use id="item-a0" href="#item" x="100" y="500" />
+    <use id="item-b0" href="#item" x="400" y="500" />
 
     <g id="fg-a">
         <use href="#store" x="100" y="100"/>
@@ -107,8 +103,8 @@
     <use href="#op" x="400" y="400"/>
   </g>
   <g class="active">
-    <circle id="worker1" cx="100" cy="200" class="worker busy" />
-    <circle id="worker2" cx="400" cy="200" class="worker busy" />
-    <circle id="worker3" cx="100" cy="400" class="worker busy swap" />
+    <circle id="worker-a1" cx="100" cy="200" class="worker busy" />
+    <circle id="worker-b1" cx="400" cy="200" class="worker busy" />
+    <circle id="worker-x0" cx="100" cy="400" class="worker swap" />
   </g>
 </svg>
