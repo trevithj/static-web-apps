@@ -1,8 +1,8 @@
 import {publish, subscribe} from "../../../common/modules/pubsub.js";
-import {getRM, getItem, getWorker, updateStock} from "./theRace01.fns.js";
+import {getRM, getItem, getWorker, updateStock, getWIP} from "./theRace01.fns.js";
 
 const viz = document.querySelector("div.theViz");
-const DATA = {job: "a0"};
+const DATA = {job: "a0", worker: "ready"};
 
 fetch("./theRace01.svg").then(r => r.text()).then(raw => {
     viz.innerHTML = raw;
@@ -53,11 +53,6 @@ btns[1].addEventListener("click", buyRM("b"));
 btns[2].addEventListener("click", swapJobs);
 
 function addItemsListeners() {
-    // const [a1, b1] = ["a1","b1"].map(getItem);
-    // a1.addEventListener("animationiteration", () => {
-    //     const fg = getFG("a");
-    //     const wip = getWIP("a");
-    // });
     ["a", "b"].forEach(col => {
         const item = getItem(col+"0");
         item.addEventListener("animationiteration", () => {
@@ -67,15 +62,15 @@ function addItemsListeners() {
             publish("RM-Removed", col);
         });
     });
-
-    // const items = viz.querySelectorAll("g#items use");
-    // items[2].addEventListener("animationiteration", () => {
-    //     const { txt, qty } = getRM("a");
-    //     txt.textContent = qty - 1;
-    //     if (qty - 1 === 0) {
-
-    //     }
-    // })
+    ["a", "b"].forEach(col => {
+        const item = getItem(col+"1");
+        item.addEventListener("animationiteration", () => {
+            updateStock(col+"2", 1);
+            publish("FG-Added", col);
+            updateStock(col+"1", -1);
+            publish("WIP-Removed", col);
+        });
+    });
 }
 
 function pauseWork(id) {
@@ -94,11 +89,11 @@ function unPauseWork(id) {
 
 subscribe("WIP-Removed", col => {
     const wip = getWIP(col);
-    if (wip.qty < 0) throw Error("qty < 0 !!");
-    if (wip.qty === 0) {
+    if (wip.qty <= 0) {
         const id = [col, "1"].join("");
         pauseWork(id);
     }
+    if (wip.qty < 0) throw Error("qty < 0 !!");
 });
 
 subscribe("WIP-Added", col => {

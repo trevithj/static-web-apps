@@ -61,8 +61,8 @@
   </g>
 
   <g class="stores">
-    <use id="item-a1" href="#item" x="100" y="300" class="move1"/>
-    <use id="item-b1" href="#item" x="400" y="300" class="move1"/>
+    <use id="item-a1" href="#item" x="100" y="300" />
+    <use id="item-b1" href="#item" x="400" y="300" />
     <use id="item-a0" href="#item" x="100" y="500" />
     <use id="item-b0" href="#item" x="400" y="500" />
 
@@ -103,8 +103,8 @@
     <use href="#op" x="400" y="400"/>
   </g>
   <g class="active">
-    <circle id="worker-a1" cx="100" cy="200" class="worker busy" />
-    <circle id="worker-b1" cx="400" cy="200" class="worker busy" />
+    <circle id="worker-a1" cx="100" cy="200" class="worker" />
+    <circle id="worker-b1" cx="400" cy="200" class="worker" />
     <circle id="worker-x0" cx="100" cy="400" class="worker swap" />
   </g>
 </svg>
