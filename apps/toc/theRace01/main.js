@@ -1,8 +1,15 @@
 import {publish, subscribe} from "../../../common/modules/pubsub.js";
-import {getRM, getItem, getWorker, updateStock, getWIP} from "./theRace01.fns.js";
+import {getRM, getItem, getWorker, updateStock, getWIP} from "./selectors.js";
 
 const viz = document.querySelector("div.theViz");
-const DATA = {job: "a0", worker: "ready"};
+const DATA = {
+    cash: 1000,
+    revenue: 0,
+    expenses: 0,
+    ticks: 0,
+    job: "a0",
+    worker: "ready"
+};
 
 fetch("./theRace01.svg").then(r => r.text()).then(raw => {
     viz.innerHTML = raw;
@@ -16,7 +23,8 @@ fetch("./theRace01.svg").then(r => r.text()).then(raw => {
 
 function buyRM(col) {
     return () => {
-        updateStock(`${col}0`, 10);
+        updateStock(`${col}0`, 5);
+        DATA.expenses += 50;
         publish("RM-Added", col);
     }
 }
@@ -120,4 +128,34 @@ subscribe("RM-Removed", col => {
         w.classList.remove("busy");
         item.classList.remove("move2");
     }
+});
+
+subscribe("FG-Added", (col) => {
+    DATA.revenue += 25;
+})
+
+function display() {
+    const { ticks, cash, expenses, revenue } = DATA;
+    document.querySelector(".info").textContent = JSON.stringify({
+        time: ticks,
+        cash, expenses, revenue
+    }, null, 3);
+}
+
+subscribe("Init-done", () => {
+    const timer = setInterval(() => {
+        // TODO: every 480 ticks, sell up to 100 units, deduct expenses.
+        if (DATA.ticks >= 480 ) {
+            DATA.expenses += 2000;
+            // TODO: final display.
+            DATA.cash += DATA.revenue;
+            DATA.cash -= DATA.expenses;
+            clearInterval(timer);
+            display()
+        } else {
+            DATA.ticks += 1;
+            display()
+        }
+
+    }, 500);
 });
