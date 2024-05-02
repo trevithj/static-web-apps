@@ -45,7 +45,8 @@
 }
 
 .swap {
-    transition: cx 12s linear 0s;
+    transition: cx 15s linear 0s;
+    fill: blue;
 }
 </style>
   <defs>

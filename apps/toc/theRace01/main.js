@@ -1,30 +1,22 @@
 import {publish, subscribe} from "../../../common/modules/pubsub.js";
+import {getData} from "./controls.js";
 import {getRM, getItem, getWorker, updateStock, getWIP} from "./selectors.js";
 
 const viz = document.querySelector("div.theViz");
-const DATA = {
-    cash: 1000,
-    revenue: 0,
-    expenses: 0,
-    ticks: 0,
-    job: "a0",
-    worker: "ready"
-};
+const DATA = getData(1000, document.querySelector(".info"));
+DATA.display();
 
 fetch("./theRace01.svg").then(r => r.text()).then(raw => {
     viz.innerHTML = raw;
     setTimeout(() => {
         publish("Init-done", viz);
-        addJobListener();
-        addItemsListeners();
     }, 0)
 });
 
-
-function buyRM(col) {
+function buyRM(col, qty = 5) {
     return () => {
-        updateStock(`${col}0`, 5);
-        DATA.expenses += 50;
+        updateStock(`${col}0`, qty);
+        DATA.updateCash(-qty*10);
         publish("RM-Added", col);
     }
 }
@@ -56,9 +48,13 @@ function addJobListener() {
 }
 
 const btns = document.querySelectorAll(".controls button");
+btns[0].disabled = true;
+btns[1].disabled = true;
+btns[2].disabled = true;
 btns[0].addEventListener("click", buyRM("a"));
 btns[1].addEventListener("click", buyRM("b"));
 btns[2].addEventListener("click", swapJobs);
+btns[3].addEventListener("click", startRun);
 
 function addItemsListeners() {
     ["a", "b"].forEach(col => {
@@ -111,7 +107,7 @@ subscribe("WIP-Added", col => {
 
 subscribe("RM-Added", col => {
     const id = col+"0";
-    if (DATA.job === id && DATA.worker==="ready") {
+    if (DATA.isReady(id)) {
         const w = getWorker("x0");
         const item = getItem(id);
         w.classList.add("busy");
@@ -131,31 +127,39 @@ subscribe("RM-Removed", col => {
 });
 
 subscribe("FG-Added", (col) => {
-    DATA.revenue += 25;
+    DATA.updateCash(30);
 })
 
-function display() {
-    const { ticks, cash, expenses, revenue } = DATA;
-    document.querySelector(".info").textContent = JSON.stringify({
-        time: ticks,
-        cash, expenses, revenue
-    }, null, 3);
-}
-
-subscribe("Init-done", () => {
+function startRun() {
+    btns[0].disabled = false;
+    btns[1].disabled = false;
+    btns[2].disabled = false;
+    btns[3].disabled = true;
+    
     const timer = setInterval(() => {
         // TODO: every 480 ticks, sell up to 100 units, deduct expenses.
         if (DATA.ticks >= 480 ) {
-            DATA.expenses += 2000;
-            // TODO: final display.
-            DATA.cash += DATA.revenue;
-            DATA.cash -= DATA.expenses;
+            DATA.updateCash(-4000);
             clearInterval(timer);
-            display()
+            finish();
+        } else if (DATA.hasFailed) {
+            clearInterval(timer);
+            finish();
         } else {
-            DATA.ticks += 1;
-            display()
+            DATA.tick();
+            DATA.display()
         }
-
     }, 500);
+}
+
+function finish() {
+    viz.querySelectorAll(".busy").forEach(el => el.classList.remove("busy"));
+    viz.querySelectorAll(".move1").forEach(el => el.classList.remove("move1"));
+    viz.querySelectorAll(".move2").forEach(el => el.classList.remove("move2"));
+    DATA.display();
+}
+
+subscribe("Init-done", () => {
+    addJobListener();
+    addItemsListeners();
 });
