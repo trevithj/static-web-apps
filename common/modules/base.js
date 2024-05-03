@@ -1,4 +1,7 @@
-import { publish, subscribe } from "./pubsub.js";
+import {publish, subscribe} from "./pubsub.js";
+import {getStore} from "./store.js";
+import * as Selectors from "./selectors.js";
+
 /* Global object that implements:
  * 1- a diy Flux/Redux-based framework.
  * 2- a mediator one-to-one messaging system.
@@ -6,30 +9,21 @@ import { publish, subscribe } from "./pubsub.js";
  **/
 const BASE = {};
 
-//Flux/Redux-like framework that acts as a single 'store'.
-let state, reduce;
-
 BASE.initState = (reducerFn) => {
-    if (typeof reducerFn !== "function") {
-        throw Error("Reducer function is mandatory.");
-    } //else set reducer and initialize state.
-    reduce = reducerFn;
-    BASE.dispatch("");
-}
+    const {dispatch, getState} = getStore(reducerFn);
+    BASE.getState = getState;
 
-BASE.dispatch = (type, payload) => {
-    state = reduce(state, {type, payload});
-    if (BASE.logging) {
-        console.groupCollapsed("DISPATCH:" + type);
-        console.log("Payload: ", payload);
-        console.log("State: ", state);
-        console.groupEnd();
+    BASE.dispatch = (type, payload) => {
+        dispatch(type, payload);
+        const state = getState();
+        if (BASE.logging) {
+            console.groupCollapsed("DISPATCH:" + type);
+            console.log("Payload: ", payload);
+            console.log("State: ", state);
+            console.groupEnd();
+        }
+        BASE.send("STATE_CHANGED", state);
     }
-    BASE.send("STATE_CHANGED", state);
-}
-
-BASE.getState = () => {
-    return Object.freeze(state); //return a copy?
 }
 
 // Mediation methods, to allow messages to be passed between
@@ -92,13 +86,9 @@ BASE.value = (name, val) => {
 }
 
 // Misc helper functions
-BASE.select = (selector, el = document) => el.querySelector(selector);
-BASE.selectAll = (selector, el = document) => el.querySelectorAll(selector);
-BASE.createEl = (type, className) => {
-    const el = document.createElement(type);
-    if (className) el.classList.add(className);
-    return el;
-}
-BASE.createElSVG = type => document.createElementNS('http://www.w3.org/2000/svg', type);
+BASE.select = Selectors.select;
+BASE.selectAll = Selectors.selectAll;
+BASE.createEl = Selectors.makeElement;
+BASE.createElSVG = Selectors.makeSVGElement;
 
 export default BASE;

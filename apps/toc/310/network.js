@@ -20,12 +20,20 @@ export function initNetwork(BASE) {
     }
     const renderOp = (op) => {
         // console.log(op);
-        const html = [
-            `<title>${op.id}</title>`,
-            `<ellipse cy=7.5 cx=5 rx=2.9 ry=2.3 fill=${op.fill} stroke=black stroke-width=${op.selected ? 0.8 : 0.1} />`,
-            `<text ${textPos} y=7.5 x=5 class="optxt">${op.runtime}</text>`
-        ].join('');
-        op.element.innerHTML = html;
+        if (!op.element.innerHTML) {
+            const html = [
+                `<title>${op.id}</title>`,
+                `<ellipse cy=7.5 cx=5 rx=2.9 ry=2.3 fill=${op.fill} stroke=black />`,
+                `<text ${textPos} y=7.5 x=5 class="optxt">${op.runtime}</text>`
+            ].join('');
+            op.element.innerHTML = html;
+        } 
+        const shape = op.element.querySelector("ellipse");
+        if (op.selected) { // status?
+            shape.classList.add("selected");
+        } else {
+            shape.classList.remove("selected");
+        }
     }
 
     const nodesMap = {}; // Needed for line plotting
@@ -55,7 +63,15 @@ export function initNetwork(BASE) {
     // Create the SVG view and add node elements
     const svg = document.querySelector('svg');
     const html = [
-        '<rect x=0 y=0 width=80 height=100 stroke-width=0.5 class="background" />',
+        '<rect x=0 y=10 width=80 height=10 class="background" />',
+        '<rect x=0 y=30 width=80 height=10 class="background" />',
+        '<rect x=0 y=50 width=80 height=10 class="background" />',
+        '<rect x=0 y=70 width=80 height=10 class="background" />',
+        '<rect x=10 y=0 width=10 height=90 class="background" />',
+        '<rect x=30 y=0 width=10 height=90 class="background" />',
+        '<rect x=50 y=0 width=10 height=90 class="background" />',
+        '<rect x=70 y=0 width=10 height=90 class="background" />',
+
         '<path id="links" fill=none stroke=silver stroke-width=0.5px />',
         '<g id="grid" />',
         '<g id="nodes" />',

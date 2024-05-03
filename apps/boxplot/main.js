@@ -3,8 +3,8 @@ import {getInputLabels, getInputValues, strToArray} from "./calcs.js";
 import {reducer} from "./state.js";
 import {getPath, getScaleData, makeDisplayRow, makeInputs, stringify} from "./views.js";
 
-const {select, selectAll, listen, dispatch} = BASE;
 BASE.initState(reducer);
+const {select, selectAll, listen, dispatch} = BASE;
 BASE.logging = true;
 
 const views = {};

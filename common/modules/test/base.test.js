@@ -38,3 +38,22 @@ describe("pub sub", () => {
         assert(!data.includes("New Message2"));
     })
 })
+
+describe("state management", () => {
+    function reducer(state = {}, action) {
+        return {...state, ...action.payload };
+    };
+    it("should demand a reducer function", () => {
+        assert.throws(() => {
+            BASE.initState("not a function");
+        }, {name:"Error", message:"Reducer function is mandatory."});
+    });
+    it("should handle dispatched actions", () => {
+        BASE.initState(reducer);
+        BASE.dispatch("test", {abc:123});
+        BASE.dispatch("next", {def:444});
+        const state = BASE.getState();
+        assert.equal(state.abc, 123);
+        assert.equal(state.def, 444);
+    })
+})
