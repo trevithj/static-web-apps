@@ -1,4 +1,4 @@
-const getLinksBySource = links => theSrc => links.filter(link => link[0] === theSrc);
+const getLinksBySource = linkArray => theSrc => linkArray.filter(link => link[0] === theSrc);
 
 function processLink(visited, stackOrQueue) {
     return link => {
@@ -9,8 +9,8 @@ function processLink(visited, stackOrQueue) {
         }
     }
 }
-const doBFS = links => start => {
-    const getBySource = getLinksBySource(links);
+const doBFS = linkArray => start => {
+    const getBySource = getLinksBySource(linkArray);
     const queue = [start];
     const result = [];
     const visited = {start: true};
@@ -24,8 +24,8 @@ const doBFS = links => start => {
 }
 
 // iterative version
-export const doDFS = links => start => {
-    const getBySource = getLinksBySource(links);
+export const doDFS = linkArray => start => {
+    const getBySource = getLinksBySource(linkArray);
     const stack = [start];
     const result = [];
     const visited = {[start]: true};
@@ -59,23 +59,35 @@ export const doRecursiveDFS = links => start => {
     return result;
 };
 
-
-export function Links() {
-    const links = [];
+export function Edges() {
+    const linkArray = [];
     const add = (src, tgt, wgt) => {
         const link = Object.freeze([src, tgt, wgt]);
-        links.push(link);
+        linkArray.push(link);
     };
-    const getBySource = getLinksBySource(links);
+    const getBySource = getLinksBySource(linkArray);
 
-    const instance = {
+    return {
         add,
-        bfs: doBFS(links),
-        dfs: doRecursiveDFS(links),
+        bfs: doBFS(linkArray),
+        dfs: doRecursiveDFS(linkArray),
         // dfs: doRecursiveDFS(links),
-        getAll: () => links,
+        getAll: () => linkArray,
         getBySource,
-        getByTarget: (tgtId) => links.filter(link => link[1] === tgtId)
-    }
-    return instance;
+        getByTarget: (tgtId) => linkArray.filter(link => link[1] === tgtId)
+    };
 }
+
+// export function toAdjacencyListMap(linksArray) {
+//     const theMap = new Map();
+//     linksArray.forEach(link => {
+//         const [src, tgt] = link;
+//         const adjSet = theMap.get(src) || new Set();
+//         adjSet.add(tgt);
+//         theMap.set(src, adjSet);
+//     });
+//     theMap.forEach((key, value) => {
+//         theMap.set(key, value?.values() || value);
+//     })
+//     return theMap;
+// }

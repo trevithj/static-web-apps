@@ -1,8 +1,8 @@
 import assert from "assert";
-import {Links} from "../links.js";
+import {Edges} from "../edges.js";
 
 describe("Graph links", () => {
-    const links = Links();
+    const links = Edges();
     links.add("a", "b");
     links.add("a", "c");
     links.add("d", "c");
@@ -50,15 +50,15 @@ describe("Graph links", () => {
         const list1 = links.bfs("a");
         const list2 = links.bfs("d");
 
-        assert.equal("a,b,c,d", list1.join(","));
-        assert.equal("d,c", list2.join(","));
+        assert.equal(list1.join(","), "a,b,c,d");
+        assert.equal(list2.join(","), "d,c");
     })
 
     it("should perform DFS of nodes", () => {
         const list1 = links.dfs("a");
         const list2 = links.dfs("d");
 
-        assert.equal("a,b,d,c", list1.join(","));
-        assert.equal("d,c", list2.join(","));
+        assert.equal(list1.join(","), "a,b,d,c");
+        assert.equal(list2.join(","), "d,c");
     })
 })

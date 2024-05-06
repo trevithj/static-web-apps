@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <!-- <meta name="keywords" content="boxplot, javascript, statistics. percentiles"> -->
+    </meta>
+    <!-- <link rel="stylesheet" type="text/css" href="./style.css"> -->
+    <style>
+        body {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+        }
+        div.chart { border: solid thin black; }
+        #theViz circle {
+            stroke: blue;
+            fill: orange;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div class="chart">
+            <svg viewBox="0 0 100 100" width="600"></svg>
+        </div>
+        <input type="range" />
+        <button>Refresh</button>
+    </div>
+
+</body>
+
+<script src="./main.js" type="module"></script>
+
+</html>
