@@ -1,56 +1,33 @@
 import * as SEL from "../../../common/modules/selectors.js";
+import {getCirclePoints, makeCircles} from "./circles.js";
 import {Edges} from "./edges.js";
-
-function round(factor) {
-    return n => Math.round(n * factor) / factor;
-}
-
-function getCirclePoints(n) {
-    const delta = Math.PI * 2 / n;
-    const rnd = round(100000);
-    const coords = [];
-    while(n > 0) {
-        const xy = {
-            x: rnd(Math.sin(delta * n)),
-            y: rnd(Math.cos(delta * n)),
-        };
-        coords.push(xy);
-        n -= 1;
-    }
-    return coords;
-}
-
-function drawLinks(path, edges) {
-    const d = edges.getAll().map(edge => edge[2]).join(" ");
-    path.setAttribute("d", d);
-}
+import {drawLinks, makeLinkPath} from "./paths.js";
 
 const chart = SEL.select(".chart svg");
 
 const theViz = SEL.makeSVGElement("g");
 theViz.setAttribute("id","theViz");
 
-const edges = Edges();
-const path = SEL.makeSVGElement("path");
-path.setAttribute("stroke", "#999");
-path.setAttribute("stroke-width", "0.3");
-theViz.appendChild(path);
+const linkPath = makeLinkPath("#bbb");
+const highlightedLinkPath = makeLinkPath("blue");
+theViz.appendChild(linkPath);
+theViz.appendChild(highlightedLinkPath);
 
 const coords = getCirclePoints(16).map(xy => {
     const { x, y }= xy;
     return {x: Math.round(x*45+50), y: Math.round(y*45+50)};
 });
-coords.forEach(xy => {
-    const { x, y }= xy;
-    const circle = SEL.makeSVGElement("circle");
-    circle.setAttribute("cx", x);
-    circle.setAttribute("cy", y);
-    circle.setAttribute("r", 4);
+
+const circles = makeCircles(coords);
+
+circles.forEach(circle => {
     theViz.appendChild(circle);
-})
+});
+
+// const MAX_LINKS = 5;
+const edges = Edges();
 
 coords.forEach(src => {
-    const { x, y }= src;
     coords.forEach(tgt => {
         if (src !== tgt) {
             const wgt = `M${src.x},${src.y} L${tgt.x},${tgt.y}`;
@@ -59,7 +36,15 @@ coords.forEach(src => {
     })
 })
 
-drawLinks(path, edges);
+drawLinks(linkPath, edges.getAll());
 chart.appendChild(theViz);
 
 console.log(edges.getAll());
+
+circles.forEach(circle => {
+    circle.addEventListener("click", evt => {
+        const src = evt.target._data;
+        const links = edges.getBySource(src);
+        drawLinks(highlightedLinkPath, links);
+    })
+});
