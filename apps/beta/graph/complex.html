@@ -15,6 +15,9 @@
             stroke: blue;
             fill: orange;
         }
+        .the-range {
+            width: 20rem;
+        }
     </style>
 </head>
 
@@ -23,12 +26,15 @@
         <div class="chart">
             <svg viewBox="0 0 100 100" width="600"></svg>
         </div>
-        <input type="range" />
-        <button>Refresh</button>
+        <input class="the-range" type="range" />
+        <button class="the-button">Refresh</button>
     </div>
 
 </body>
 
 <script src="./main.js" type="module"></script>
-
+<!-- 
+    TODO: Figure out a this/next-state data structure.
+    Animate transitions for each node's active/inactive state
+ -->
 </html>

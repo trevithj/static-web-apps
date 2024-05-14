@@ -9,45 +9,40 @@ function processLink(visited, stackOrQueue) {
         }
     }
 }
-const doBFS = linkArray => start => {
+const doBFS = linkArray => (start, process) => {
     const getBySource = getLinksBySource(linkArray);
     const queue = [start];
-    const result = [];
     const visited = {start: true};
     let currentVertex;
     while (queue.length) {
         currentVertex = queue.shift();
-        result.push(currentVertex);
+        process(currentVertex);
         getBySource(currentVertex).forEach(processLink(visited, queue));
     }
-    return result;
 }
 
 // iterative version
-export const doDFS = linkArray => start => {
+export const doDFS = linkArray => (start, process) => {
     const getBySource = getLinksBySource(linkArray);
     const stack = [start];
-    const result = [];
     const visited = {[start]: true};
 
     while (stack.length) {
         const vertex = stack.pop();
-        result.push(vertex);
+        process(vertex);
         getBySource(vertex).reverse().forEach(processLink(visited, stack));
     }
-    return result;
 }
 
 // recursive version
-export const doRecursiveDFS = links => start => {
+export const doRecursiveDFS = links => (start, process) => {
     const getBySource = getLinksBySource(links);
-    const result = [];
     const visited = {};
     // the recursive bit
     const dfs = vertex => {
         if (!vertex) return null;
         visited[vertex] = true;
-        result.push(vertex);
+        process(vertex);
         getBySource(vertex).forEach(link => {
             const neighbor = link[1];
             if (!visited[neighbor]) {
@@ -56,7 +51,6 @@ export const doRecursiveDFS = links => start => {
         })
     }
     dfs(start);
-    return result;
 };
 
 export function Edges() {
@@ -69,6 +63,7 @@ export function Edges() {
 
     return {
         add,
+        clear: () => linkArray.length = 0,
         bfs: doBFS(linkArray),
         dfs: doRecursiveDFS(linkArray),
         // dfs: doRecursiveDFS(links),

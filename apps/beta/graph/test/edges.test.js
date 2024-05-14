@@ -47,18 +47,47 @@ describe("Graph links", () => {
     })
 
     it("should perform BFS of nodes", () => {
-        const list1 = links.bfs("a");
-        const list2 = links.bfs("d");
+        function getProcessFn(a) {
+            return vertex => a.push(vertex);
+        }
+        const list1 = [];
+        const list2 = [];
+        links.bfs("a", getProcessFn(list1));
+        links.bfs("d", getProcessFn(list2));
 
         assert.equal(list1.join(","), "a,b,c,d");
         assert.equal(list2.join(","), "d,c");
     })
 
     it("should perform DFS of nodes", () => {
-        const list1 = links.dfs("a");
-        const list2 = links.dfs("d");
+        function getProcessFn(a) {
+            return vertex => a.push(vertex);
+        }
+        const list1 = [];
+        const list2 = [];
+        links.dfs("a", getProcessFn(list1));
+        links.dfs("d", getProcessFn(list2));
 
+        // assert.equal(JSON.stringify(list1), '["a","b","d","c"]');
+        // assert.equal(JSON.stringify(list1), '[["a","b"],["b","d"],["a","c"]]');
         assert.equal(list1.join(","), "a,b,d,c");
+        // assert.equal(JSON.stringify(list2), '[["d","c"]]');
         assert.equal(list2.join(","), "d,c");
+    })
+
+})
+
+describe("Graph links clear", () => {
+    it("should clear the links", () => {
+        const links = Edges();
+        links.add("a", "b");
+        links.add("a", "c");
+        
+        assert.equal(links.getAll().length, 2);
+        links.clear();
+        assert.equal(links.getAll().length, 0);
+        
+        links.add("a", "d");
+        assert.equal(links.getAll().length, 1);
     })
 })
