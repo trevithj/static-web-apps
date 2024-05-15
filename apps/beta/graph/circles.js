@@ -12,10 +12,12 @@ export function getCirclePoints(n) {
         const xy = {
             x: rnd(Math.sin(delta * n)),
             y: rnd(Math.cos(delta * n)),
+            id: n
         };
         coords.push(xy);
         n -= 1;
     }
+    console.log(coords);
     return coords;
 }
 
@@ -29,4 +31,18 @@ export function makeCircles(coords) {
         circle._data = xy;
         return circle;
     });
+}
+
+export function control(circles) {
+    return {
+        deselectAll: () => circles.forEach(circle => circle.classList.remove("active")),
+        selectOnly: (ids) => circles.forEach(circle => {
+            const { id } = circle._data;
+            if (ids.includes(id)) {
+                circle.classList.add("active");
+            } else {
+                circle.classList.remove("active");
+            }
+        })
+    }
 }

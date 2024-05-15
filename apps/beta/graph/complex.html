@@ -15,6 +15,9 @@
             stroke: blue;
             fill: orange;
         }
+        #theViz circle.active {
+            fill: red;
+        }
         .the-range {
             width: 20rem;
         }
@@ -27,7 +30,8 @@
             <svg viewBox="0 0 100 100" width="600"></svg>
         </div>
         <input class="the-range" type="range" />
-        <button class="the-button">Refresh</button>
+        <button class="the-refresh">Refresh</button>
+        <button class="the-stepper">Step</button>
     </div>
 
 </body>
