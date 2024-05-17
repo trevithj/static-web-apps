@@ -6,7 +6,7 @@ const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 function readWord() {
     // TODO modify so ithreads the word from the command line
-    return "_ACIENDA";
+    return "RINGEIN_";
 }
 
 function permutate(word) {
