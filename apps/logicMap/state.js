@@ -1,5 +1,5 @@
 /*jshint esversion:6 */
-(function() {
+export function initState(BASE) {
 
 	//useful helper function
 	function setProp(prop, type, action) {
@@ -72,4 +72,4 @@
 		};
 	});
 
-}());
+};
