@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Management</title>
+    <style type="text/css" media="screen">
+        @import url("style.css");
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 50px;
+        }
+
+        .store {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="store">
+            <h2>Store 1</h2>
+            <input type="number" id="store1" value="10" readonly><br>
+            <button id="btn1">Move to Store 2</button>
+        </div>
+        <div class="store">
+            <h2>Store 2</h2>
+            <input type="number" id="store2" value="0" readonly><br>
+            <button id="btn2">Move to Store 1</button>
+        </div>
+    </div>
+
+    <script type="module" src="./moveItem.js"></script>
+    <script>
+        function sel(selector) {
+            return document.querySelector(selector);
+        }
+
+        function checkStore(store, btn) {
+            if (store.value === "0") {
+                btn.setAttribute("disabled", true);
+            } else {
+                btn.removeAttribute("disabled");
+            }
+        }
+        function checkStores() {
+            checkStore(sel("#store1"), sel("#btn1"));
+            checkStore(sel("#store2"), sel("#btn2"));
+        }
+
+        function doMove(btn, src, tgt) {
+            btn.setAttribute("disabled", true);
+            const srcInput = sel(src);
+            const tgtInput = sel(tgt);
+            moveItem(srcInput, tgtInput, 1, () => {
+                btn.removeAttribute("disabled");
+                checkStores();
+            });
+        }
+
+        sel("#btn1").addEventListener("click", (evt => {
+            doMove(evt.target, "#store1", "#store2");
+        }))
+        sel("#btn2").addEventListener("click", (evt => {
+            doMove(evt.target, "#store2", "#store1");
+        }))
+    </script>
+</body>
+
+</html>

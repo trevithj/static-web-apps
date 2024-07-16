@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Event Tester</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial;
+            margin: 2rem 1rem;
+        }
+
+        #target {
+            line-height: 5rem;
+            border: solid thin blue;
+            border-radius: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <button>Clear</button>
+        <div id="target">This is the Event Target</div>
+        <pre id="output"></pre>
+    </div>
+</body>
+<script>
+    const target = document.querySelector("#target");
+    const output = document.querySelector("#output");
+    const log = [];
+
+    document.querySelector("button").addEventListener("click", () => {
+        log.length = 0;
+        output.innerHTML = log.join("\n");
+    });
+
+    function handler(evt) {
+        evt.preventDefault();
+        log.push(evt.type);
+        output.innerHTML = log.join("\n");
+    }
+    target.addEventListener("mousedown", handler);
+    target.addEventListener("mouseenter", handler);
+    target.addEventListener("mouseleave", handler);
+    target.addEventListener("mouseout", handler);
+    target.addEventListener("mouseover", handler);
+    target.addEventListener("mouseup", handler);
+    target.addEventListener("touchstart", handler);
+    target.addEventListener("touchend", handler);
+</script>
+</html>
