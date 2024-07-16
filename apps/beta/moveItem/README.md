@@ -4,3 +4,9 @@ Original query was:
 ```
 I would like to create a simple web app that depicts two stores. Each store is represented by a number in a text box or similar. Items can be moved from one store to the other, and the numbers change to reflect the movement. Please write a simle example.
 ```
+
+So, some tweaks were needed. The unit tests were for JEST, so I got them modified for Mocha. This meant adding JSDom for mocking the document, and Sinon for the fake timers.
+
+That worked rather well.
+
+I also got the animation function split out of the main moveItem fn. Will see about refactoring now the tests are robust.

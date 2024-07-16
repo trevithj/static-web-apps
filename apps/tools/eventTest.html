@@ -22,6 +22,7 @@
 <body>
     <div>
         <button>Clear</button>
+        Prevent Default: <input type="checkbox" />
         <div id="target">This is the Event Target</div>
         <pre id="output"></pre>
     </div>
@@ -29,6 +30,7 @@
 <script>
     const target = document.querySelector("#target");
     const output = document.querySelector("#output");
+    const toggle = document.querySelector("input");
     const log = [];
 
     document.querySelector("button").addEventListener("click", () => {
@@ -37,7 +39,10 @@
     });
 
     function handler(evt) {
-        evt.preventDefault();
+        evt.stopPropagation();
+        if(toggle.checked) {
+            evt.preventDefault();
+        }
         log.push(evt.type);
         output.innerHTML = log.join("\n");
     }
