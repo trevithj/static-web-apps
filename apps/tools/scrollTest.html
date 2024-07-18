@@ -2,15 +2,19 @@
 <html>
 
 <head>
-    <title>Event Tester</title>
+    <title>Scroll Event Tester</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: Arial;
             margin: 2rem 1rem;
+            height: 300vh;
+            border: solid thin blue;
         }
-
+        pre {
+            width: 50vw;
+        }
         #target {
             line-height: 5rem;
             border: solid thin blue;
@@ -22,16 +26,16 @@
 <body>
     <div>
         <button>Clear</button>
-        Prevent Default: <input type="checkbox" />
-        <div id="target">This is the Event Target</div>
+        Listen to Scroll: <input id="in1" type="checkbox" />
+        Prevent Default: <input id="in2" type="checkbox" />
         <pre id="output"></pre>
     </div>
-    <a href="./scrollTest.html">Scroll Test</a>
 </body>
 <script>
-    const target = document.querySelector("#target");
+    const target = document; //.querySelector("body");
     const output = document.querySelector("#output");
-    const toggle = document.querySelector("input");
+    const listen = document.querySelector("#in1");
+    const toggle = document.querySelector("#in2");
     const log = [];
 
     document.querySelector("button").addEventListener("click", () => {
@@ -40,20 +44,18 @@
     });
 
     function handler(evt) {
+        if(!listen.checked) return;
         evt.stopPropagation();
         if(toggle.checked) {
             evt.preventDefault();
         }
-        log.push(evt.type);
+        log.unshift(`${Date.now()}  ${evt.type} [${document.documentElement.scrollTop}]`);
         output.innerHTML = log.join("\n");
     }
     target.addEventListener("mousedown", handler);
-    target.addEventListener("mouseenter", handler);
-    target.addEventListener("mouseleave", handler);
-    target.addEventListener("mouseout", handler);
-    target.addEventListener("mouseover", handler);
     target.addEventListener("mouseup", handler);
     target.addEventListener("touchstart", handler);
     target.addEventListener("touchend", handler);
+    target.addEventListener("scroll", handler);
 </script>
 </html>
