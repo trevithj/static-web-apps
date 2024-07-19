@@ -43,13 +43,21 @@
         output.innerHTML = log.join("\n");
     });
 
+    function getScrollTop() {
+        return [
+            Math.round(window.scrollY),
+            Math.round(document.documentElement.scrollTop), 
+            Math.round(document.body.scrollTop)
+        ];
+//        return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+    }
     function handler(evt) {
         if(!listen.checked) return;
         evt.stopPropagation();
         if(toggle.checked) {
             evt.preventDefault();
         }
-        log.unshift(`${Date.now()}  ${evt.type} [${document.documentElement.scrollTop}]`);
+        log.unshift(`${Date.now()}  ${evt.type} [${getScrollTop()}]`);
         output.innerHTML = log.join("\n");
     }
     target.addEventListener("mousedown", handler);
