@@ -36,7 +36,7 @@ theNet.stockMap = makeIdMap(theNet.stock);
 theNet.opMap = makeIdMap(theNet.ops);
 
 function deAllocate(net, mac, op) {
-    const alloc = net.allocs.find(a => a.mac.id === mac.id);
+    const alloc = net.allocs.find(a => a.macId === mac.id);
     if(!alloc) return net; // no change
     // const fedByStock = alloc.fedBy.map(feed => net.stock.find(s => s.id===feed.stockId));
     const stock = net.stock.map(s => {
@@ -77,9 +77,10 @@ function finishOp(net, alloc) {
 
 //
 
-export default function calcNet(net = theNet,  type, payload) {
+export default function calcNet(net = theNet, type, payload) {
     console.log(net, type, payload);
     if(type==="ALLOCATE") return allocate(net, payload);
+    // if(type==="TICK") return doUpdate(net, payload);
     return net;
 }
 
