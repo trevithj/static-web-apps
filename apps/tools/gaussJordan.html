@@ -20,16 +20,12 @@
             /* border-bottom: solid 2px silver; */
         }
         .cell {
-            /* border: solid thin silver; */
-            /* border-radius: 0.5em; */
             text-align: center;
             align-content: center;
         }
-        .cell input {
-            width: 100%;
-            height: 100%;
-            padding: 0px;
-            margin: 0px;
+        .value {
+            border: solid thin silver;
+            border-radius: 0.5em;
         }
         button.ctrl {
             padding: 0;
@@ -43,9 +39,11 @@
 <body>
     <main>
         <section id="input">
-            TODO: input panel
+            Input panel
+            <label>
+                Columns: <input name="cols" type="number" min="3" max="20" value="5" />
+            </label>
             <button id="addRow">Add Row</button>
-            <input name="columns" type="range" min="3" max="20" />
         </section>
         <section id="rows">
             <div class="row"></div>
