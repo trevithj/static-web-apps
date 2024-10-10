@@ -26,6 +26,8 @@
         .value {
             border: solid thin silver;
             border-radius: 0.5em;
+            white-space: no-wrap;
+            overflow: hidden;
         }
         button.ctrl {
             padding: 0;
@@ -44,6 +46,7 @@
                 Columns: <input name="cols" type="number" min="3" max="20" value="5" />
             </label>
             <button id="addRow">Add Row</button>
+            <button id="dupRow">Duplicate Row</button>
         </section>
         <section id="rows">
             <div class="row"></div>
@@ -56,3 +59,7 @@
     <script src="./gaussJordan.js"></script>
 </body>
 </html>
+
+<!-- 
+Notes: maybe instead of having a set of control buttons per row, we make each row selectable, so the controls know which row to act on. Hmm 
+-->
