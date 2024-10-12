@@ -1,14 +1,21 @@
 const store = {
-    cols: 10,
+    cols: 4,
+    logs: [],
     rows: []
 };
 // TEMP
-store.rows.push([1,2,3,4,5]);
-store.rows.push([2,3,4,3,2]);
-store.rows.push([3,3,3,3,3]);
+store.rows.push([1,2,3,6]);
+store.rows.push([2,3,4,9]);
+store.rows.push([1,1,2,4]);
+
+function isRowIndexOk(index) {
+    if (index < 0) return false;
+    if (index >= store.rows.length) return false;
+    return true;}
 
 function log(msg) {
-    document.querySelector("#logs").innerHTML = msg;
+    store.logs.unshift(msg);
+    document.querySelector("#logs > pre").innerHTML = store.logs.join("\n");
 }
 
 const rows = document.querySelector("#rows");
@@ -49,11 +56,44 @@ function renderRow(data) {
 function getNumbers(label, defaultValue) {
     const values = prompt(label, defaultValue);
     if (!values) return { status: "cancelled "};
-    const numbers = values.split(",").map(v => eval(v)); // allow entering expressions
-    if(numbers.some(n => isNaN(n))) return {
-        numbers, status: "invalid"
-    };
-    return { numbers, status: "ok" };
+    try {
+        const numbers = values.split(",").map(v => eval(v)); // allow entering expressions
+        if(numbers.some(n => isNaN(n))) return {
+            numbers, status: "invalid"
+        };
+        return { numbers, status: "ok" };
+    } catch (err) {
+        console.warn(err);
+        return  { status: `${err.message}, "${values}"`};
+    }
+}
+
+function doMove(rowIndex) {
+    if(rowIndex === 0) return log("Can't move first row upward"); //not allowed
+    const thisRow = store.rows[rowIndex];
+    if(!thisRow) return log(`Invalid row number: ${rowIndex}`);
+    store.rows[rowIndex] = store.rows[rowIndex-1];
+    store.rows[rowIndex-1] = thisRow;
+    log(`Row ${rowIndex} moved.`)
+}
+
+function doScale(rowIndex) {
+    const { numbers, status } = getNumbers("How much to multiply row by?", 1);
+    if (status !== "ok") return log(`Data entry status: ${status}`);
+    const [scale] = numbers;
+    store.rows[rowIndex] = store.rows[rowIndex].map(n => n * scale);
+    log(`Row ${rowIndex} multiplied by ${scale}.`)
+}
+
+function doAdd(rowIndex) {
+    const { numbers, status } = getNumbers("Enter which row to add", 0);
+    if (status !== "ok") return log(`Data entry status: ${status}`);
+    const [refRowIndex] = numbers;
+    if (!isRowIndexOk(refRowIndex)) return log(`Invalid row number: ${refRowIndex}`);
+    const refRow = store.rows[refRowIndex];
+    const tgtRow = store.rows[rowIndex].map((v, i) => v + refRow[i]);
+    store.rows[rowIndex] = tgtRow;
+    log(`Row ${refRowIndex} added to Row ${rowIndex}.`)
 }
 
 function btnListener(evt) {
@@ -62,22 +102,11 @@ function btnListener(evt) {
     if(type === "delete") {
         store.rows = store.rows.filter((r, i) => i !== rowIndex);
     } else if(type === "move") {
-        if(rowIndex === 0) return; //not allowed
-        const thisRow = store.rows[rowIndex];
-        store.rows[rowIndex] = store.rows[rowIndex-1];
-        store.rows[rowIndex-1] = thisRow;
+        doMove(rowIndex);
     } else if(type === "scale") {
-        const { numbers, status } = getNumbers("How much to multiply row by?", 1);
-        if (status !== "ok") return; // TODO: log reason
-        const [scale] = numbers;
-        store.rows[rowIndex] = store.rows[rowIndex].map(n => n * scale);
+        doScale(rowIndex);
     } else if(type === "add") {
-        const { numbers, status } = getNumbers("Enter which row to add", 0);
-        if (status !== "ok") return; // TODO: log reason
-        const [refRowIndex] = numbers;
-        const refRow = store.rows[refRowIndex];
-        const tgtRow = store.rows[rowIndex].map((v, i) => v + refRow[i]);
-        store.rows[rowIndex] = tgtRow;
+        doAdd(rowIndex);
     } else {
         console.log({type, rowIndex});
     }
@@ -85,24 +114,24 @@ function btnListener(evt) {
 }
 
 // Top buttons
-document.querySelector("#addRow").addEventListener("click", () => {
+document.querySelector("#newRow").addEventListener("click", () => {
     const { cols } = store;
     const defaultValues = Array.from({ length: cols }, () => "0").join(",");
-    const result = getNumbers(`Enter ${cols} comma-delimited values:`, defaultValues);
-    if (result.status !== "ok") return log(result.status);
-    if (result.numbers.length !== cols) return log("Wrong number of elements:" + result.numbers.length + " vs " + cols);
-    store.rows.push(result.numbers);
+    const { status, numbers } = getNumbers(`Enter ${cols} comma-delimited values:`, defaultValues);
+    if (status !== "ok") return log(`Data entry status: ${status}`);
+    if (numbers.length !== cols) return log(`Expected ${cols} numbers: actual=${numbers.length}`);
+    store.rows.push(numbers);
+    log("New row added successfully.");
     render();
 });
 document.querySelector("#dupRow").addEventListener("click", () => {
-    const result = getNumbers("Enter the row number to duplicate", 0);
-    if (result.status !== "ok") {
-        // TODO: log status
-        return; // cancelled or invalid
-    }
-    const [rowIndex] = result.numbers;
+    const{ status, numbers } = getNumbers("Enter the row number to duplicate", 0);
+    if (status !== "ok") return log(`Data entry status: ${status}`);
+    const [rowIndex] = numbers;
+    if (!isRowIndexOk(rowIndex)) return log(`Invalid row number: ${rowIndex}`);
     const refRow = store.rows[rowIndex];
     store.rows.push([...refRow]);
+    log(`Row ${rowIndex} duplicated successfully.`);
     render();
 });
 
